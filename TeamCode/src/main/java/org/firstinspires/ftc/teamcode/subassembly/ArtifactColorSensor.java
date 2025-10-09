@@ -12,7 +12,7 @@ public class ArtifactColorSensor {
     public ArtifactColorSensor(HardwareMap hwMap){
         colorSensor = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance");
     }
-    public String detectArtifactColor() {
+    public ArtifactColor detectArtifactColor() {
         final float[] hsvValues = new float[3];
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         Color.colorToHSV(colors.toColor(), hsvValues);
@@ -20,12 +20,13 @@ public class ArtifactColorSensor {
 
 
         if ((hue >= 200) && (hue <= 240)) {
-            return ("purple");
+            return ArtifactColor.PURPLE;
         }
         if ((hue >= 150) && (hue <= 190)) {
-            return ("green");
+            return ArtifactColor.GREEN;
         }
-        return Float.toString(hue);
+        return ArtifactColor.NONE;
     }
+
 }
 

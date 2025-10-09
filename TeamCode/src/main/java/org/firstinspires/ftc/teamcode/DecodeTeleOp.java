@@ -64,6 +64,10 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.moveCarouselToPosition(3);
         }
 
+        artifactSystem.loop();
+
+        artifactSystem.outputTelemetry(telemetry);
+
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
@@ -71,9 +75,7 @@ public class DecodeTeleOp extends OpMode {
         drive.drive(axial, lateral, yaw);
 
 
-        telemetry.addData("Fly Wheel Power: ",artifactSystem.getLauncherPower());
-        telemetry.addData("Intake Running: ", artifactSystem.isIntakeRunning());
-        telemetry.addData("Launcher Running: ", artifactSystem.isLauncherRunning());
+
 
     }
 }

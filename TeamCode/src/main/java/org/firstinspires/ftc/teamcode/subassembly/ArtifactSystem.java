@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.subassembly;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class ArtifactSystem {
     private final ArtifactCarousel carousel;
     private final ArtifactColorSensor detector;
     private final ArtifactLauncher launcher;
     private final ArtifactIntake intake;
+    private final ArtifactTracker tracker;
 
 
     public ArtifactSystem(HardwareMap hwMap) {
@@ -14,6 +17,16 @@ public class ArtifactSystem {
         detector = new ArtifactColorSensor(hwMap);
         launcher = new ArtifactLauncher(hwMap);
         intake = new ArtifactIntake(hwMap);
+        tracker = new ArtifactTracker();
+    }
+
+    public void loop() {
+        if (intake.isRunning()) {
+            ArtifactColor artifactColor = detector.detectArtifactColor();
+            if (artifactColor != ArtifactColor.NONE){
+                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
+            }
+        }
     }
 
 
@@ -45,6 +58,7 @@ public class ArtifactSystem {
 
     public void raiseFlipper() {
         launcher.raiseFlipper();
+        tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
     }
 
 
@@ -88,6 +102,16 @@ public class ArtifactSystem {
         // NOTE: to complete this method, you will need to add a method on the
         // ArtifactLauncher class called isRunning(), similar to the one in our
         // ArtifactIntake class.
+    }
+
+    public void outputTelemetry(Telemetry telemetry) {
+        telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
+        telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
+        telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
+        telemetry.addData("Fly Wheel Power: ",  getLauncherPower());
+        telemetry.addData("Intake Running: ",   isIntakeRunning());
+        telemetry.addData("Launcher Running: ", isLauncherRunning());
+
     }
 }
 

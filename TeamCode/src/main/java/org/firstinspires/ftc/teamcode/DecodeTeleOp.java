@@ -50,6 +50,10 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.moveCarouselToPosition(1);
         }
 
+        if (gamepad1.rightStickButtonWasPressed()) {
+            artifactSystem.resetCarouselDetection();
+        }
+
 
         if (gamepad1.right_trigger > 0.1) {
             artifactSystem.raiseFlipper();

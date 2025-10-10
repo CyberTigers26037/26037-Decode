@@ -42,5 +42,11 @@ public class ArtifactTracker {
         if (position3 == color) return 3;
         return 0;
     }
+
+    public void reset() {
+        position1 = ArtifactColor.NONE;
+        position2 = ArtifactColor.NONE;
+        position3 = ArtifactColor.NONE;
+    }
 }
 

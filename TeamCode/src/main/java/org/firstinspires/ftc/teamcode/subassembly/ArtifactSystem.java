@@ -11,6 +11,10 @@ public class ArtifactSystem {
     private final ArtifactIntake intake;
     private final ArtifactTracker tracker;
 
+    private boolean inDetectionMode;
+
+    private long detectionTimeoutMillis;
+
 
     public ArtifactSystem(HardwareMap hwMap) {
         carousel = new ArtifactCarousel(hwMap);
@@ -99,32 +103,6 @@ public class ArtifactSystem {
         // ArtifactIntake class.
     }
 
-    public void loop() {
-        if (intake.isRunning()) {
-            ArtifactColor artifactColor = detector.detectArtifactColor();
-            if (artifactColor != ArtifactColor.NONE){
-                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
-                int emptyArtifactPosition = tracker.getFirstEmptyArtifactPosition();
-                if (emptyArtifactPosition != 0) {
-                    carousel.moveCarouselToIntakePosition(emptyArtifactPosition);
-                    detector.tempStopDetection();
-                }
-                else {
-                    stopIntake();
-                }
-            }
-        }
-    }
-
-    public void outputTelemetry(Telemetry telemetry) {
-        telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
-        telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
-        telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
-        telemetry.addData("Fly Wheel Power: ",  getLauncherPower());
-        telemetry.addData("Intake Running: ",   isIntakeRunning());
-        telemetry.addData("Launcher Running: ", isLauncherRunning());
-
-    }
 
     public void moveCarouselToFireFirstPurple() {
         if (isIntakeRunning()) return;
@@ -142,6 +120,69 @@ public class ArtifactSystem {
         if (position != 0) {
             carousel.moveCarouselToFirePosition(position);
         }
+    }
+
+    public void resetCarouselDetection() {
+        tracker.reset();
+        carousel.moveCarouselToIntakePosition(1);
+        detector.tempStopDetection();
+        inDetectionMode = true;
+        detectionTimeoutMillis = System.currentTimeMillis() + 1000;
+    }
+
+    public void loop() {
+        if (inDetectionMode) {
+            ArtifactColor artifactColor = detector.detectArtifactColor();
+            if (artifactColor != ArtifactColor.NONE) {
+                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
+                advanceCarouselInDetectionMode();
+            }
+            else if (System.currentTimeMillis() > detectionTimeoutMillis) {
+                advanceCarouselInDetectionMode();
+            }
+            return;
+        }
+
+        if (intake.isRunning()) {
+            ArtifactColor artifactColor = detector.detectArtifactColor();
+            if (artifactColor != ArtifactColor.NONE) {
+                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
+                int emptyArtifactPosition = tracker.getFirstEmptyArtifactPosition();
+                if (emptyArtifactPosition != 0) {
+                    carousel.moveCarouselToIntakePosition(emptyArtifactPosition);
+                    detector.tempStopDetection();
+                }
+                else {
+                    stopIntake();
+                }
+            }
+        }
+    }
+
+    private void advanceCarouselInDetectionMode() {
+        if (carousel.getCurrentPosition() == 1) {
+            carousel.moveCarouselToIntakePosition(2);
+            detector.tempStopDetection();
+            detectionTimeoutMillis = System.currentTimeMillis() + 1000;
+        }
+        else if (carousel.getCurrentPosition() == 2) {
+            carousel.moveCarouselToIntakePosition(3);
+            detector.tempStopDetection();
+            detectionTimeoutMillis = System.currentTimeMillis() + 1000;
+        }
+        else if (carousel.getCurrentPosition() == 3) {
+            inDetectionMode = false;
+        }
+    }
+
+    public void outputTelemetry(Telemetry telemetry) {
+        telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
+        telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
+        telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
+        telemetry.addData("Fly Wheel Power: ",  getLauncherPower());
+        telemetry.addData("Intake Running: ",   isIntakeRunning());
+        telemetry.addData("Launcher Running: ", isLauncherRunning());
+
     }
 }
 

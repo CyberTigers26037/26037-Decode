@@ -43,12 +43,12 @@ public class ArtifactLauncher {
 
 
     public void raiseFlipper() {
-        setServoToAngle(flipperServo,93);
+        setServoToAngle(flipperServo,48.3);
     }
 
 
     public void parkFlipper() {
-        setServoToAngle(flipperServo,0);
+        setServoToAngle(flipperServo,-2.2);
     }
 
     public boolean isRunning(){

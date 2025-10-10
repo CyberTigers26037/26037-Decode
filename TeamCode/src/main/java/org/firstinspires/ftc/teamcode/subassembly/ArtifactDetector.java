@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-public class ArtifactColorSensor {
+public class ArtifactDetector {
     private final NormalizedColorSensor colorSensor;
     private long detectionResumeMillis;
 
-    public ArtifactColorSensor(HardwareMap hwMap){
+    public ArtifactDetector(HardwareMap hwMap){
         colorSensor = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance");
     }
     public ArtifactColor detectArtifactColor() {

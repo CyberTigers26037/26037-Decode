@@ -36,5 +36,11 @@ public class ArtifactTracker {
         if (position3 == ArtifactColor.NONE) return 3;
         return 0;
     }
+    public int getFirstForArtifactColor(ArtifactColor color) {
+        if (position1 == color) return 1;
+        if (position2 == color) return 2;
+        if (position3 == color) return 3;
+        return 0;
+    }
 }
 

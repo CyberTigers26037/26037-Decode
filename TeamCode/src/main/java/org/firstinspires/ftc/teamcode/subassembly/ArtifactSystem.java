@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ArtifactSystem {
     private final ArtifactCarousel carousel;
-    private final ArtifactColorSensor detector;
+    private final ArtifactDetector detector;
     private final ArtifactLauncher launcher;
     private final ArtifactIntake intake;
     private final ArtifactTracker tracker;
@@ -14,7 +14,7 @@ public class ArtifactSystem {
 
     public ArtifactSystem(HardwareMap hwMap) {
         carousel = new ArtifactCarousel(hwMap);
-        detector = new ArtifactColorSensor(hwMap);
+        detector = new ArtifactDetector(hwMap);
         launcher = new ArtifactLauncher(hwMap);
         intake = new ArtifactIntake(hwMap);
         tracker = new ArtifactTracker();
@@ -124,6 +124,24 @@ public class ArtifactSystem {
         telemetry.addData("Intake Running: ",   isIntakeRunning());
         telemetry.addData("Launcher Running: ", isLauncherRunning());
 
+    }
+
+    public void moveCarouselToFireFirstPurple() {
+        if (isIntakeRunning()) return;
+
+        int position = tracker.getFirstForArtifactColor(ArtifactColor.PURPLE);
+        if (position != 0) {
+            carousel.moveCarouselToFirePosition(position);
+        }
+    }
+
+    public void moveCarouselToFireFirstGreen() {
+        if (isIntakeRunning()) return;
+
+        int position = tracker.getFirstForArtifactColor(ArtifactColor.GREEN);
+        if (position != 0) {
+            carousel.moveCarouselToFirePosition(position);
+        }
     }
 }
 

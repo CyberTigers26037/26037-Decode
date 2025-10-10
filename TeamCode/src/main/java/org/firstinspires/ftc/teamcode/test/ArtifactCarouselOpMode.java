@@ -4,18 +4,18 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactCarousel;
-import org.firstinspires.ftc.teamcode.subassembly.ArtifactColorSensor;
+import org.firstinspires.ftc.teamcode.subassembly.ArtifactDetector;
 
 @SuppressWarnings("unused")
 @TeleOp(name="ArtifactCarouselTestOpMode", group = "OpMode")
 public class ArtifactCarouselOpMode extends OpMode {
         private ArtifactCarousel carousel;
         boolean intakeActive = false;
-        private ArtifactColorSensor detector;
+        private ArtifactDetector detector;
 
     @Override
     public void init(){
-        detector = new ArtifactColorSensor(hardwareMap);
+        detector = new ArtifactDetector(hardwareMap);
         carousel = new ArtifactCarousel(hardwareMap);
         }
 

@@ -20,18 +20,12 @@ public class ArtifactSystem {
         tracker = new ArtifactTracker();
     }
 
-    public void loop() {
-        if (intake.isRunning()) {
-            ArtifactColor artifactColor = detector.detectArtifactColor();
-            if (artifactColor != ArtifactColor.NONE){
-                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
-            }
-        }
-    }
+
 
 
     public void startIntake() {
         carousel.moveCarouselToIntakePosition(1);
+        detector.tempStopDetection();
         intake.start();
     }
 
@@ -43,10 +37,10 @@ public class ArtifactSystem {
 
     public void toggleIntake() {
         if(!intake.isRunning()){
-            intake.start();
+            startIntake();
         }
         else{
-            intake.stop();
+            stopIntake();
         }
         //it is  not running
      }
@@ -83,6 +77,7 @@ public class ArtifactSystem {
     public void moveCarouselToPosition(int position) {
         if (intake.isRunning()){
             carousel.moveCarouselToIntakePosition(position);
+            detector.tempStopDetection();
         }
         else{
             carousel.moveCarouselToFirePosition(position);
@@ -102,6 +97,23 @@ public class ArtifactSystem {
         // NOTE: to complete this method, you will need to add a method on the
         // ArtifactLauncher class called isRunning(), similar to the one in our
         // ArtifactIntake class.
+    }
+
+    public void loop() {
+        if (intake.isRunning()) {
+            ArtifactColor artifactColor = detector.detectArtifactColor();
+            if (artifactColor != ArtifactColor.NONE){
+                tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
+                int emptyArtifactPosition = tracker.getFirstEmptyArtifactPosition();
+                if (emptyArtifactPosition != 0) {
+                    carousel.moveCarouselToIntakePosition(emptyArtifactPosition);
+                    detector.tempStopDetection();
+                }
+                else {
+                    stopIntake();
+                }
+            }
+        }
     }
 
     public void outputTelemetry(Telemetry telemetry) {

@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.subassembly;
 
 public class ArtifactTracker {
-    private ArtifactColor position1;
-    private ArtifactColor position2;
-    private ArtifactColor position3;
+    private ArtifactColor position1 = ArtifactColor.NONE;
+    private ArtifactColor position2 = ArtifactColor.NONE;
+    private ArtifactColor position3 = ArtifactColor.NONE;
 
     public void loadArtifactAtPosition(int position, ArtifactColor color) {
          switch (position) {
@@ -28,6 +28,13 @@ public class ArtifactTracker {
             case 3: return position3;
         }
         return ArtifactColor.NONE;
+    }
+
+    public int getFirstEmptyArtifactPosition() {
+        if (position1 == ArtifactColor.NONE) return 1;
+        if (position2 == ArtifactColor.NONE) return 2;
+        if (position3 == ArtifactColor.NONE) return 3;
+        return 0;
     }
 }
 

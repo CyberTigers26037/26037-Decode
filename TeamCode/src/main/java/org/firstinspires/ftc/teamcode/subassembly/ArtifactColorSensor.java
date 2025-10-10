@@ -8,11 +8,15 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 public class ArtifactColorSensor {
     private final NormalizedColorSensor colorSensor;
+    private long detectionResumeMillis;
 
     public ArtifactColorSensor(HardwareMap hwMap){
         colorSensor = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance");
     }
     public ArtifactColor detectArtifactColor() {
+        if (System.currentTimeMillis() < detectionResumeMillis) {
+            return ArtifactColor.NONE;
+        }
         final float[] hsvValues = new float[3];
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         Color.colorToHSV(colors.toColor(), hsvValues);
@@ -28,5 +32,8 @@ public class ArtifactColorSensor {
         return ArtifactColor.NONE;
     }
 
+    public void tempStopDetection() {
+        detectionResumeMillis = System.currentTimeMillis() + 1000;
+    }
 }
 

@@ -12,7 +12,6 @@ public class ArtifactCarousel {
         servo = hwMap.get(Servo.class, "carouselServo");
     }
     public void moveCarouselToIntakePosition(int position) {
-
         if (position == 1){
             setServoToAngle(servo,-79);
         }

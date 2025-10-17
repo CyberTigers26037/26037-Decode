@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.config.RobotConfig;
+
 public class ArtifactLauncher {
     private final DcMotorEx flywheelMotor;
     private final Servo flipperServo;
@@ -43,12 +45,12 @@ public class ArtifactLauncher {
 
 
     public void raiseFlipper() {
-        setServoToAngle(flipperServo,48.3);
+        setServoToAngle(flipperServo, RobotConfig.getFlipperRaisedPosition());
     }
 
 
     public void parkFlipper() {
-        setServoToAngle(flipperServo,-2.2);
+        setServoToAngle(flipperServo,RobotConfig.getFlipperParkedPosition());
     }
 
     public boolean isRunning(){

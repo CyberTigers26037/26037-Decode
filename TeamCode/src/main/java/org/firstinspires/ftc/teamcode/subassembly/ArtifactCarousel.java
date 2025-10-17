@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.config.RobotConfig;
+
 public class ArtifactCarousel {
     private final Servo servo;
     private int currentPosition;
@@ -13,13 +15,13 @@ public class ArtifactCarousel {
     }
     public void moveCarouselToIntakePosition(int position) {
         if (position == 1){
-            setServoToAngle(servo,15.7);
+            setServoToAngle(servo, RobotConfig.getCarouselIntakePosition1());
         }
         if (position == 2){
-            setServoToAngle(servo, 114.6);
+            setServoToAngle(servo, RobotConfig.getCarouselIntakePosition2());
         }
         if (position == 3){
-            setServoToAngle(servo,-83.8);
+            setServoToAngle(servo, RobotConfig.getCarouselIntakePosition3());
         }
         currentPosition = position;
 
@@ -28,14 +30,13 @@ public class ArtifactCarousel {
 
     public void moveCarouselToFirePosition(int position) {
         if (position == 1 ){
-            setServoToAngle(servo,-135);
+            setServoToAngle(servo, RobotConfig.getCarouselLaunchPosition1());
         }
         if(position == 2){
-            setServoToAngle(servo, -34.3);
-
+            setServoToAngle(servo, RobotConfig.getCarouselLaunchPosition2());
         }
         if (position ==3){
-            setServoToAngle(servo,63.8);
+            setServoToAngle(servo, RobotConfig.getCarouselLaunchPosition3());
         }
         currentPosition = position;
     }

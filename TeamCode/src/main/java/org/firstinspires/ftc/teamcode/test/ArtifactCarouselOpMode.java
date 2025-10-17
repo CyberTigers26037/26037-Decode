@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactCarousel;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactDetector;
 
 @SuppressWarnings("unused")
-@TeleOp(name="ArtifactCarouselTestOpMode", group = "OpMode")
+@TeleOp(name="ArtifactCarouselTestOpMode", group = "Test")
 public class ArtifactCarouselOpMode extends OpMode {
         private ArtifactCarousel carousel;
         boolean intakeActive = false;

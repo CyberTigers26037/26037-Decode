@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
 
 
 @SuppressWarnings("unused")
-@TeleOp(name ="MecanumDriveTestOpMode", group = "OpMode")
+@TeleOp(name ="MecanumDriveTestOpMode", group = "Test")
 public class MecanumDriveTestOpMode extends LinearOpMode {
 
     @Override

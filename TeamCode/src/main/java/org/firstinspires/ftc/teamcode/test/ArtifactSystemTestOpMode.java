@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 
 
 @SuppressWarnings("unused")
-@TeleOp(name = "ArtifactSystemTestOpMode")
+@TeleOp(name = "ArtifactSystemTestOpMode", group = "Test")
 public class ArtifactSystemTestOpMode extends OpMode {
     private ArtifactSystem artifactSystem;
 

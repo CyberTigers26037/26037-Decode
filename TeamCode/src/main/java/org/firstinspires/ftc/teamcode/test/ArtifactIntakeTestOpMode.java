@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactIntake;
 
 @SuppressWarnings("unused")
-@TeleOp(name = "ArtifactIntakeTestOpMode", group = "OpMode")
+@TeleOp(name = "ArtifactIntakeTestOpMode", group = "Test")
 
 public class ArtifactIntakeTestOpMode extends OpMode {
     private ArtifactIntake artifactIntake;

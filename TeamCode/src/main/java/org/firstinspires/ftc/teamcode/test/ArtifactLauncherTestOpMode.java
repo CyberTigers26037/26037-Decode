@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactLauncher;
 
 
 @SuppressWarnings("unused")
-@TeleOp(name = "ArtifactLauncherTestOpMode", group = "OpMode")
+@TeleOp(name = "ArtifactLauncherTestOpMode", group = "Test")
 public class ArtifactLauncherTestOpMode extends OpMode {
     private ArtifactLauncher launcher;
     static final double MAX_FLYWHEEL_POWER = 1.0;

@@ -17,8 +17,8 @@ public class RobotConfig {
     private static double carouselLaunchPosition2 =  -34.3;
     private static double carouselLaunchPosition3 =   63.8;
 
-    private static double flipperParkedPosition = -2.2;
-    private static double flipperRaisedPosition = 48.3;
+    private static double flipperParkedPosition = -4.3;
+    private static double flipperRaisedPosition = 93.4;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {

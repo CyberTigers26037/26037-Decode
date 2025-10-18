@@ -7,29 +7,38 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 public class ArtifactDetector {
-    private final NormalizedColorSensor colorSensor;
+    private final NormalizedColorSensor colorSensor1;
+    private final NormalizedColorSensor colorSensor2;
     private long detectionResumeMillis;
 
     public ArtifactDetector(HardwareMap hwMap){
-        colorSensor = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance");
+        colorSensor1 = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance_one");
+        colorSensor2 = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance_two");
     }
+
+
     public ArtifactColor detectArtifactColor() {
         if (System.currentTimeMillis() < detectionResumeMillis) {
             return ArtifactColor.NONE;
         }
-        final float[] hsvValues = new float[3];
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
-        Color.colorToHSV(colors.toColor(), hsvValues);
-        float hue = hsvValues[0];
 
+        final float[] hsvValues1 = new float[3];
+        final float[] hsvValues2 = new float[3];
+        NormalizedRGBA colors1 = colorSensor1.getNormalizedColors();
+        NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
+        Color.colorToHSV(colors1.toColor(), hsvValues1);
+        Color.colorToHSV(colors2.toColor(), hsvValues2);
+        float hue1 = hsvValues1[0];
+        float hue2 = hsvValues2[0];
 
-        if ((hue >= 200) && (hue <= 240)) {
+        if (((hue1 >= 200) && (hue1 <= 240)) || ((hue2 >= 200) && (hue2 <= 240))) {
             return ArtifactColor.PURPLE;
         }
-        if ((hue >= 150) && (hue <= 190)) {
+        if (((hue1 >= 150) && (hue1 <= 190)) || ((hue2 >= 150) && (hue2 <= 190))) {
             return ArtifactColor.GREEN;
         }
         return ArtifactColor.NONE;
+
     }
 
     public void tempStopDetection() {
@@ -37,3 +46,4 @@ public class ArtifactDetector {
     }
 }
 
+//worked on adometry pods & number plate mount

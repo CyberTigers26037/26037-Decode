@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimeLight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
 
@@ -12,16 +14,26 @@ public class DecodeTeleOp extends OpMode {
     private ArtifactSystem artifactSystem;
     private MecanumDrive drive;
     private final double flywheelPower = 0.5;
+    private static final double TURN_GAIN     = 0.037;
+    private static final double MAX_AUTO_TURN = 0.3;
+    private AprilTagLimeLight aprilTagLimeLight;
+   // private final double goalAngle = AprilTagLimeLight.detectGoalAngle;
 
     @Override
     public void init() {
         artifactSystem = new ArtifactSystem(hardwareMap);
         drive = new MecanumDrive();
         drive.init(hardwareMap);
+        aprilTagLimeLight = new AprilTagLimeLight();
+        aprilTagLimeLight.init(hardwareMap);
+        aprilTagLimeLight.beginDetectingTeamBlue();
     }
+
+
 
     @Override
     public void loop() {
+
         if (gamepad1.left_trigger > 0.1) {
             artifactSystem.startLauncher();
         }
@@ -50,6 +62,7 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.moveCarouselToPosition(1);
         }
 
+
         if (gamepad1.rightStickButtonWasPressed()) {
             artifactSystem.resetCarouselDetection();
         }
@@ -77,14 +90,20 @@ public class DecodeTeleOp extends OpMode {
 
         artifactSystem.outputTelemetry(telemetry);
 
+        Double goalAngle = aprilTagLimeLight.detectGoalAngle();
+
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
 
+        if (gamepad1.left_bumper && (goalAngle != null)) {
+            double yawError = goalAngle;
+            axial = 0;
+            lateral = 0;
+            yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+        }
+        telemetry.addData("goal angle = ", goalAngle);
+
         drive.drive(axial, lateral, yaw);
-
-
-
-
     }
 }

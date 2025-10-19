@@ -17,13 +17,13 @@ public class DecodeTeleOp extends OpMode {
     private static final double TURN_GAIN     = 0.037;
     private static final double MAX_AUTO_TURN = 0.3;
     private AprilTagLimeLight aprilTagLimeLight;
-   // private final double goalAngle = AprilTagLimeLight.detectGoalAngle;
 
     @Override
     public void init() {
         artifactSystem = new ArtifactSystem(hardwareMap);
         drive = new MecanumDrive();
         drive.init(hardwareMap);
+
         aprilTagLimeLight = new AprilTagLimeLight();
         aprilTagLimeLight.init(hardwareMap);
         aprilTagLimeLight.beginDetectingTeamBlue();

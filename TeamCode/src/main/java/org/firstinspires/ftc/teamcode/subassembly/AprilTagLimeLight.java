@@ -9,26 +9,36 @@ public class AprilTagLimeLight {
     private Limelight3A limelight;
 
     public void init(HardwareMap hardwareMap) {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        // If the robot does not have a limelight camera configured, this will return null
+        // and we won't do any limelight camera operations
+        limelight = hardwareMap.tryGet(Limelight3A.class, "limelight");
     }
 
     public void beginDetectingObelisk() {
+        if (limelight == null) return;
+
         limelight.pipelineSwitch(0);
         limelight.start();
     }
 
     public void beginDetectingTeamBlue() {
+        if (limelight == null) return;
+
         limelight.pipelineSwitch(1);
         limelight.start();
     }
 
     public void beginDetectingTeamRed() {
+        if (limelight == null) return;
+
         limelight.pipelineSwitch(2);
         limelight.start();
     }
 
 
     public String findObeliskArtifactOrder() {
+        if (limelight == null) return null;
+
         LLResult result = limelight.getLatestResult();
 
         if (result != null && result.isValid()) {
@@ -43,10 +53,13 @@ public class AprilTagLimeLight {
                 }
             }
         }
+
         return null;
     }
 
     public Double detectGoalAngle() {
+        if (limelight == null) return null;
+
         LLResult result = limelight.getLatestResult();
         if (result != null && result.isValid()) {
             return result.getTx();

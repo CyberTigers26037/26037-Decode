@@ -1,4 +1,4 @@
-package pathing.dax;
+package pathing.pathing;
 
 public class PedroPathingTest1 {
 }

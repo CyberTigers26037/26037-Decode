@@ -14,8 +14,8 @@ public class DecodeTeleOp extends OpMode {
     private ArtifactSystem artifactSystem;
     private MecanumDrive drive;
     private final double flywheelPower = 0.5;
-    private static final double TURN_GAIN     = 0.037;
-    private static final double MAX_AUTO_TURN = 0.3;
+    private static final double TURN_GAIN     = 0.034;
+    private static final double MAX_AUTO_TURN = 0.4;
     private AprilTagLimeLight aprilTagLimeLight;
 
     @Override
@@ -96,14 +96,16 @@ public class DecodeTeleOp extends OpMode {
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
 
-        if (gamepad1.left_bumper && (goalAngle != null)) {
+        if (gamepad1.dpad_left && (goalAngle != null)) {
             double yawError = goalAngle;
             axial = 0;
             lateral = 0;
             yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
         }
-        telemetry.addData("goal angle = ", goalAngle);
 
         drive.drive(axial, lateral, yaw);
+
+        telemetry.addData("Goal Angle: ", goalAngle);
+
     }
 }

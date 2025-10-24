@@ -7,9 +7,15 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 public class AprilTagLimeLight {
+
     private Limelight3A limelight;
+    double limelightMountAngleDegrees = 10.0;
+    double limelightLensHeightInches = 11.25;
+    double goalHeightInches = 29.75;
 
     public void init(HardwareMap hardwareMap) {
         // If the robot does not have a limelight camera configured, this will return null
@@ -68,6 +74,24 @@ public class AprilTagLimeLight {
             return result.getTx();
         }
         return null;
+    }
+
+    public void outputTelemetry(Telemetry telemetry) {
+        if (limelight == null) return;
+
+        LLResult result = limelight.getLatestResult();
+        if (result != null && result.isValid()) {
+            double targetOffsetAngle_Vertical = result.getTy();
+
+            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+            double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+
+
+            telemetry.addData("Tx", result.getTx());
+            telemetry.addData("Ty", result.getTy());
+            telemetry.addData("Distance: ", distanceFromLimelightToGoalInches);
+        }
     }
 
 

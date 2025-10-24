@@ -15,7 +15,7 @@ public class DecodeTeleOp extends OpMode {
     private MecanumDrive drive;
     private final double flywheelPower = 0.5;
     private static final double TURN_GAIN     = 0.034;
-    private static final double MAX_AUTO_TURN = 0.4;
+    private static final double MAX_AUTO_TURN = 0.2;
     private AprilTagLimeLight aprilTagLimeLight;
 
     @Override
@@ -106,6 +106,7 @@ public class DecodeTeleOp extends OpMode {
         drive.drive(axial, lateral, yaw);
 
         telemetry.addData("Goal Angle: ", goalAngle);
+        aprilTagLimeLight.outputTelemetry(telemetry);
 
     }
 }

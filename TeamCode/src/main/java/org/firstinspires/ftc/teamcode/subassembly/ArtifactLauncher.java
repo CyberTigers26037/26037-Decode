@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subassembly;
 
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -13,6 +14,7 @@ public class ArtifactLauncher {
     private final Servo flipperServo;
     private double flywheelPower = 0.5;
     private boolean isRunning;
+    private static final double MOTOR_TICKS_PER_SECOND = 28.0 * 6000.0/60.0;
     public double getFlywheelPower(){
         return flywheelPower;
     }
@@ -28,18 +30,19 @@ public class ArtifactLauncher {
     public ArtifactLauncher(HardwareMap hwMap) {
         flywheelMotor = hwMap.get(DcMotorEx.class, "flywheelMotor");
         flipperServo = hwMap.get(Servo.class, "flipperServo");
+        flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         parkFlipper();
     }
 
 
     public void startFlywheelMotor() {
-        flywheelMotor.setPower(flywheelPower);
+        flywheelMotor.setVelocity(flywheelPower * MOTOR_TICKS_PER_SECOND);
         isRunning = true;
     }
 
 
     public void stopFlywheelMotor() {
-        flywheelMotor.setPower(0.0);
+        flywheelMotor.setVelocity(0.0);
         isRunning = false;
     }
 
@@ -56,7 +59,6 @@ public class ArtifactLauncher {
     public boolean isRunning(){
         return isRunning;
     }
-
 
     private static final double SERVO_DEGREES = 270;
     private void setServoToAngle(Servo servo, double degrees) {

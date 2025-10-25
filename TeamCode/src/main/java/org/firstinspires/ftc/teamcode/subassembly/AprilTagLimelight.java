@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subassembly;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -10,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
-public class AprilTagLimeLight {
+public class AprilTagLimelight {
 
     private Limelight3A limelight;
     double limelightMountAngleDegrees = 10.0;
@@ -93,8 +91,4 @@ public class AprilTagLimeLight {
             telemetry.addData("Distance: ", distanceFromLimelightToGoalInches);
         }
     }
-
-
-
-
 }

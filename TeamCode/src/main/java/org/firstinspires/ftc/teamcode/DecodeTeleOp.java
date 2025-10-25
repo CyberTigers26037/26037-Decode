@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimeLight;
+import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
 
@@ -16,7 +16,7 @@ public class DecodeTeleOp extends OpMode {
     private final double flywheelPower = 0.5;
     private static final double TURN_GAIN     = 0.034;
     private static final double MAX_AUTO_TURN = 0.2;
-    private AprilTagLimeLight aprilTagLimeLight;
+    private AprilTagLimelight aprilTagLimeLight;
 
     @Override
     public void init() {
@@ -24,7 +24,7 @@ public class DecodeTeleOp extends OpMode {
         drive = new MecanumDrive();
         drive.init(hardwareMap);
 
-        aprilTagLimeLight = new AprilTagLimeLight();
+        aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
         aprilTagLimeLight.beginDetectingTeamBlue();
     }

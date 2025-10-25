@@ -84,7 +84,7 @@ public class ArtifactSystem {
             detector.tempStopDetection();
         }
         else{
-            carousel.moveCarouselToFirePosition(position);
+            carousel.moveCarouselToLaunchPosition(position);
         }
         // is running and move the carousel to a fire position if the intake is not running
     }
@@ -109,7 +109,7 @@ public class ArtifactSystem {
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.PURPLE);
         if (position != 0) {
-            carousel.moveCarouselToFirePosition(position);
+            carousel.moveCarouselToLaunchPosition(position);
         }
     }
 
@@ -118,7 +118,7 @@ public class ArtifactSystem {
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.GREEN);
         if (position != 0) {
-            carousel.moveCarouselToFirePosition(position);
+            carousel.moveCarouselToLaunchPosition(position);
         }
     }
 

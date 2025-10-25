@@ -28,7 +28,7 @@ public class ArtifactCarousel {
     }
 
 
-    public void moveCarouselToFirePosition(int position) {
+    public void moveCarouselToLaunchPosition(int position) {
         if (position == 1 ){
             setServoToAngle(servo, RobotConfig.getCarouselLaunchPosition1());
         }

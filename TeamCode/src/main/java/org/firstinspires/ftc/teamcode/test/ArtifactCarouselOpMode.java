@@ -34,13 +34,13 @@ public class ArtifactCarouselOpMode extends OpMode {
                 intakeActive = !intakeActive;
             }
             if(gamepad1.back && gamepad1.x){
-                carousel.moveCarouselToFirePosition(1);
+                carousel.moveCarouselToLaunchPosition(1);
             }
             if(gamepad1.back && gamepad1.y){
-                carousel.moveCarouselToFirePosition(2);
+                carousel.moveCarouselToLaunchPosition(2);
             }
             if(gamepad1.back && gamepad1.b){
-                carousel.moveCarouselToFirePosition(3);
+                carousel.moveCarouselToLaunchPosition(3);
             }
 
             telemetry.addData("INTAKE ACTIVE: ", intakeActive);

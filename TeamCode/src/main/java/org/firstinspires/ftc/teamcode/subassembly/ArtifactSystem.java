@@ -77,7 +77,6 @@ public class ArtifactSystem {
         return launcher.getFlywheelPower();
     }
 
-
     public void moveCarouselToPosition(int position) {
         if (intake.isRunning()){
             carousel.moveCarouselToIntakePosition(position);

@@ -1,6 +1,6 @@
 package pathing.pathing;
 
-public class PedroPathingTest1 {
+public class DaxAndBraeden {
 }
 
 /*public static class Paths {

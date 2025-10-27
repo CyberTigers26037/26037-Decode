@@ -10,6 +10,7 @@ public class ArtifactSystem {
     private final ArtifactLauncher launcher;
     private final ArtifactIntake intake;
     private final ArtifactTracker tracker;
+    private final ArtifactLight light;
 
     private boolean inDetectionMode;
 
@@ -20,6 +21,7 @@ public class ArtifactSystem {
         detector = new ArtifactDetector(hwMap);
         launcher = new ArtifactLauncher(hwMap);
         intake = new ArtifactIntake(hwMap);
+        light = new ArtifactLight(hwMap);
         tracker = new ArtifactTracker();
     }
 
@@ -47,6 +49,7 @@ public class ArtifactSystem {
     public void raiseFlipper() {
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
+        updateArtifactLight();
     }
 
     public void parkFlipper() {
@@ -73,6 +76,8 @@ public class ArtifactSystem {
         else{
             carousel.moveCarouselToLaunchPosition(position);
         }
+
+        updateArtifactLight();
     }
 
     public boolean isIntakeRunning() {
@@ -107,6 +112,7 @@ public class ArtifactSystem {
         detector.tempStopDetection();
         inDetectionMode = true;
         detectionTimeoutMillis = System.currentTimeMillis() + 1000;
+        updateArtifactLight();
     }
 
     public void loop() {
@@ -135,6 +141,7 @@ public class ArtifactSystem {
                     stopIntake();
                 }
             }
+            updateArtifactLight();
         }
     }
 
@@ -151,6 +158,18 @@ public class ArtifactSystem {
         }
         else if (carousel.getCurrentPosition() == 3) {
             inDetectionMode = false;
+        }
+        updateArtifactLight();
+    }
+
+    private void updateArtifactLight () {
+        if (carousel.isInLaunchPosition()) {
+            ArtifactColor color =
+                    tracker.getArtifactAtPosition(carousel.getCurrentPosition());
+            light.setColor(color);
+        }
+        else {
+            light.setColor(ArtifactColor.NONE);
         }
     }
 

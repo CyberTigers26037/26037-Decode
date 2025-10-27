@@ -24,9 +24,8 @@ public class ArtifactSystem {
     }
 
     public void startIntake() {
-        carousel.moveCarouselToIntakePosition(1);
-        detector.tempStopDetection();
         intake.start();
+        moveCarouselToPosition(1);
     }
 
     public void stopIntake() {

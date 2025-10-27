@@ -22,8 +22,8 @@ public class PedroAuto extends OpMode {
 
     private final Pose startPose = new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
     private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose prepPickup1Pose = new Pose(50, 84, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose collect1Pose = new Pose(26, 84, Math.toRadians(180));
+    private final Pose prepPickup1Pose = new Pose(50, 88, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose collect1Pose = new Pose(26, 88, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
     private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -87,17 +87,18 @@ public class PedroAuto extends OpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(scorePreload);
+                artifactSystem.startLauncher();
                 setPathState(1);
                 break;
             case 1:
                 if (!follower.isBusy()) {
-                    artifactSystem.startLauncher();
+                    artifactSystem.adjustLauncherRpm(2000);
                     artifactSystem.moveCarouselToPosition(1);
                     setPathState(2);
                 }
                 break;
             case 2:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
                     artifactSystem.raiseFlipper();
                     setPathState(3);
                 }
@@ -148,6 +149,88 @@ public class PedroAuto extends OpMode {
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     artifactSystem.stopLauncher();
                     setPathState(11);
+                }
+                break;
+            case 11:
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.startIntake();
+                    follower.followPath(prepPickup1);
+                    setPathState(12);
+                }
+                break;
+            case 12:
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    follower.followPath(collectPickup1, 0.3, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(13);
+                }
+                break;
+            case 13:
+                if (pathTimer.getElapsedTimeSeconds() > 3.0) {
+                    artifactSystem.stopIntake();
+                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
+                    //artifactSystem.startLauncher();
+                    setPathState(14);
+                }
+                break;
+            case 14:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+//                    artifactSystem.adjustLauncherRpm(2800);
+//                    artifactSystem.moveCarouselToPosition(1);
+//                    setPathState(15);
+                }
+                break;
+            case 15:
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    artifactSystem.raiseFlipper();
+                    setPathState(16);
+                }
+                break;
+            case 16:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.parkFlipper();
+                    setPathState(17);
+                }
+                break;
+            case 17:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToPosition(2);
+                    setPathState(18);
+                }
+                break;
+            case 18:
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
+                    setPathState(19);
+                }
+                break;
+            case 19:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.parkFlipper();
+                    setPathState(20);
+                }
+                break;
+            case 20:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToPosition(3);
+                    setPathState(21);
+                }
+                break;
+            case 21:
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
+                    setPathState(22);
+                }
+                break;
+            case 22:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.parkFlipper();
+                    setPathState(23);
+                }
+                break;
+            case 23:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.stopLauncher();
+                    setPathState(24);
                 }
                 break;
 //            case 1:

@@ -32,6 +32,8 @@ public class ArtifactSystem {
         tracker.loadArtifactAtPosition(3, position3);
     }
 
+    //Tell Exaveer (sorry spelling) to add meathod to auto. and set preload colors for all times
+
     public void startIntake() {
         intake.start();
         moveCarouselToPosition(1);

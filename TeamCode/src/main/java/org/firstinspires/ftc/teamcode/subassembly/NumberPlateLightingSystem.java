@@ -38,11 +38,11 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
 
     @Override
     public void onOpModePreInit(OpMode opMode) {
-        rgbLight = opMode.hardwareMap.tryGet(Servo.class, "rgbLight");
+        rgbLight = opMode.hardwareMap.tryGet(Servo.class, "allianceLight");
         numberPlateSensor = new NumberPlateSensor(opMode.hardwareMap);
 
         if (rgbLight == null) {
-            opMode.telemetry.addLine("Unable to init lighting system, cannot find rgbLight");
+            opMode.telemetry.addLine("Unable to init lighting system, cannot find allianceLight");
             return;
         }
 

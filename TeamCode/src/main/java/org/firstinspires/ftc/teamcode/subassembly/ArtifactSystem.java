@@ -15,7 +15,6 @@ public class ArtifactSystem {
 
     private long detectionTimeoutMillis;
 
-
     public ArtifactSystem(HardwareMap hwMap) {
         carousel = new ArtifactCarousel(hwMap);
         detector = new ArtifactDetector(hwMap);
@@ -24,31 +23,23 @@ public class ArtifactSystem {
         tracker = new ArtifactTracker();
     }
 
-
-
-
     public void startIntake() {
         carousel.moveCarouselToIntakePosition(1);
         detector.tempStopDetection();
         intake.start();
     }
 
-
     public void stopIntake() {
         intake.stop();
     }
 
-
     public void toggleIntake() {
-        if(!intake.isRunning()){
+        if (!intake.isRunning()) {
             startIntake();
-        }
-        else{
+        } else {
             stopIntake();
         }
-        //it is  not running
-     }
-
+    }
 
     public void startLauncher() {
         launcher.startFlywheelMotor();
@@ -59,11 +50,9 @@ public class ArtifactSystem {
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
     }
 
-
     public void parkFlipper() {
         launcher.parkFlipper();
     }
-
 
     public void stopLauncher() {
         launcher.stopFlywheelMotor();
@@ -85,23 +74,15 @@ public class ArtifactSystem {
         else{
             carousel.moveCarouselToLaunchPosition(position);
         }
-        // is running and move the carousel to a fire position if the intake is not running
     }
-
 
     public boolean isIntakeRunning() {
         return intake.isRunning();
     }
 
-
     public boolean isLauncherRunning() {
         return launcher.isRunning();
-
-        // NOTE: to complete this method, you will need to add a method on the
-        // ArtifactLauncher class called isRunning(), similar to the one in our
-        // ArtifactIntake class.
     }
-
 
     public void moveCarouselToFireFirstPurple() {
         if (isIntakeRunning()) return;
@@ -181,7 +162,6 @@ public class ArtifactSystem {
         telemetry.addData("Fly Wheel Power: ",  getLauncherPower());
         telemetry.addData("Intake Running: ",   isIntakeRunning());
         telemetry.addData("Launcher Running: ", isLauncherRunning());
-
     }
 }
 

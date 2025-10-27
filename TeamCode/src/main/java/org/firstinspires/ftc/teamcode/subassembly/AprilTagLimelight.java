@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
 public class AprilTagLimelight {
 
     private Limelight3A limelight;
@@ -41,7 +40,6 @@ public class AprilTagLimelight {
         limelight.pipelineSwitch(2);
         limelight.start();
     }
-
 
     public String findObeliskArtifactOrder() {
         if (limelight == null) return null;

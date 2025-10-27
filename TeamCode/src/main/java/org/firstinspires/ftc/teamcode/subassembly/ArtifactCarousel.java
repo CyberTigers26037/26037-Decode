@@ -13,6 +13,7 @@ public class ArtifactCarousel {
     public ArtifactCarousel(HardwareMap hwMap) {
         servo = hwMap.get(Servo.class, "carouselServo");
     }
+
     public void moveCarouselToIntakePosition(int position) {
         if (position == 1){
             setServoToAngle(servo, RobotConfig.getCarouselIntakePosition1());
@@ -24,9 +25,7 @@ public class ArtifactCarousel {
             setServoToAngle(servo, RobotConfig.getCarouselIntakePosition3());
         }
         currentPosition = position;
-
     }
-
 
     public void moveCarouselToLaunchPosition(int position) {
         if (position == 1 ){
@@ -41,12 +40,10 @@ public class ArtifactCarousel {
         currentPosition = position;
     }
 
-
-
     private static final double SERVO_DEGREES = 270;
     private void setServoToAngle(Servo servo, double degrees ) {
-        servo.setPosition(Range.scale(degrees, -SERVO_DEGREES/2, SERVO_DEGREES/2, 0, 1));
-}
+        servo.setPosition(Range.scale(degrees, -SERVO_DEGREES / 2, SERVO_DEGREES / 2, 0, 1));
+    }
 
     public int getCurrentPosition() {
         return currentPosition;

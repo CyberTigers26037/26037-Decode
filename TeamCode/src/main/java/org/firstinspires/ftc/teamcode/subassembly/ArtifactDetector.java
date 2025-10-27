@@ -16,7 +16,6 @@ public class ArtifactDetector {
         colorSensor2 = hwMap.get(NormalizedColorSensor.class,"sensor_color_distance_two");
     }
 
-
     public ArtifactColor detectArtifactColor() {
         if (System.currentTimeMillis() < detectionResumeMillis) {
             return ArtifactColor.NONE;
@@ -34,16 +33,15 @@ public class ArtifactDetector {
         if (((hue1 >= 200) && (hue1 <= 240)) || ((hue2 >= 200) && (hue2 <= 240))) {
             return ArtifactColor.PURPLE;
         }
+
         if (((hue1 >= 150) && (hue1 <= 190)) || ((hue2 >= 150) && (hue2 <= 190))) {
             return ArtifactColor.GREEN;
         }
-        return ArtifactColor.NONE;
 
+        return ArtifactColor.NONE;
     }
 
     public void tempStopDetection() {
         detectionResumeMillis = System.currentTimeMillis() + 1000;
     }
 }
-
-//worked on adometry pods & number plate mount

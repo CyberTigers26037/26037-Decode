@@ -19,13 +19,10 @@ public class ArtifactLauncher {
         return flywheelPower;
     }
 
-
     public void adjustFlywheelPower(double amount){
         flywheelPower += amount;
         flywheelPower = Range.clip(flywheelPower,0.1,1.0);
     }
-
-
 
     public ArtifactLauncher(HardwareMap hwMap) {
         flywheelMotor = hwMap.get(DcMotorEx.class, "flywheelMotor");
@@ -34,23 +31,19 @@ public class ArtifactLauncher {
         parkFlipper();
     }
 
-
     public void startFlywheelMotor() {
         flywheelMotor.setVelocity(flywheelPower * MOTOR_TICKS_PER_SECOND);
         isRunning = true;
     }
-
 
     public void stopFlywheelMotor() {
         flywheelMotor.setVelocity(0.0);
         isRunning = false;
     }
 
-
     public void raiseFlipper() {
         setServoToAngle(flipperServo, RobotConfig.getFlipperRaisedPosition());
     }
-
 
     public void parkFlipper() {
         setServoToAngle(flipperServo,RobotConfig.getFlipperParkedPosition());

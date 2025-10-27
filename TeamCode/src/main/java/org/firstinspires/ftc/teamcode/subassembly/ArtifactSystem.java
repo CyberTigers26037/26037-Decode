@@ -88,7 +88,7 @@ public class ArtifactSystem {
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.PURPLE);
         if (position != 0) {
-            carousel.moveCarouselToLaunchPosition(position);
+            moveCarouselToPosition(position);
         }
     }
 
@@ -97,7 +97,7 @@ public class ArtifactSystem {
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.GREEN);
         if (position != 0) {
-            carousel.moveCarouselToLaunchPosition(position);
+            moveCarouselToPosition(position);
         }
     }
 

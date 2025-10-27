@@ -25,6 +25,13 @@ public class ArtifactSystem {
         tracker = new ArtifactTracker();
     }
 
+    public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
+        tracker.reset();
+        tracker.loadArtifactAtPosition(1, position1);
+        tracker.loadArtifactAtPosition(2, position2);
+        tracker.loadArtifactAtPosition(3, position3);
+    }
+
     public void startIntake() {
         intake.start();
         moveCarouselToPosition(1);

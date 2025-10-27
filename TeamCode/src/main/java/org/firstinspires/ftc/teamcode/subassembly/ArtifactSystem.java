@@ -49,6 +49,8 @@ public class ArtifactSystem {
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
     }
 
+
+
     public void parkFlipper() {
         launcher.parkFlipper();
     }
@@ -60,6 +62,8 @@ public class ArtifactSystem {
     public void adjustLauncherRpm(int amount) {
         launcher.adjustFlywheelRpm(amount);
     }
+
+    public void setLauncherRpm(int rpm){launcher.setFlywheelRpm(rpm);}
 
     public int getLauncherRpm() {
         return launcher.getFlywheelRpm();

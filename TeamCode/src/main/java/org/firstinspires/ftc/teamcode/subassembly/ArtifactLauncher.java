@@ -76,6 +76,11 @@ public class ArtifactLauncher {
     private void setServoToAngle(Servo servo, double degrees) {
         servo.setPosition(Range.scale(degrees, -SERVO_DEGREES/2, SERVO_DEGREES/2, 0, 1));
     }
+
+    public void setFlywheelRpm(int rpm) {
+        flywheelRpm = rpm;
+        flywheelRpm = Range.clip(flywheelRpm, MIN_RPM, MAX_RPM);
+    }
 }
 
 

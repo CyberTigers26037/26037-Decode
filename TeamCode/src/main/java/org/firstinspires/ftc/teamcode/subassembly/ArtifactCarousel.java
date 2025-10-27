@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.config.RobotConfig;
 public class ArtifactCarousel {
     private final Servo servo;
     private int currentPosition;
+    private boolean currentPositionIsALaunchPosition;
 
     public ArtifactCarousel(HardwareMap hwMap) {
         servo = hwMap.get(Servo.class, "carouselServo");
@@ -25,6 +26,7 @@ public class ArtifactCarousel {
             setServoToAngle(servo, RobotConfig.getCarouselIntakePosition3());
         }
         currentPosition = position;
+        currentPositionIsALaunchPosition = false;
     }
 
     public void moveCarouselToLaunchPosition(int position) {
@@ -38,6 +40,7 @@ public class ArtifactCarousel {
             setServoToAngle(servo, RobotConfig.getCarouselLaunchPosition3());
         }
         currentPosition = position;
+        currentPositionIsALaunchPosition = true;
     }
 
     private static final double SERVO_DEGREES = 270;
@@ -47,5 +50,9 @@ public class ArtifactCarousel {
 
     public int getCurrentPosition() {
         return currentPosition;
+    }
+
+    public boolean isInLaunchPosition() {
+        return currentPositionIsALaunchPosition;
     }
 }

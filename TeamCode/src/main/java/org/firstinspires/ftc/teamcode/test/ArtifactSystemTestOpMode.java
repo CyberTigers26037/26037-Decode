@@ -30,12 +30,12 @@ public class ArtifactSystemTestOpMode extends OpMode {
 
 
         if (gamepad1.dpadUpWasPressed()) {
-            artifactSystem.adjustLauncherPower(+ 0.1);
+            artifactSystem.adjustLauncherRpm(+ 500);
         }
 
 
         if (gamepad1.dpadDownWasPressed()) {
-            artifactSystem.adjustLauncherPower(- 0.1);
+            artifactSystem.adjustLauncherRpm(- 500);
         }
 
 
@@ -63,7 +63,7 @@ public class ArtifactSystemTestOpMode extends OpMode {
             artifactSystem.moveCarouselToPosition(3);
         }
 
-        telemetry.addData("Fly Wheel Power: ",artifactSystem.getLauncherPower());
+        telemetry.addData("Flywheel RPM: ",artifactSystem.getLauncherRpm());
         telemetry.addData("Intake Running: ", artifactSystem.isIntakeRunning());
         telemetry.addData("Launcher Running: ", artifactSystem.isLauncherRunning());
 

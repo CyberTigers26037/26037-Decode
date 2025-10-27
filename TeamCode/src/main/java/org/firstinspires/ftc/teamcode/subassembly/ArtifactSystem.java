@@ -58,12 +58,12 @@ public class ArtifactSystem {
         launcher.stopFlywheelMotor();
     }
 
-    public void adjustLauncherPower(double amount) {
-        launcher.adjustFlywheelPower(amount);
+    public void adjustLauncherRpm(int amount) {
+        launcher.adjustFlywheelRpm(amount);
     }
 
-    public double getLauncherPower() {
-        return launcher.getFlywheelPower();
+    public int getLauncherRpm() {
+        return launcher.getFlywheelRpm();
     }
 
     public void moveCarouselToPosition(int position) {
@@ -159,7 +159,8 @@ public class ArtifactSystem {
         telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
         telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
         telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
-        telemetry.addData("Fly Wheel Power: ",  getLauncherPower());
+        telemetry.addData("Flywheel RPM (Target): ", getLauncherRpm());
+        telemetry.addData("Flywheel RPM (Actual): ", launcher.getActualFlywheelRpm());
         telemetry.addData("Intake Running: ",   isIntakeRunning());
         telemetry.addData("Launcher Running: ", isLauncherRunning());
     }

@@ -12,33 +12,52 @@ import org.firstinspires.ftc.teamcode.config.RobotConfig;
 public class ArtifactLauncher {
     private final DcMotorEx flywheelMotor;
     private final Servo flipperServo;
-    private double flywheelPower = 0.5;
+    private int flywheelRpm = 3000;
     private boolean isRunning;
-    private static final double MOTOR_TICKS_PER_SECOND = 28.0 * 6000.0/60.0;
-    public double getFlywheelPower(){
-        return flywheelPower;
+    private static final int MIN_RPM =  100;
+    private static final int MAX_RPM = 6000;
+    private static final double MOTOR_TICKS_PER_REVOLUTION = 28;
+    private static final double SECONDS_PER_MINUTE = 60;
+
+    public int getFlywheelRpm(){
+        return flywheelRpm;
     }
 
-    public void adjustFlywheelPower(double amount){
-        flywheelPower += amount;
-        flywheelPower = Range.clip(flywheelPower,0.1,1.0);
+    public void adjustFlywheelRpm(int amount){
+        flywheelRpm += amount;
+        flywheelRpm = Range.clip(flywheelRpm, MIN_RPM, MAX_RPM);
     }
 
     public ArtifactLauncher(HardwareMap hwMap) {
         flywheelMotor = hwMap.get(DcMotorEx.class, "flywheelMotor");
-        flipperServo = hwMap.get(Servo.class, "flipperServo");
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        flipperServo = hwMap.get(Servo.class, "flipperServo");
         parkFlipper();
     }
 
+    private double rpmToTps(int rpm) {
+        // Converts revolutions per minute (RPM) to ticks per second (TPS)
+        return rpm * MOTOR_TICKS_PER_REVOLUTION / SECONDS_PER_MINUTE;
+    }
+
+    private int tpsToRpm(double tps) {
+        // Converts ticks per second (TPS) to revolutions per minute (RPM)
+        return (int)(tps / MOTOR_TICKS_PER_REVOLUTION * SECONDS_PER_MINUTE);
+    }
+
     public void startFlywheelMotor() {
-        flywheelMotor.setVelocity(flywheelPower * MOTOR_TICKS_PER_SECOND);
+        flywheelMotor.setVelocity(rpmToTps(flywheelRpm));
         isRunning = true;
     }
 
     public void stopFlywheelMotor() {
         flywheelMotor.setVelocity(0.0);
         isRunning = false;
+    }
+
+    public int getActualFlywheelRpm() {
+        return tpsToRpm(flywheelMotor.getVelocity());
     }
 
     public void raiseFlipper() {

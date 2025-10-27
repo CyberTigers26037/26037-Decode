@@ -48,12 +48,12 @@ public class DecodeTeleOp extends OpMode {
         }
 
         if (gamepad1.dpadUpWasPressed()) {
-            artifactSystem.adjustLauncherPower(+ 0.1);
+            artifactSystem.adjustLauncherRpm(+ 500);
         }
 
 
         if (gamepad1.dpadDownWasPressed()) {
-            artifactSystem.adjustLauncherPower(- 0.1);
+            artifactSystem.adjustLauncherRpm(- 500);
         }
 
 
@@ -92,8 +92,6 @@ public class DecodeTeleOp extends OpMode {
 
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 
-        Double flyWheelPower = artifactSystem.getLauncherPower();
-
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
@@ -108,7 +106,6 @@ public class DecodeTeleOp extends OpMode {
         drive.drive(axial, lateral, yaw);
 
         telemetry.addData("Goal Angle: ", goalAngle);
-        telemetry.addData("FlyWheel Power: ", flyWheelPower);
         aprilTagLimeLight.outputTelemetry(telemetry);
 
     }

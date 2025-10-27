@@ -11,10 +11,6 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactLauncher;
 @TeleOp(name = "ArtifactLauncherTestOpMode", group = "Test")
 public class ArtifactLauncherTestOpMode extends OpMode {
     private ArtifactLauncher launcher;
-    static final double MAX_FLYWHEEL_POWER = 1.0;
-    static final double MIN_FLYWHEEL_POWER = 0.1;
-
-
 
     @Override
     public void init() {
@@ -31,11 +27,11 @@ public class ArtifactLauncherTestOpMode extends OpMode {
         }
 
         if (gamepad1.dpadUpWasPressed()){
-            launcher.adjustFlywheelPower(+ 0.1 );
+            launcher.adjustFlywheelRpm(+ 500 );
 
         }
         else if (gamepad1.dpadDownWasPressed()){
-            launcher.adjustFlywheelPower(- 0.1);
+            launcher.adjustFlywheelRpm(- 500);
         }
 
         if (gamepad1.right_trigger > 0.1) {
@@ -43,7 +39,7 @@ public class ArtifactLauncherTestOpMode extends OpMode {
         } else {
             launcher.parkFlipper();
         }
-        telemetry.addData("fly wheel power: ", launcher.getFlywheelPower());
+        telemetry.addData("Flywheel RPM: ", launcher.getFlywheelRpm());
 
     }
 }

@@ -72,21 +72,30 @@ public class AprilTagLimelight {
         return null;
     }
 
+    public Double detectGoalDistance() {
+        if (limelight == null) return null;
+
+        LLResult result = limelight.getLatestResult();
+        if (result != null && result.isValid()) {
+            double targetOffsetAngle_Vertical = result.getTy();
+            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+
+            return (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+
+        }
+        return null;
+    }
+
     public void outputTelemetry(Telemetry telemetry) {
         if (limelight == null) return;
 
         LLResult result = limelight.getLatestResult();
         if (result != null && result.isValid()) {
-            double targetOffsetAngle_Vertical = result.getTy();
-
-            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-            double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
-            double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
-
 
             telemetry.addData("Tx", result.getTx());
             telemetry.addData("Ty", result.getTy());
-            telemetry.addData("Distance: ", distanceFromLimelightToGoalInches);
+            telemetry.addData("Distance: ", detectGoalDistance());
         }
     }
 }

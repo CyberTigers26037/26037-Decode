@@ -25,6 +25,15 @@ public class ArtifactSystem {
         tracker = new ArtifactTracker();
     }
 
+    public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
+        tracker.reset();
+        tracker.loadArtifactAtPosition(1, position1);
+        tracker.loadArtifactAtPosition(2, position2);
+        tracker.loadArtifactAtPosition(3, position3);
+    }
+
+    //Tell Exaveer (sorry spelling) to add meathod to auto. and set preload colors for all times
+
     public void startIntake() {
         intake.start();
         moveCarouselToPosition(1);
@@ -52,6 +61,8 @@ public class ArtifactSystem {
         updateArtifactLight();
     }
 
+
+
     public void parkFlipper() {
         launcher.parkFlipper();
     }
@@ -63,6 +74,8 @@ public class ArtifactSystem {
     public void adjustLauncherRpm(int amount) {
         launcher.adjustFlywheelRpm(amount);
     }
+
+    public void setLauncherRpm(int rpm){launcher.setFlywheelRpm(rpm);}
 
     public int getLauncherRpm() {
         return launcher.getFlywheelRpm();

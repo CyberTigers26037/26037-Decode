@@ -34,6 +34,12 @@ public class DecodeTeleOp extends OpMode {
     @Override
     public void loop() {
 
+        if (gamepad1.dpad_right) {
+            Double goalDistance = aprilTagLimeLight.detectGoalDistance();
+            if (goalDistance != null){
+                artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
+            }
+        }
         if (gamepad1.left_trigger > 0.1) {
             artifactSystem.startLauncher();
         }
@@ -108,5 +114,10 @@ public class DecodeTeleOp extends OpMode {
         telemetry.addData("Goal Angle: ", goalAngle);
         aprilTagLimeLight.outputTelemetry(telemetry);
 
+    }
+
+    private int calculateRpmFromDistance(Double goalDistance) {
+
+        return (int)(14.21*(goalDistance) + 2188.0);
     }
 }

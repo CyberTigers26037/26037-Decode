@@ -7,7 +7,7 @@ public class NumberPlateSensor {
     private final TouchSensor numberPlateSensor;
 
     public NumberPlateSensor(HardwareMap hwMap) {
-        numberPlateSensor = hwMap.tryGet(TouchSensor.class, "Number Plate Sensor");
+        numberPlateSensor = hwMap.tryGet(TouchSensor.class, "numberPlateSensor");
     }
 
     public boolean isNumberPlateBlue () {

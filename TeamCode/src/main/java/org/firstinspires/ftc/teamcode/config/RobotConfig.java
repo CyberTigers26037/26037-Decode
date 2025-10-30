@@ -107,12 +107,12 @@ public class RobotConfig {
     private static void initCoachAnthonyRobot() {
         robotName = "Coach Anthony";
 
-        carouselIntakePosition1 =  -79;
-        carouselIntakePosition2 =   20;
-        carouselIntakePosition3 =  121;
-        carouselLaunchPosition1 =   72;
-        carouselLaunchPosition2 = -129;
-        carouselLaunchPosition3 =  -26;
+        carouselIntakePosition1 =  -82.3;
+        carouselIntakePosition2 =   18.5;
+        carouselIntakePosition3 =  119.7;
+        carouselLaunchPosition1 =   68.4;
+        carouselLaunchPosition2 = -131.8;
+        carouselLaunchPosition3 =  -31.7;
 
         flipperParkedPosition = 0;
         flipperRaisedPosition = 93;

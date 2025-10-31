@@ -119,6 +119,19 @@ public class ArtifactSystem {
         }
     }
 
+    public void moveCarouselToFireFirstColor(ArtifactColor artifactColor) {
+        if (isIntakeRunning()) return;
+
+        int position = tracker.getFirstForArtifactColor(artifactColor);
+        if (position != 0) {
+            moveCarouselToPosition(position);
+        }
+    }
+
+
+
+
+
     public void resetCarouselDetection() {
         tracker.reset();
         carousel.moveCarouselToIntakePosition(1);

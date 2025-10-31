@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -10,6 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
+import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 
 @SuppressWarnings("unused")
@@ -17,8 +21,15 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 public class PedroAuto extends OpMode {
     private Follower follower;
     private ArtifactSystem artifactSystem;
+    private AprilTagLimelight aprilTagLimeLight;
+
     private Timer pathTimer, opmodeTimer;
     private int pathState;
+
+
+    private ArtifactColor artifact1;
+    private ArtifactColor artifact2;
+    private ArtifactColor artifact3;
 
     private final Pose startPose = new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
     private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -85,152 +96,167 @@ public class PedroAuto extends OpMode {
 
     public void autonomousPathUpdate() {
         switch (pathState) {
+
             case 0:
-                follower.followPath(scorePreload);
-                artifactSystem.startLauncher();
-                setPathState(1);
-                break;
-            case 1:
-                if (!follower.isBusy()) {
-                    artifactSystem.adjustLauncherRpm(2000);
-                    artifactSystem.moveCarouselToPosition(1);
-                    setPathState(2);
+                AprilTagLimelight.ObeliskOrder obeliskOrder = aprilTagLimeLight.findObeliskArtifactOrder();
+                if (obeliskOrder != AprilTagLimelight.ObeliskOrder.NONE) {
+                    setObeliskOder(obeliskOrder);
+                    setPathState(1);
+                }
+                else if (pathTimer.getElapsedTimeSeconds() > 3.0){
+                    setObeliskOder(AprilTagLimelight.ObeliskOrder.GPP);
+                    setPathState(1);
                 }
                 break;
+
+
+            case 1:
+                aprilTagLimeLight.detectGoalDistance();
+                follower.followPath(scorePreload);
+                artifactSystem.startLauncher();
+                setPathState(2);
+                break;
             case 2:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
-                    artifactSystem.raiseFlipper();
+                if (!follower.isBusy()) {
+                    artifactSystem.adjustLauncherRpm(2000);
+                    artifactSystem.moveCarouselToFireFirstColor(artifact1);
                     setPathState(3);
                 }
                 break;
             case 3:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    artifactSystem.raiseFlipper();
                     setPathState(4);
                 }
                 break;
             case 4:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(2);
+                    artifactSystem.parkFlipper();
                     setPathState(5);
                 }
                 break;
             case 5:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToFireFirstColor(artifact2);
                     setPathState(6);
                 }
                 break;
             case 6:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(7);
                 }
                 break;
             case 7:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(3);
+                    artifactSystem.parkFlipper();
                     setPathState(8);
                 }
                 break;
             case 8:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToFireFirstColor(artifact3);
                     setPathState(9);
                 }
                 break;
             case 9:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(10);
                 }
                 break;
             case 10:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.stopLauncher();
+                    artifactSystem.parkFlipper();
                     setPathState(11);
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.startIntake();
-                    follower.followPath(prepPickup1);
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.stopLauncher();
                     setPathState(12);
                 }
                 break;
             case 12:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    follower.followPath(collectPickup1, 0.3, Constants.followerConstants.automaticHoldEnd);
+                    artifactSystem.startIntake();
+                    follower.followPath(prepPickup1);
                     setPathState(13);
                 }
                 break;
             case 13:
-                if (pathTimer.getElapsedTimeSeconds() > 3.0) {
-                    artifactSystem.stopIntake();
-                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
-                    //artifactSystem.startLauncher();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    follower.followPath(collectPickup1, 0.3, Constants.followerConstants.automaticHoldEnd);
                     setPathState(14);
                 }
                 break;
             case 14:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-//                    artifactSystem.adjustLauncherRpm(2800);
-//                    artifactSystem.moveCarouselToPosition(1);
-//                    setPathState(15);
+                if (pathTimer.getElapsedTimeSeconds() > 3.0) {
+                    artifactSystem.stopIntake();
+                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
+                    //artifactSystem.startLauncher();
+                    setPathState(15);
                 }
                 break;
             case 15:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(16);
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+//                    artifactSystem.adjustLauncherRpm(2800);
+//                    artifactSystem.moveCarouselToPosition(1);
+//                    setPathState(16);
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(17);
                 }
                 break;
             case 17:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(2);
+                    artifactSystem.parkFlipper();
                     setPathState(18);
                 }
                 break;
             case 18:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToPosition(2);
                     setPathState(19);
                 }
                 break;
             case 19:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(20);
                 }
                 break;
             case 20:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(3);
+                    artifactSystem.parkFlipper();
                     setPathState(21);
                 }
                 break;
             case 21:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.moveCarouselToPosition(3);
                     setPathState(22);
                 }
                 break;
             case 22:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(23);
                 }
                 break;
             case 23:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.stopLauncher();
+                    artifactSystem.parkFlipper();
                     setPathState(24);
+                }
+                break;
+            case 24:
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.stopLauncher();
+                    setPathState(25);
                 }
                 break;
 //            case 1:
@@ -337,6 +363,32 @@ public class PedroAuto extends OpMode {
         }
     }
 
+    private void setObeliskOder(AprilTagLimelight.ObeliskOrder obeliskOrder) {
+        switch(obeliskOrder){
+
+            case GPP:
+                artifact1 = ArtifactColor.GREEN;
+                artifact2 = ArtifactColor.PURPLE;
+                artifact3 = ArtifactColor.PURPLE;
+
+                break;
+            case PGP:
+                artifact1 = ArtifactColor.PURPLE;
+                artifact2 = ArtifactColor.GREEN;
+                artifact3 = ArtifactColor.PURPLE;
+
+                break;
+
+            case PPG:
+                artifact1 = ArtifactColor.PURPLE;
+                artifact2 = ArtifactColor.PURPLE;
+                artifact3 = ArtifactColor.GREEN;
+
+                break;
+
+        }
+    }
+
     /** These change the states of the paths and actions. It will also reset the timers of the individual switches **/
     public void setPathState(int pState) {
         pathState = pState;
@@ -346,6 +398,8 @@ public class PedroAuto extends OpMode {
     /** This is the main loop of the OpMode, it will run repeatedly after clicking "Play". **/
     @Override
     public void loop() {
+
+
 
         // These loop the movements of the robot, these must be called continuously in order to work
         follower.update();
@@ -362,10 +416,19 @@ public class PedroAuto extends OpMode {
     /** This method is called once at the init of the OpMode. **/
     @Override
     public void init() {
+
+
+        aprilTagLimeLight = new AprilTagLimelight();
+        aprilTagLimeLight.init(hardwareMap);
+        aprilTagLimeLight.beginDetectingObelisk();
+
+
         artifactSystem = new ArtifactSystem(hardwareMap);
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
+
+        artifactSystem.initializeArtifactColors(ArtifactColor.GREEN,ArtifactColor.PURPLE,ArtifactColor.PURPLE);
 
         follower = Constants.createFollower(hardwareMap);
         buildPaths();

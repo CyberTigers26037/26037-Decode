@@ -8,7 +8,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AprilTagLimelight {
-
+    public enum ObeliskOrder {
+        NONE, PPG, PGP, GPP
+    }
     private Limelight3A limelight;
     double limelightMountAngleDegrees = 10.0;
     double limelightLensHeightInches = 11.25;
@@ -41,8 +43,8 @@ public class AprilTagLimelight {
         limelight.start();
     }
 
-    public String findObeliskArtifactOrder() {
-        if (limelight == null) return null;
+    public ObeliskOrder findObeliskArtifactOrder() {
+        if (limelight == null) return ObeliskOrder.NONE;
 
         LLResult result = limelight.getLatestResult();
 
@@ -50,16 +52,16 @@ public class AprilTagLimelight {
             for (LLResultTypes.FiducialResult detection : result.getFiducialResults()) {
                 int id = detection.getFiducialId();
                 if (id == 21) {
-                    return "Green Purple Purple";
+                    return ObeliskOrder.GPP;
                 } else if (id == 22) {
-                    return "Purple Green Purple";
+                    return ObeliskOrder.PGP;
                 } else if (id == 23) {
-                    return "Purple Purple Green";
+                    return ObeliskOrder.PPG;
                 }
             }
         }
 
-        return null;
+        return ObeliskOrder.NONE;
     }
 
     public Double detectGoalAngle() {

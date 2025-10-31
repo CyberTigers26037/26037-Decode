@@ -54,12 +54,12 @@ public class DecodeTeleOp extends OpMode {
         }
 
         if (gamepad1.dpadUpWasPressed()) {
-            artifactSystem.adjustLauncherRpm(+ 500);
+            artifactSystem.adjustLauncherRpm(+ 100);
         }
 
 
         if (gamepad1.dpadDownWasPressed()) {
-            artifactSystem.adjustLauncherRpm(- 500);
+            artifactSystem.adjustLauncherRpm(- 100);
         }
 
 

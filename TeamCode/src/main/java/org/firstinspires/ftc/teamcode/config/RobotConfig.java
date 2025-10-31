@@ -114,8 +114,8 @@ public class RobotConfig {
         carouselLaunchPosition2 = -131.8;
         carouselLaunchPosition3 =  -31.7;
 
-        flipperParkedPosition = 0;
-        flipperRaisedPosition = 93;
+        flipperParkedPosition = -1;
+        flipperRaisedPosition = 49;
     }
 
     private static void initCoachRobRobot() {

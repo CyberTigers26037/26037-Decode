@@ -8,12 +8,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.util.Timer;
+
 @SuppressWarnings("unused")
 @TeleOp(group = "Tuning")
 public class LauncherTuningOpMode extends OpMode {
     private enum TUNING_PARAMETER { P, I, D }
 
-    TelemetryManager telemetryM;
+    private Timer inputTimer;
+    private TelemetryManager telemetryM;
     private int motorRpm = 3000;
     private static final int MIN_RPM =  100;
     private static final int MAX_RPM = 6000;
@@ -25,6 +28,8 @@ public class LauncherTuningOpMode extends OpMode {
 
     @Override
     public void init() {
+        inputTimer = new Timer(0.1, true);
+
         motor = hardwareMap.get(DcMotorEx.class, "flywheelMotor");
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -45,12 +50,20 @@ public class LauncherTuningOpMode extends OpMode {
         if (gamepad1.yWasPressed()) tuningParameter = TUNING_PARAMETER.I;
         if (gamepad1.bWasPressed()) tuningParameter = TUNING_PARAMETER.D;
 
-        telemetry.addLine("DPAD L/R to adjust Target RPM");
+        telemetry.addLine("DPAD Left/Right to adjust Target RPM");
         telemetry.addLine("Right Trigger to run motor");
         telemetry.addLine("X to tune P, Y to tune I, B to tune D");
         telemetry.addLine();
 
-        double tuningAdjustment = gamepad1.dpad_up ? 1 : gamepad1.dpad_down ? -1 : 0;
+        double tuningAdjustment = 0;
+        if (gamepad1.dpad_up && inputTimer.isExpired()) {
+            tuningAdjustment = 1;
+            inputTimer.start();
+        }
+        else if (gamepad1.dpad_down && inputTimer.isExpired()) {
+            tuningAdjustment = -1;
+            inputTimer.start();
+        }
 
         PIDFCoefficients pidf = motor.getPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -82,6 +95,7 @@ public class LauncherTuningOpMode extends OpMode {
         telemetry.addLine();
 
         telemetry.addData("Currently Tuning", tuningParameter);
+        telemetry.addLine("DPAD Up/Down to Adjust");
         telemetry.addLine();
 
         telemetry.addData("P", pidf.p);

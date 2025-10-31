@@ -31,6 +31,7 @@ public class ArtifactLauncher {
     public ArtifactLauncher(HardwareMap hwMap) {
         flywheelMotor = hwMap.get(DcMotorEx.class, "flywheelMotor");
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flywheelMotor.setVelocityPIDFCoefficients(260, 16, 26, 0);
 
         flipperServo = hwMap.get(Servo.class, "flipperServo");
         parkFlipper();

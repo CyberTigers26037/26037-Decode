@@ -113,12 +113,12 @@ public class PedroAuto extends OpMode {
             case 1:
                 aprilTagLimeLight.detectGoalDistance();
                 follower.followPath(scorePreload);
+                artifactSystem.setLauncherRpm(2420);
                 artifactSystem.startLauncher();
                 setPathState(2);
                 break;
             case 2:
                 if (!follower.isBusy()) {
-                    artifactSystem.adjustLauncherRpm(2000);
                     artifactSystem.moveCarouselToFireFirstColor(artifact1);
                     setPathState(3);
                 }
@@ -410,6 +410,7 @@ public class PedroAuto extends OpMode {
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
+        artifactSystem.outputTelemetry(telemetry);
         telemetry.update();
     }
 

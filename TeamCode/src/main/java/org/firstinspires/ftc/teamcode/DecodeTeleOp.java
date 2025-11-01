@@ -118,6 +118,6 @@ public class DecodeTeleOp extends OpMode {
 
     private int calculateRpmFromDistance(Double goalDistance) {
 
-        return (int)(14.21*(goalDistance) + 2188.0);
+        return (int)(9.060*(goalDistance) + 1901.0);
     }
 }

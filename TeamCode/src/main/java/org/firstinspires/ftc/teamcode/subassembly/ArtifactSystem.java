@@ -58,6 +58,7 @@ public class ArtifactSystem {
     public void raiseFlipper() {
         if (!carousel.isInLaunchPosition()) return;
         if (!carousel.isAtTargetPosition()) return;
+        if (!launcher.isLauncherAboveMinSpeed()) return;
 
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());

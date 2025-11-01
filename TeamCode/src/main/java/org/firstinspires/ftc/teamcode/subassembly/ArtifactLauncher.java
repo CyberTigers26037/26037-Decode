@@ -16,7 +16,7 @@ public class ArtifactLauncher {
     private int flywheelRpm = 3000;
     private boolean isRunning;
     private boolean isFlipperRaised;
-    private static final int MIN_RPM =  100;
+    private static final int MIN_RPM =  1000;
     private static final int MAX_RPM = 6000;
     private static final double MOTOR_TICKS_PER_REVOLUTION = 28;
     private static final double SECONDS_PER_MINUTE = 60;
@@ -94,6 +94,10 @@ public class ArtifactLauncher {
             return true;
         }
         return isFlipperRaised;
+    }
+
+    public boolean isLauncherAboveMinSpeed() {
+        return getActualFlywheelRpm() > MIN_RPM;
     }
 }
 

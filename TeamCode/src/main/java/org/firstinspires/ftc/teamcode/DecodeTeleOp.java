@@ -47,10 +47,10 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.stopLauncher();
         }
         if (gamepad1.rightBumperWasPressed()) {
-            artifactSystem.moveCarouselToFireFirstPurple();
+            artifactSystem.moveCarouselToLaunchFirstPurple();
         }
         if (gamepad1.leftBumperWasPressed()) {
-            artifactSystem.moveCarouselToFireFirstGreen();
+            artifactSystem.moveCarouselToLaunchFirstGreen();
         }
 
         if (gamepad1.dpadUpWasPressed()) {

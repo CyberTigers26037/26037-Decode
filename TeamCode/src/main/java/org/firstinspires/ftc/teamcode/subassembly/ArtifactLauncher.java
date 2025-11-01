@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subassembly;
 
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,10 +12,11 @@ import org.firstinspires.ftc.teamcode.config.RobotConfig;
 
 public class ArtifactLauncher {
     private final DcMotorEx flywheelMotor;
-    private final Servo flipperServo;
+    private final AxonServo flipperServo;
     private int flywheelRpm = 3000;
     private boolean isRunning;
-    private static final int MIN_RPM =  100;
+    private boolean isFlipperRaised;
+    private static final int MIN_RPM =  1000;
     private static final int MAX_RPM = 6000;
     private static final double MOTOR_TICKS_PER_REVOLUTION = 28;
     private static final double SECONDS_PER_MINUTE = 60;
@@ -33,7 +35,10 @@ public class ArtifactLauncher {
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelMotor.setVelocityPIDFCoefficients(260, 16, 26, 0);
 
-        flipperServo = hwMap.get(Servo.class, "flipperServo");
+        flipperServo = new AxonServo(hwMap.get(
+                Servo.class, "flipperServo"),
+                hwMap.get(AnalogInput.class, "flipperServoEncoder"));
+
         parkFlipper();
     }
 
@@ -62,25 +67,37 @@ public class ArtifactLauncher {
     }
 
     public void raiseFlipper() {
-        setServoToAngle(flipperServo, RobotConfig.getFlipperRaisedPosition());
+        flipperServo.setTargetAngle(RobotConfig.getFlipperRaisedPosition());
+        isFlipperRaised = true;
     }
 
     public void parkFlipper() {
-        setServoToAngle(flipperServo,RobotConfig.getFlipperParkedPosition());
+        flipperServo.setTargetAngle(RobotConfig.getFlipperParkedPosition());
+        isFlipperRaised = false;
     }
 
     public boolean isRunning(){
         return isRunning;
     }
 
-    private static final double SERVO_DEGREES = 270;
-    private void setServoToAngle(Servo servo, double degrees) {
-        servo.setPosition(Range.scale(degrees, -SERVO_DEGREES/2, SERVO_DEGREES/2, 0, 1));
-    }
-
     public void setFlywheelRpm(int rpm) {
         flywheelRpm = rpm;
         flywheelRpm = Range.clip(flywheelRpm, MIN_RPM, MAX_RPM);
+    }
+
+    public boolean isFlipperAtTargetPosition() {
+        return flipperServo.isAtTarget();
+    }
+
+    public boolean isFlipperRaised() {
+        if (!isFlipperAtTargetPosition()) {
+            return true;
+        }
+        return isFlipperRaised;
+    }
+
+    public boolean isLauncherAboveMinSpeed() {
+        return getActualFlywheelRpm() > MIN_RPM;
     }
 }
 

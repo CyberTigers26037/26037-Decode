@@ -56,12 +56,14 @@ public class ArtifactSystem {
     }
 
     public void raiseFlipper() {
+        if (!carousel.isInLaunchPosition()) return;
+        if (!carousel.isAtTargetPosition()) return;
+        if (!launcher.isLauncherAboveMinSpeed()) return;
+
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
         updateArtifactLight();
     }
-
-
 
     public void parkFlipper() {
         launcher.parkFlipper();
@@ -82,6 +84,8 @@ public class ArtifactSystem {
     }
 
     public void moveCarouselToPosition(int position) {
+        if (launcher.isFlipperRaised()) return;
+
         if (intake.isRunning()){
             carousel.moveCarouselToIntakePosition(position);
             detector.tempStopDetection();
@@ -101,7 +105,7 @@ public class ArtifactSystem {
         return launcher.isRunning();
     }
 
-    public void moveCarouselToFireFirstPurple() {
+    public void moveCarouselToLaunchFirstPurple() {
         if (isIntakeRunning()) return;
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.PURPLE);
@@ -110,7 +114,7 @@ public class ArtifactSystem {
         }
     }
 
-    public void moveCarouselToFireFirstGreen() {
+    public void moveCarouselToLaunchFirstGreen() {
         if (isIntakeRunning()) return;
 
         int position = tracker.getFirstForArtifactColor(ArtifactColor.GREEN);
@@ -119,7 +123,7 @@ public class ArtifactSystem {
         }
     }
 
-    public void moveCarouselToFireFirstColor(ArtifactColor artifactColor) {
+    public void moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
         if (isIntakeRunning()) return;
 
         int position = tracker.getFirstForArtifactColor(artifactColor);
@@ -128,11 +132,9 @@ public class ArtifactSystem {
         }
     }
 
-
-
-
-
     public void resetCarouselDetection() {
+        if (launcher.isFlipperRaised()) return;
+
         tracker.reset();
         carousel.moveCarouselToIntakePosition(1);
         detector.tempStopDetection();
@@ -142,7 +144,7 @@ public class ArtifactSystem {
     }
 
     public void loop() {
-        if (inDetectionMode) {
+        if (inDetectionMode && !launcher.isFlipperRaised()) {
             ArtifactColor artifactColor = detector.detectArtifactColor();
             if (artifactColor != ArtifactColor.NONE) {
                 tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
@@ -154,7 +156,7 @@ public class ArtifactSystem {
             return;
         }
 
-        if (intake.isRunning()) {
+        if (intake.isRunning() && !launcher.isFlipperRaised()) {
             ArtifactColor artifactColor = detector.detectArtifactColor();
             if (artifactColor != ArtifactColor.NONE) {
                 tracker.loadArtifactAtPosition(carousel.getCurrentPosition(), artifactColor);
@@ -207,6 +209,9 @@ public class ArtifactSystem {
         telemetry.addData("Flywheel RPM (Actual): ", launcher.getActualFlywheelRpm());
         telemetry.addData("Intake Running: ",   isIntakeRunning());
         telemetry.addData("Launcher Running: ", isLauncherRunning());
+
+        telemetry.addData("Flipper at Target", launcher.isFlipperAtTargetPosition());
+        telemetry.addData("Carousel at Target", carousel.isAtTargetPosition());
     }
 }
 

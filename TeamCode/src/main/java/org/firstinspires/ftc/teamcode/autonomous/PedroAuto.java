@@ -137,7 +137,7 @@ public class PedroAuto extends OpMode {
                 break;
             case 5:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToFireFirstColor(artifact2);
+                    artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
                     setPathState(6);
                 }
                 break;
@@ -155,7 +155,7 @@ public class PedroAuto extends OpMode {
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToFireFirstColor(artifact3);
+                    artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
                     setPathState(9);
                 }
                 break;

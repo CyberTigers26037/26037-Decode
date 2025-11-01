@@ -38,7 +38,7 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
 
     @Override
     public void onOpModePreInit(OpMode opMode) {
-        rgbLight = opMode.hardwareMap.tryGet(Servo.class, "allianceLight");
+        rgbLight = opMode.hardwareMap.tryGet(Servo.class, "artifactLight");
         numberPlateSensor = new NumberPlateSensor(opMode.hardwareMap);
 
         if (rgbLight == null) {
@@ -52,11 +52,6 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
         }
 
         initialized = true;
-    }
-
-    @Override
-    public void onOpModePreStart(OpMode opMode) {
-        if (!initialized) return;
 
         if (numberPlateSensor.isNumberPlateBlue()) {
             rgbLight.setPosition(BLUE);
@@ -64,6 +59,13 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
         else {
             rgbLight.setPosition(RED);
         }
+    }
+
+    @Override
+    public void onOpModePreStart(OpMode opMode) {
+        if (!initialized) return;
+
+        rgbLight.setPosition(OFF);
     }
 
     @Override

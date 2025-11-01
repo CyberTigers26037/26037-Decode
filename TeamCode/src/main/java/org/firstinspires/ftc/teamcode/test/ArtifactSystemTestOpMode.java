@@ -63,9 +63,7 @@ public class ArtifactSystemTestOpMode extends OpMode {
             artifactSystem.moveCarouselToPosition(3);
         }
 
-        telemetry.addData("Flywheel RPM: ",artifactSystem.getLauncherRpm());
-        telemetry.addData("Intake Running: ", artifactSystem.isIntakeRunning());
-        telemetry.addData("Launcher Running: ", artifactSystem.isLauncherRunning());
+        artifactSystem.outputTelemetry(telemetry);
 
     }
 }

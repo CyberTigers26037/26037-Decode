@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subassembly;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.util.Timer;
 
 public class ArtifactSystem {
     private final ArtifactCarousel carousel;
@@ -11,6 +12,7 @@ public class ArtifactSystem {
     private final ArtifactIntake intake;
     private final ArtifactTracker tracker;
     private final ArtifactLight light;
+    private final Timer flipperTimer;
 
     private boolean inDetectionMode;
 
@@ -23,6 +25,7 @@ public class ArtifactSystem {
         intake = new ArtifactIntake(hwMap);
         light = new ArtifactLight(hwMap);
         tracker = new ArtifactTracker();
+        flipperTimer = new Timer(0.5);
     }
 
     public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
@@ -63,6 +66,7 @@ public class ArtifactSystem {
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
         updateArtifactLight();
+        flipperTimer.start();
     }
 
     public void parkFlipper() {
@@ -170,6 +174,9 @@ public class ArtifactSystem {
                 }
             }
             updateArtifactLight();
+        }
+        if (flipperTimer.isExpired() && launcher.isFlipperRaised()) {
+            parkFlipper();
         }
     }
 

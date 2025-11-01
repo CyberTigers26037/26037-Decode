@@ -77,9 +77,6 @@ public class DecodeTeleOp extends OpMode {
         if (gamepad1.right_trigger > 0.1) {
             artifactSystem.raiseFlipper();
         }
-        else {
-            artifactSystem.parkFlipper();
-        }
 
 
         if (gamepad1.xWasPressed()) {

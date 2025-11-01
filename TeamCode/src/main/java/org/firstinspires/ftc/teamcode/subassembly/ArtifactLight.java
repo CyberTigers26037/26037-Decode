@@ -8,7 +8,6 @@ public class ArtifactLight {
 
     public ArtifactLight (HardwareMap hwMap) {
         artifactLight = hwMap.get(Servo.class, "artifactLight");
-        artifactLight.setPosition(0.0); //Off
     }
 
     public void setColor(ArtifactColor color) {

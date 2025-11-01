@@ -119,7 +119,7 @@ public class PedroAuto extends OpMode {
                 break;
             case 2:
                 if (!follower.isBusy()) {
-                    artifactSystem.moveCarouselToFireFirstColor(artifact1);
+                    artifactSystem.moveCarouselToLaunchFirstColor(artifact1);
                     setPathState(3);
                 }
                 break;

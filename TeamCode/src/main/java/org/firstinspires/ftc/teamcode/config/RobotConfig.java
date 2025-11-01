@@ -7,6 +7,7 @@ public class RobotConfig {
     private static final String ROBOT_SERIAL_COACH_ANTHONY = "5838f408422f581c";
     private static final String ROBOT_SERIAL_COACH_ROB     = "803b7c0c22973496";
     private static final String ROBOT_SERIAL_MILLENNIUM    = "a542e45d0aef5058";
+    private static final String ROBOT_SERIAL_ERNIE         = "a29b4bcc0fa42842";
 
     private static String robotName = "Unknown";
 
@@ -90,6 +91,9 @@ public class RobotConfig {
             case ROBOT_SERIAL_MILLENNIUM:
                 initMillenniumRobot();
                 break;
+            case ROBOT_SERIAL_ERNIE:
+                initErnieRobot();
+                break;
             default:
                 // Unknown robot
                 break;
@@ -116,6 +120,20 @@ public class RobotConfig {
 
         flipperParkedPosition = -1;
         flipperRaisedPosition = 49;
+    }
+
+    private static void initErnieRobot() {
+        robotName = "Ernie";
+
+        carouselIntakePosition1 =  20.35;
+        carouselIntakePosition2 = 138.90;
+        carouselIntakePosition3 = 258.45;
+        carouselLaunchPosition1 =  81.88;
+        carouselLaunchPosition2 = 201.51;
+        carouselLaunchPosition3 = 322.48;
+
+        flipperParkedPosition = 163;
+        flipperRaisedPosition = 238;
     }
 
     private static void initCoachRobRobot() {

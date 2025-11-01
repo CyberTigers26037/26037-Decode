@@ -109,9 +109,7 @@ public class PedroAuto extends OpMode {
                 }
                 break;
 
-
             case 1:
-                aprilTagLimeLight.detectGoalDistance();
                 follower.followPath(scorePreload);
                 artifactSystem.setLauncherRpm(2420);
                 artifactSystem.startLauncher();
@@ -124,89 +122,89 @@ public class PedroAuto extends OpMode {
                 }
                 break;
             case 3:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
                     artifactSystem.raiseFlipper();
                     setPathState(4);
                 }
                 break;
             case 4:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
                     setPathState(5);
                 }
                 break;
             case 5:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
+                    artifactSystem.raiseFlipper();
                     setPathState(6);
                 }
                 break;
             case 6:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                    artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
                     setPathState(7);
                 }
                 break;
             case 7:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                    artifactSystem.raiseFlipper();
                     setPathState(8);
                 }
                 break;
             case 8:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
+                    artifactSystem.stopLauncher();
                     setPathState(9);
                 }
                 break;
             case 9:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
+                    artifactSystem.startIntake();
+                    follower.followPath(prepPickup1);
                     setPathState(10);
                 }
                 break;
             case 10:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    follower.followPath(collectPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
                     setPathState(11);
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.stopLauncher();
+                if (pathTimer.getElapsedTimeSeconds() > 4.0) {
+                    artifactSystem.stopIntake();
+                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
+                    //artifactSystem.startLauncher();
                     setPathState(12);
                 }
                 break;
             case 12:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.startIntake();
-                    follower.followPath(prepPickup1);
-                    setPathState(13);
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+//                    artifactSystem.setLauncherRpm(2420);
+//                    artifactSystem.moveCarouselToPosition(1);
+//                    setPathState(13);
                 }
                 break;
             case 13:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    follower.followPath(collectPickup1, 0.3, Constants.followerConstants.automaticHoldEnd);
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    artifactSystem.raiseFlipper();
                     setPathState(14);
                 }
                 break;
             case 14:
-                if (pathTimer.getElapsedTimeSeconds() > 3.0) {
-                    artifactSystem.stopIntake();
-                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
-                    //artifactSystem.startLauncher();
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                    artifactSystem.parkFlipper();
                     setPathState(15);
                 }
                 break;
             case 15:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-//                    artifactSystem.adjustLauncherRpm(2800);
-//                    artifactSystem.moveCarouselToPosition(1);
-//                    setPathState(16);
+                    artifactSystem.moveCarouselToPosition(2);
+                    setPathState(16);
                 }
                 break;
             case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     artifactSystem.raiseFlipper();
                     setPathState(17);
                 }
@@ -219,7 +217,7 @@ public class PedroAuto extends OpMode {
                 break;
             case 18:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(2);
+                    artifactSystem.moveCarouselToPosition(3);
                     setPathState(19);
                 }
                 break;
@@ -237,26 +235,8 @@ public class PedroAuto extends OpMode {
                 break;
             case 21:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(3);
-                    setPathState(22);
-                }
-                break;
-            case 22:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(23);
-                }
-                break;
-            case 23:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
-                    setPathState(24);
-                }
-                break;
-            case 24:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     artifactSystem.stopLauncher();
-                    setPathState(25);
+                    setPathState(22);
                 }
                 break;
 //            case 1:
@@ -404,6 +384,7 @@ public class PedroAuto extends OpMode {
         // These loop the movements of the robot, these must be called continuously in order to work
         follower.update();
         autonomousPathUpdate();
+        artifactSystem.loop();
 
         // Feedback to Driver Hub for debugging
         telemetry.addData("path state", pathState);

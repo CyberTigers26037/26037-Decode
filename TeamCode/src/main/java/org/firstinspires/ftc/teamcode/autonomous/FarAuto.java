@@ -12,10 +12,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 
 @SuppressWarnings("unused")
-@Autonomous(name= "CloseAuto", group="Pedro")
-public class CloseAuto extends PedroAutoBase {
+@Autonomous(name= "FarAuto", group="Pedro")
+public class FarAuto extends PedroAutoBase {
 
-    private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup1Pose = new Pose(50, 88, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose collect1Pose = new Pose(26, 88, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
@@ -101,7 +101,7 @@ public class CloseAuto extends PedroAutoBase {
 
             case 1:
                 follower.followPath(scorePreload);
-                artifactSystem.setLauncherRpm(2420);
+                artifactSystem.setLauncherRpm(3000);
                 artifactSystem.startLauncher();
                 setPathState(2);
                 break;

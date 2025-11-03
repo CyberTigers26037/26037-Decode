@@ -208,6 +208,14 @@ public class ArtifactSystem {
         }
     }
 
+    public boolean isCarouselAtTarget() {
+        return carousel.isAtTargetPosition();
+    }
+
+    public boolean isFlipperRaised() {
+        return launcher.isFlipperRaised();
+    }
+
     public void outputTelemetry(Telemetry telemetry) {
         telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
         telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
@@ -220,5 +228,7 @@ public class ArtifactSystem {
         telemetry.addData("Flipper at Target", launcher.isFlipperAtTargetPosition());
         telemetry.addData("Carousel at Target", carousel.isAtTargetPosition());
     }
+
+
 }
 

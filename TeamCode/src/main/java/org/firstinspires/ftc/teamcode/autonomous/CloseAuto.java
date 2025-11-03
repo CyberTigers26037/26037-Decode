@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 
 @SuppressWarnings("unused")
-@Autonomous(name= "Decode Auto", group="Pedro")
+@Autonomous(name= "CloseAuto", group="Pedro")
 public class CloseAuto extends PedroAutoBase {
 
     private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -23,7 +23,7 @@ public class CloseAuto extends PedroAutoBase {
     private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose collect3Pose = new Pose(26, 36, Math.toRadians(180));
     public Pose getStartPose(){
-        return new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
+        return new Pose(36, 132, Math.toRadians(45)); // Start Pose of our robot.
     }
 
 
@@ -93,7 +93,7 @@ public class CloseAuto extends PedroAutoBase {
                     setObeliskOder(obeliskOrder);
                     setPathState(1);
                 }
-                else if (pathTimer.getElapsedTimeSeconds() > 3.0){
+                else if (pathTimer.getElapsedTimeSeconds() > 2.0){
                     setObeliskOder(AprilTagLimelight.ObeliskOrder.GPP);
                     setPathState(1);
                 }
@@ -112,31 +112,31 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case 3:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
                     setPathState(4);
                 }
                 break;
             case 4:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
                     setPathState(5);
                 }
                 break;
             case 5:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
                     setPathState(6);
                 }
                 break;
             case 6:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
                     setPathState(7);
                 }
                 break;
             case 7:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
                     setPathState(8);
                 }
@@ -156,80 +156,18 @@ public class CloseAuto extends PedroAutoBase {
                 break;
             case 10:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    follower.followPath(collectPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(collectPickup1, 0.1, Constants.followerConstants.automaticHoldEnd);
                     setPathState(11);
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 4.0) {
+                if (pathTimer.getElapsedTimeSeconds() > 5.0) {
                     artifactSystem.stopIntake();
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     //artifactSystem.startLauncher();
                     setPathState(12);
                 }
                 break;
-            case 12:
-                //if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-//                    artifactSystem.setLauncherRpm(2420);
-//                    artifactSystem.moveCarouselToPosition(1);
-//                    setPathState(13);
-              //  }
-                break;
-            case 13:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(14);
-                }
-                break;
-            case 14:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
-                    setPathState(15);
-                }
-                break;
-            case 15:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(2);
-                    setPathState(16);
-                }
-                break;
-            case 16:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(17);
-                }
-                break;
-            case 17:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
-                    setPathState(18);
-                }
-                break;
-            case 18:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.moveCarouselToPosition(3);
-                    setPathState(19);
-                }
-                break;
-            case 19:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(20);
-                }
-                break;
-            case 20:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.parkFlipper();
-                    setPathState(21);
-                }
-                break;
-            case 21:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                    artifactSystem.stopLauncher();
-                    setPathState(22);
-                }
-                break;
-//
         }
     }
 

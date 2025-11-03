@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 
 @SuppressWarnings("unused")
 @Autonomous(name= "Decode Auto", group="Pedro")
-public class PedroAuto extends PedroAutoBase {
+public class CloseAuto extends PedroAutoBase {
 
     private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup1Pose = new Pose(50, 88, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.

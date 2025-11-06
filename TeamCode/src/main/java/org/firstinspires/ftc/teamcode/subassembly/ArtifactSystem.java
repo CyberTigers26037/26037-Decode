@@ -87,6 +87,10 @@ public class ArtifactSystem {
         return launcher.getFlywheelRpm();
     }
 
+    public int getActualLauncherRpm() {
+        return launcher.getActualFlywheelRpm();
+    }
+
     public void moveCarouselToPosition(int position) {
         if (launcher.isFlipperRaised()) return;
 

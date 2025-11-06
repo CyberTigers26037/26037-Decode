@@ -15,15 +15,15 @@ import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 @Autonomous(name= "CloseAuto", group="Pedro")
 public class CloseAuto extends PedroAutoBase {
 
-    private final Pose scorePose = new Pose(60, 84, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose prepPickup1Pose = new Pose(50, 88, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose collect1Pose = new Pose(26, 88, Math.toRadians(180));
+    private final Pose scorePose = new Pose(48, 100, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose prepPickup1Pose = new Pose(750, 91, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose collect1Pose = new Pose(22, 91, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
+    private final Pose collect2Pose = new Pose(22, 60, Math.toRadians(180));
     private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose collect3Pose = new Pose(26, 36, Math.toRadians(180));
+    private final Pose collect3Pose = new Pose(22, 36, Math.toRadians(180));
     public Pose getStartPose(){
-        return new Pose(36, 132, Math.toRadians(45)); // Start Pose of our robot.
+        return new Pose(22.5, 126, Math.toRadians(54)); // Start Pose of our robot.
     }
 
 
@@ -93,7 +93,7 @@ public class CloseAuto extends PedroAutoBase {
                     setObeliskOder(obeliskOrder);
                     setPathState(1);
                 }
-                else if (pathTimer.getElapsedTimeSeconds() > 2.0){
+                else if (pathTimer.getElapsedTimeSeconds() > 3.0){
                     setObeliskOder(AprilTagLimelight.ObeliskOrder.GPP);
                     setPathState(1);
                 }
@@ -142,26 +142,24 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case 8:
-                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
+                if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
                     setPathState(9);
                 }
                 break;
             case 9:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.startIntake();
-                    follower.followPath(prepPickup1);
-                    setPathState(10);
-                }
+                artifactSystem.startIntake();
+                follower.followPath(prepPickup1);
+                setPathState(10);
                 break;
             case 10:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    follower.followPath(collectPickup1, 0.1, Constants.followerConstants.automaticHoldEnd);
+                if (!follower.isBusy()) {
+                    follower.followPath(collectPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
                     setPathState(11);
                 }
                 break;
             case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 5.0) {
+                if (!follower.isBusy()) {
                     artifactSystem.stopIntake();
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     //artifactSystem.startLauncher();

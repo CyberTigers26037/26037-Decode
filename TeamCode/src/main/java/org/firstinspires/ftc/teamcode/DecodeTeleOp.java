@@ -34,36 +34,31 @@ public class DecodeTeleOp extends OpMode {
     @Override
     public void loop() {
 
-        if (gamepad1.dpad_right) {
-            Double goalDistance = aprilTagLimeLight.detectGoalDistance();
-            if (goalDistance != null){
-                artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
-            }
-        }
-        if (gamepad1.left_trigger > 0.1) {
+
+        if (gamepad2.left_trigger > 0.1) {
             artifactSystem.startLauncher();
         }
         else {
             artifactSystem.stopLauncher();
         }
-        if (gamepad1.rightBumperWasPressed()) {
+        if (gamepad2.rightBumperWasPressed()) {
             artifactSystem.moveCarouselToLaunchFirstPurple();
         }
-        if (gamepad1.leftBumperWasPressed()) {
+        if (gamepad2.leftBumperWasPressed()) {
             artifactSystem.moveCarouselToLaunchFirstGreen();
         }
 
-        if (gamepad1.dpadUpWasPressed()) {
+        if (gamepad2.dpadUpWasPressed()) {
             artifactSystem.adjustLauncherRpm(+ 100);
         }
 
 
-        if (gamepad1.dpadDownWasPressed()) {
+        if (gamepad2.dpadRightWasPressed()) {
             artifactSystem.adjustLauncherRpm(- 100);
         }
 
 
-        if (gamepad1.aWasPressed()) {
+        if (gamepad2.aWasPressed()) {
             artifactSystem.toggleIntake();
             artifactSystem.moveCarouselToPosition(1);
         }
@@ -74,18 +69,18 @@ public class DecodeTeleOp extends OpMode {
         }
 
 
-        if (gamepad1.right_trigger > 0.1) {
+        if (gamepad2.right_trigger > 0.1) {
             artifactSystem.raiseFlipper();
         }
 
 
-        if (gamepad1.xWasPressed()) {
+        if (gamepad2.xWasPressed()) {
             artifactSystem.moveCarouselToPosition(1);
         }
-        if (gamepad1.yWasPressed()) {
+        if (gamepad2.yWasPressed()) {
             artifactSystem.moveCarouselToPosition(2);
         }
-        if (gamepad1.bWasPressed()) {
+        if (gamepad2.bWasPressed()) {
             artifactSystem.moveCarouselToPosition(3);
         }
 
@@ -99,11 +94,17 @@ public class DecodeTeleOp extends OpMode {
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
 
-        if (gamepad1.dpad_left && (goalAngle != null)) {
+        if (gamepad2.dpad_left && (goalAngle != null)) {
             double yawError = goalAngle;
             axial = 0;
             lateral = 0;
             yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+        }
+        if (gamepad2.dpad_left) {
+            Double goalDistance = aprilTagLimeLight.detectGoalDistance();
+            if (goalDistance != null){
+                artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
+            }
         }
 
         drive.drive(axial, lateral, yaw);

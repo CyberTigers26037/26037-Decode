@@ -105,6 +105,7 @@ public class ArtifactSystem {
         updateArtifactLight();
     }
 
+
     public boolean isIntakeRunning() {
         return intake.isRunning();
     }

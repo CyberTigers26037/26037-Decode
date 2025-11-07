@@ -17,41 +17,41 @@ public class FarAuto extends PedroAutoBase {
 
     private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup3Pose = new Pose(46, 40, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose collectPickup3Pose = new Pose(13, 40, Math.toRadians(180));
     private final Pose collect1Pose = new Pose (19,35, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
    // private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose collect3Pose = new Pose(15, 40, Math.toRadians(180));
+    private final Pose collect3Pose = new Pose(17, 40, Math.toRadians(180));
+    private final Pose collect3Pose2 = new Pose(30, 40, Math.toRadians(180));
+    private final Pose scorePoseNotHitWall = new Pose (60,17, Math.toRadians(110));
+
     public Pose getStartPose(){
         return new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
     }
 
 
 
-
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
-    private PathChain prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3;
+    private PathChain prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3, pickup3Artifact3;
     public void buildPaths() {
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
+
 
         prepPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup3Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
                 .build();
 
-        collectPickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
-                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect1Pose.getHeading())
-                .build();
+
+
 
         scorePickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(collect1Pose, scorePose))
-                .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(collect1Pose, scorePoseNotHitWall))
+                .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePoseNotHitWall.getHeading())
                 .build();
 
         prepPickup2 = follower.pathBuilder()
@@ -75,10 +75,13 @@ public class FarAuto extends PedroAutoBase {
                 .build();
 
         collectPickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
-                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose.getHeading())
+                .addPath(new BezierLine(prepPickup3Pose, collect3Pose2))
+                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose2.getHeading())
                 .build();
-
+        pickup3Artifact3 = follower.pathBuilder()
+                .addPath(new BezierLine(collect3Pose2, collect3Pose))
+                .setLinearHeadingInterpolation(collect3Pose2.getHeading(), collect3Pose.getHeading())
+                .build();
         scorePickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(collect3Pose, scorePose))
                 .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose.getHeading())
@@ -160,36 +163,37 @@ public class FarAuto extends PedroAutoBase {
                     setPathState(11);
                 }
                 break;
+
             case 11:
+                if (pathTimer.getElapsedTimeSeconds() > 2.5){
+                    follower.followPath(pickup3Artifact3,0.2, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(12);
+                }
+                break;
+            case 12:
                 if (!follower.isBusy()) {
                     artifactSystem.stopIntake();
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(3000);
                     artifactSystem.startLauncher();
-                    setPathState(12);
-                }
-                break;
-            case 12:
-                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm()>2900){
-                    artifactSystem.moveCarouselToPosition(1);
                     setPathState(13);
                 }
                 break;
             case 13:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
+                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm()>2900){
+                    artifactSystem.moveCarouselToPosition(1);
                     setPathState(14);
                 }
                 break;
             case 14:
-                if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToPosition(2);
+                if (artifactSystem.isCarouselAtTarget()) {
+                    artifactSystem.raiseFlipper();
                     setPathState(15);
                 }
                 break;
             case 15:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
+                if (!artifactSystem.isFlipperRaised()) {
+                    artifactSystem.moveCarouselToPosition(2);
                     setPathState(16);
                 }
                 break;
@@ -200,18 +204,24 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case 17:
-                if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToPosition(3);
+                if (artifactSystem.isCarouselAtTarget()) {
+                    artifactSystem.raiseFlipper();
                     setPathState(18);
                 }
                 break;
             case 18:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
+                if (!artifactSystem.isFlipperRaised()) {
+                    artifactSystem.moveCarouselToPosition(3);
                     setPathState(19);
                 }
                 break;
             case 19:
+                if (artifactSystem.isCarouselAtTarget()) {
+                    artifactSystem.raiseFlipper();
+                    setPathState(20);
+                }
+                break;
+            case 20:
                 if (!artifactSystem.isFlipperRaised()){
                     artifactSystem.stopLauncher();
                     setPathState(20);

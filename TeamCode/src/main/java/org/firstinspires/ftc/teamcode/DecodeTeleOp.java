@@ -53,7 +53,7 @@ public class DecodeTeleOp extends OpMode {
         }
 
 
-        if (gamepad2.dpadRightWasPressed()) {
+        if (gamepad2.dpadDownWasPressed()) {
             artifactSystem.adjustLauncherRpm(- 100);
         }
 
@@ -84,10 +84,6 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.moveCarouselToPosition(3);
         }
 
-        artifactSystem.loop();
-
-        artifactSystem.outputTelemetry(telemetry);
-
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 
         double axial = -gamepad1.left_stick_y;
@@ -106,6 +102,10 @@ public class DecodeTeleOp extends OpMode {
                 artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
             }
         }
+
+        artifactSystem.loop();
+
+        artifactSystem.outputTelemetry(telemetry);
 
         drive.drive(axial, lateral, yaw);
 

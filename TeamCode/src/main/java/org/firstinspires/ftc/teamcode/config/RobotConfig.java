@@ -105,7 +105,15 @@ public class RobotConfig {
     private static void initMillenniumRobot() {
         robotName = "Millennium";
 
-        // do nothing, use defaults
+        carouselIntakePosition1 =   73.0;
+        carouselIntakePosition2 =  191.9;
+        carouselIntakePosition3 =  312.7;
+        carouselLaunchPosition1 =  250.1;
+        carouselLaunchPosition2 =   12.8;
+        carouselLaunchPosition3 =  130.0;
+
+        flipperParkedPosition = 173.1;
+        flipperRaisedPosition = 233.3;
     }
 
     private static void initCoachAnthonyRobot() {

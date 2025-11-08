@@ -21,6 +21,9 @@ public class RobotConfig {
     private static double flipperParkedPosition = -4.3;
     private static double flipperRaisedPosition = 93.4;
 
+    private static double goalCalcSlope = 23.02 ;
+    private static double goalCalcYIntercept = 1076.0;
+
     @SuppressWarnings("unused")
     public static String getRobotName() {
         init();
@@ -128,6 +131,9 @@ public class RobotConfig {
 
         flipperParkedPosition = 173.0;
         flipperRaisedPosition = 232.6;
+
+        goalCalcSlope = 9.060;
+        goalCalcYIntercept = 1901.0;
     }
 
     private static void initErnieRobot() {
@@ -148,5 +154,13 @@ public class RobotConfig {
         robotName = "Coach Rob";
 
         // Use defaults for now...
+    }
+
+    public static double getGoalCalcSlope() {
+        return goalCalcSlope;
+    }
+
+    public static double getGoalCalcYIntercept() {
+        return goalCalcYIntercept;
     }
 }

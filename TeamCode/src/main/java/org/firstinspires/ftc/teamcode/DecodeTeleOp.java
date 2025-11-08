@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.config.RobotConfig;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
@@ -124,7 +125,6 @@ public class DecodeTeleOp extends OpMode {
     }
 
     private int calculateRpmFromDistance(Double goalDistance) {
-
-        return (int)(9.060*(goalDistance) + 1901.0);
+        return (int)((RobotConfig.getGoalCalcSlope() * goalDistance) + RobotConfig.getGoalCalcYIntercept());
     }
 }

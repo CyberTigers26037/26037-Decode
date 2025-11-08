@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 
 @SuppressWarnings("unused")
 @TeleOp(name="DecodeTeleOp")
@@ -17,6 +18,7 @@ public class DecodeTeleOp extends OpMode {
     private static final double TURN_GAIN     = 0.034;
     private static final double MAX_AUTO_TURN = 0.2;
     private AprilTagLimelight aprilTagLimeLight;
+    private NumberPlateSensor numberPlateSensor;
 
     @Override
     public void init() {
@@ -24,9 +26,16 @@ public class DecodeTeleOp extends OpMode {
         drive = new MecanumDrive();
         drive.init(hardwareMap);
 
+        numberPlateSensor = new NumberPlateSensor(hardwareMap);
+
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
-        aprilTagLimeLight.beginDetectingTeamBlue();
+        if (numberPlateSensor.isNumberPlateBlue()) {
+            aprilTagLimeLight.beginDetectingTeamBlue();
+        }
+        else {
+            aprilTagLimeLight.beginDetectingTeamRed();
+        }
     }
 
 

@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
-
-
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
@@ -14,40 +12,60 @@ import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 @SuppressWarnings("unused")
 @Autonomous(name= "FarAuto", group="Pedro")
 public class FarAuto extends PedroAutoBase {
+    private enum PathState {
+        DETECT_OBELISK,
+        SCORE_PRELOAD,
+        PREPARE_TO_LAUNCH_PRELOAD1,
+        LAUNCH_PRELOAD1,
+        PREPARE_TO_LAUNCH_PRELOAD2,
+        LAUNCH_PRELOAD2,
+        PREPARE_TO_LAUNCH_PRELOAD3,
+        LAUNCH_PRELOAD3,
+        AFTER_PRELOAD_LAUNCHES,
+        PREP_PICKUP3,
+        COLLECT_PICKUP3,
+        PICKUP3_ARTIFACT3,
+        SCORE_PICKUP3,
+        PREPARE_TO_LAUNCH_PICKUP3_1,
+        LAUNCH_PICKUP3_1,
+        PREPARE_TO_LAUNCH_PICKUP3_2,
+        LAUNCH_PICKUP3_2,
+        PREPARE_TO_LAUNCH_PICKUP3_3,
+        LAUNCH_PICKUP3_3,
+        AFTER_PICKUP3_LAUNCHES,
+        STOP
+    }
+
+    private PathState pathState;
 
     private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup3Pose = new Pose(46, 40, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose collect1Pose = new Pose (19,35, Math.toRadians(180));
+    private final Pose collect1Pose = new Pose (19, 35, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
-   // private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    // private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose collect3Pose = new Pose(17, 40, Math.toRadians(180));
     private final Pose collect3Pose2 = new Pose(30, 40, Math.toRadians(180));
-    private final Pose scorePoseNotHitWall = new Pose (60,17, Math.toRadians(110));
+    private final Pose scorePoseNotHitWall = new Pose (60, 17, Math.toRadians(110));
 
     public Pose getStartPose(){
         return new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
     }
 
-
-
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
     private PathChain prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3, pickup3Artifact3;
+
     public void buildPaths() {
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
 
-
         prepPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup3Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
                 .build();
-
-
-
 
         scorePickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(collect1Pose, scorePoseNotHitWall))
@@ -90,149 +108,154 @@ public class FarAuto extends PedroAutoBase {
 
     public void autonomousPathUpdate() {
         switch (pathState) {
-
-            case 0:
+            case DETECT_OBELISK:
                 AprilTagLimelight.ObeliskOrder obeliskOrder = aprilTagLimeLight.findObeliskArtifactOrder();
                 if (obeliskOrder != AprilTagLimelight.ObeliskOrder.NONE) {
                     setObeliskOder(obeliskOrder);
-                    setPathState(1);
+                    setPathState(PathState.SCORE_PRELOAD);
                 }
                 else if (pathTimer.getElapsedTimeSeconds() > 3.0){
                     setObeliskOder(AprilTagLimelight.ObeliskOrder.GPP);
-                    setPathState(1);
+                    setPathState(PathState.SCORE_PRELOAD);
                 }
                 break;
-
-            case 1:
+            case SCORE_PRELOAD:
                 follower.followPath(scorePreload);
-                artifactSystem.setLauncherRpm(3000);
+
+                artifactSystem.setLauncherRpm(3394);
                 artifactSystem.startLauncher();
-                setPathState(2);
+                setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                 break;
-            case 2:
-                if ((!follower.isBusy()) && (artifactSystem.getActualLauncherRpm() > 2900)) {
+            case PREPARE_TO_LAUNCH_PRELOAD1:
+                if ((!follower.isBusy()) && (artifactSystem.getActualLauncherRpm() > 3300)) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact1);
-                    setPathState(3);
+                    setPathState(PathState.LAUNCH_PRELOAD1);
                 }
                 break;
-            case 3:
+            case LAUNCH_PRELOAD1:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(4);
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD2);
                 }
                 break;
-            case 4:
+            case PREPARE_TO_LAUNCH_PRELOAD2:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
-                    setPathState(5);
+                    setPathState(PathState.LAUNCH_PRELOAD2);
                 }
                 break;
-            case 5:
+            case LAUNCH_PRELOAD2:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(6);
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD3);
                 }
                 break;
-            case 6:
+            case PREPARE_TO_LAUNCH_PRELOAD3:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
-                    setPathState(7);
+                    setPathState(PathState.LAUNCH_PRELOAD3);
                 }
                 break;
-            case 7:
+            case LAUNCH_PRELOAD3:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(8);
+                    setPathState(PathState.AFTER_PRELOAD_LAUNCHES);
                 }
                 break;
-            case 8:
+            case AFTER_PRELOAD_LAUNCHES:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
-                    setPathState(9);
+                    setPathState(PathState.PREP_PICKUP3);
                 }
                 break;
-            case 9:
-                    follower.followPath(prepPickup3);
-                    artifactSystem.startIntake();
-                    setPathState(10);
+            case PREP_PICKUP3:
+                follower.followPath(prepPickup3);
+                artifactSystem.startIntake();
+                setPathState(PathState.COLLECT_PICKUP3);
 
                 break;
-            case 10:
+            case COLLECT_PICKUP3:
                 if (!follower.isBusy()) {
                     follower.followPath(collectPickup3, 0.2, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(11);
+                    setPathState(PathState.PICKUP3_ARTIFACT3);
                 }
                 break;
 
-            case 11:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5){
-                    follower.followPath(pickup3Artifact3,0.2, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(12);
+            case PICKUP3_ARTIFACT3:
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    follower.followPath(pickup3Artifact3, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.SCORE_PICKUP3);
                 }
                 break;
-            case 12:
+            case SCORE_PICKUP3:
                 if (!follower.isBusy()) {
                     artifactSystem.stopIntake();
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
-                    artifactSystem.setLauncherRpm(3000);
+                    artifactSystem.setLauncherRpm(3394);
                     artifactSystem.startLauncher();
-                    setPathState(13);
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                 }
                 break;
-            case 13:
-                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm()>2900){
+            case PREPARE_TO_LAUNCH_PICKUP3_1:
+                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 3300){
                     artifactSystem.moveCarouselToPosition(1);
-                    setPathState(14);
+                    setPathState(PathState.LAUNCH_PICKUP3_1);
                 }
                 break;
-            case 14:
+            case LAUNCH_PICKUP3_1:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(15);
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_2);
                 }
                 break;
-            case 15:
+            case PREPARE_TO_LAUNCH_PICKUP3_2:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToPosition(2);
-                    setPathState(16);
+                    setPathState(PathState.LAUNCH_PICKUP3_2);
                 }
                 break;
-            case 16:
+            case LAUNCH_PICKUP3_2:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(17);
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_3);
                 }
                 break;
-            case 17:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(18);
-                }
-                break;
-            case 18:
+            case PREPARE_TO_LAUNCH_PICKUP3_3:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.moveCarouselToPosition(3);
-                    setPathState(19);
+                    setPathState(PathState.LAUNCH_PICKUP3_3);
                 }
                 break;
-            case 19:
+            case LAUNCH_PICKUP3_3:
                 if (artifactSystem.isCarouselAtTarget()) {
                     artifactSystem.raiseFlipper();
-                    setPathState(20);
+                    setPathState(PathState.AFTER_PICKUP3_LAUNCHES);
                 }
                 break;
-            case 20:
-                if (!artifactSystem.isFlipperRaised()){
+            case AFTER_PICKUP3_LAUNCHES:
+                if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
-                    setPathState(20);
+                    setPathState(PathState.STOP);
                 }
                 break;
         }
     }
 
+    private void setPathState(PathState pathState) {
+        this.pathState = pathState;
+        pathTimer.resetTimer();
+    }
 
+    @Override
+    public void start() {
+        opmodeTimer.resetTimer();
+        setPathState(PathState.DETECT_OBELISK);
+    }
 
+    @Override
+    protected void outputTelemetry() {
+        telemetry.addData("path state", pathState);
 
-
-
+        super.outputTelemetry();
+    }
 }

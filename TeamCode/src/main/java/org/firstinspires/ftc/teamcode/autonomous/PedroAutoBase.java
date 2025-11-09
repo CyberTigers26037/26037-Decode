@@ -17,8 +17,6 @@ public abstract class PedroAutoBase extends OpMode {
     protected AprilTagLimelight aprilTagLimeLight;
 
     protected Timer pathTimer, opmodeTimer;
-    protected int pathState;
-
 
     protected ArtifactColor artifact1;
     protected ArtifactColor artifact2;
@@ -26,19 +24,14 @@ public abstract class PedroAutoBase extends OpMode {
 
     protected final Pose startPose = getStartPose();
 
-
-
     /**
      * This method is called once at the init of the OpMode.
      **/
     @Override
     public void init() {
-
-
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
         aprilTagLimeLight.beginDetectingObelisk();
-
 
         artifactSystem = new ArtifactSystem(hardwareMap);
         pathTimer = new Timer();
@@ -50,9 +43,7 @@ public abstract class PedroAutoBase extends OpMode {
         follower = Constants.createFollower(hardwareMap);
         buildPaths();
         follower.setStartingPose(startPose);
-
     }
-
 
     /**
      * This is the main loop of the OpMode, it will run repeatedly after clicking "Play".
@@ -65,32 +56,18 @@ public abstract class PedroAutoBase extends OpMode {
         autonomousPathUpdate();
         artifactSystem.loop();
 
-        // Feedback to Driver Hub for debugging
-        telemetry.addData("path state", pathState);
+        outputTelemetry();
+        telemetry.update();
+    }
+
+    protected void outputTelemetry() {
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         artifactSystem.outputTelemetry(telemetry);
-        telemetry.update();
-    }
-
-    /**
-     * This method is called once at the start of the OpMode.
-     * It runs all the setup actions, including building paths and starting the path system
-     **/
-    @Override
-    public void start() {
-        opmodeTimer.resetTimer();
-        setPathState(0);
     }
 
     public abstract void buildPaths();
-
-    /** These change the states of the paths and actions. It will also reset the timers of the individual switches **/
-    public void setPathState(int pState) {
-        pathState = pState;
-        pathTimer.resetTimer();
-    }
 
     public abstract void autonomousPathUpdate();
 

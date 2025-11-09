@@ -4,14 +4,21 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
+import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 
 public abstract class PedroAutoBase extends OpMode {
+    private static final double TURN_GAIN     = 0.034;
+    private static final double MAX_AUTO_TURN = 0.2;
 
+    protected MecanumDrive drive;
+    private NumberPlateSensor numberPlateSensor;
     protected Follower follower;
     protected ArtifactSystem artifactSystem;
     protected AprilTagLimelight aprilTagLimeLight;
@@ -29,6 +36,11 @@ public abstract class PedroAutoBase extends OpMode {
      **/
     @Override
     public void init() {
+        drive = new MecanumDrive();
+        drive.init(hardwareMap);
+
+        numberPlateSensor = new NumberPlateSensor(hardwareMap);
+
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
         aprilTagLimeLight.beginDetectingObelisk();
@@ -97,6 +109,31 @@ public abstract class PedroAutoBase extends OpMode {
                 break;
 
         }
+    }
+
+    protected void beginDetectingGoal() {
+        if (numberPlateSensor.isNumberPlateBlue()) {
+            aprilTagLimeLight.beginDetectingTeamBlue();
+        }
+        else {
+            aprilTagLimeLight.beginDetectingTeamRed();
+        }
+    }
+
+    protected void autoRotateTowardGoal() {
+        Double goalAngle = aprilTagLimeLight.detectGoalAngle();
+
+        if (goalAngle != null) {
+            double axial = 0;
+            double lateral = 0;
+            double yawError = goalAngle;
+            double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+            drive.drive(axial, lateral, yaw);
+        }
+    }
+
+    protected void stopAutoRotating() {
+        drive.stop();
     }
 }
 

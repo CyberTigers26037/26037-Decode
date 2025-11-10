@@ -120,20 +120,22 @@ public abstract class PedroAutoBase extends OpMode {
         }
     }
 
-    protected void autoRotateTowardGoal() {
+    protected boolean autoRotateTowardGoal(double delta) {
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 
         if (goalAngle != null) {
             double axial = 0;
             double lateral = 0;
-            double yawError = goalAngle;
+            double yawError = goalAngle + delta;
             double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
             drive.drive(axial, lateral, yaw);
+            return (yawError < 0.5);
         }
+        return true;
     }
 
     protected void stopAutoRotating() {
-        drive.stop();
+            drive.stop();
     }
 }
 

@@ -58,15 +58,16 @@ public class ArtifactSystem {
         launcher.startFlywheelMotor();
     }
 
-    public void raiseFlipper() {
-        if (!carousel.isInLaunchPosition()) return;
-        if (!carousel.isAtTargetPosition()) return;
-        if (!launcher.isLauncherAboveMinSpeed()) return;
+    public boolean raiseFlipper() {
+        if (!carousel.isInLaunchPosition()) return false;
+        if (!carousel.isAtTargetPosition()) return false;
+        if (!launcher.isLauncherAboveMinSpeed()) return false;
 
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
         updateArtifactLight();
         flipperTimer.start();
+        return true;
     }
 
     public void parkFlipper() {

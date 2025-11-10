@@ -68,7 +68,7 @@ public class DecodeTeleOp extends OpMode {
         }
 
 
-        if (gamepad2.aWasPressed()) {
+        if (gamepad1.aWasPressed() || gamepad2.aWasPressed()){
             artifactSystem.toggleIntake();
             artifactSystem.moveCarouselToPosition(1);
         }

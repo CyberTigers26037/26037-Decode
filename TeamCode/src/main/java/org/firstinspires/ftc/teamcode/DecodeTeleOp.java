@@ -74,7 +74,7 @@ public class DecodeTeleOp extends OpMode {
         }
 
 
-        if (gamepad1.rightStickButtonWasPressed()) {
+        if (gamepad1.rightStickButtonWasPressed() || gamepad2.rightStickButtonWasPressed()) {
             artifactSystem.resetCarouselDetection();
         }
 

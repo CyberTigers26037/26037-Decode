@@ -21,8 +21,8 @@ public class RobotConfig {
     private static double flipperParkedPosition = -4.3;
     private static double flipperRaisedPosition = 93.4;
 
-    private static double goalCalcSlope = 22.21 ;
-    private static double goalCalcYIntercept = 1225.0;
+    private static double goalCalcSlope = 18.85 ;
+    private static double goalCalcYIntercept = 1486.0;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {

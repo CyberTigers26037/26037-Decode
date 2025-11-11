@@ -46,9 +46,9 @@ public class FarAuto extends PedroAutoBase {
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
     // private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose collect3Pose = new Pose(23, 40, Math.toRadians(180));
+    private final Pose collect3Pose = new Pose(20, 40, Math.toRadians(180));
     private final Pose collect3Pose2 = new Pose(30, 40, Math.toRadians(180));
-    private final Pose scorePoseNotHitWall = new Pose (60, 17, Math.toRadians(110));
+    private final Pose scorePoseNotHitWall = new Pose (60, 23, Math.toRadians(110));
 
     public Pose getStartPose(){
         return new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
@@ -95,7 +95,7 @@ public class FarAuto extends PedroAutoBase {
                 .build();
 
         collectPickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup3Pose, collect3Pose2))
+                .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
                 .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose2.getHeading())
                 .build();
         pickup3Artifact3 = follower.pathBuilder()
@@ -196,21 +196,31 @@ public class FarAuto extends PedroAutoBase {
                     setPathState(PathState.PICKUP3_ARTIFACT3);
                 }
                 break;
-
             case PICKUP3_ARTIFACT3:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
-                    follower.followPath(pickup3Artifact3, 0.2, Constants.followerConstants.automaticHoldEnd);
+                if (!follower.isBusy()) {
                     setPathState(PathState.SCORE_PICKUP3);
                 }
                 break;
+
+          /*  case PICKUP3_ARTIFACT3:
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    follower.followPath(pickup3Artifact3, 0.5, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.SCORE_PICKUP3);
+                }
+
+
+                break;
+
+           */
             case SCORE_PICKUP3:
-                if (!follower.isBusy()) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     artifactSystem.stopIntake();
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(3385);
                     artifactSystem.startLauncher();
-                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
+                    setPathState(PathState.AUTO_AIM_PRELOAD_3);
                 }
+                break;
 
             case AUTO_AIM_PRELOAD_3:
                 if(!follower.isBusy()){

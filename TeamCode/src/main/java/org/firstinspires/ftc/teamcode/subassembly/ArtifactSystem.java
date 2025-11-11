@@ -180,10 +180,11 @@ public class ArtifactSystem {
                 int emptyArtifactPosition = tracker.getFirstEmptyArtifactPosition();
                 if (emptyArtifactPosition != 0) {
                     carousel.moveCarouselToIntakePosition(emptyArtifactPosition);
-
                 }
                 else {
-                    stopIntake();
+                    if (!intake.isRunningInReverse()) {
+                        stopIntake();
+                    }
                 }
             }
             updateArtifactLight();
@@ -228,6 +229,15 @@ public class ArtifactSystem {
         return launcher.isFlipperRaised();
     }
 
+    public void startReverseIntake() {
+        intake.startReverse();
+    }
+    public void stopReverseIntake() {
+        if (intake.isRunningInReverse()) {
+            intake.stop();
+        }
+    }
+
     public void outputTelemetry(Telemetry telemetry) {
         telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
         telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
@@ -240,6 +250,7 @@ public class ArtifactSystem {
         telemetry.addData("Flipper at Target", launcher.isFlipperAtTargetPosition());
         telemetry.addData("Carousel at Target", carousel.isAtTargetPosition());
     }
+
 
 
 }

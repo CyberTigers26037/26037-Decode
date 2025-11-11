@@ -133,13 +133,15 @@ public class ArtifactSystem {
         }
     }
 
-    public void moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
-        if (isIntakeRunning()) return;
+    public boolean moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
+        if (isIntakeRunning()) return false;
 
         int position = tracker.getFirstForArtifactColor(artifactColor);
         if (position != 0) {
             moveCarouselToPosition(position);
+            return true;
         }
+        return false;
     }
 
     public void resetCarouselDetection() {

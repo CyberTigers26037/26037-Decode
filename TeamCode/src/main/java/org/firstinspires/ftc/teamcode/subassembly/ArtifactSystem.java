@@ -252,6 +252,11 @@ public class ArtifactSystem {
     }
 
 
-
+    public void moveCarouselToLaunchFirstNonEmptyPosition() {
+        int position = tracker.getFirstFilledArtifactPosition();
+        if (position != 0) {
+            moveCarouselToPosition(position);
+        }
+    }
 }
 

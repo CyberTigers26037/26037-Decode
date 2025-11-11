@@ -15,8 +15,12 @@ import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 @Autonomous(name= "CloseAuto", group="Pedro")
 public class CloseAuto extends PedroAutoBase {
     private enum PathState {
+        PREP_SCAN_OBELISK,
+        DRIVE_TO_SCAN,
         DETECT_OBELISK,
         SCORE_PRELOAD,
+        SCORE_PRELOAD_AIM,
+        AUTO_AIM_PRELOAD,
         PREPARE_TO_LAUNCH_PRELOAD1,
         LAUNCH_PRELOAD1,
         PREPARE_TO_LAUNCH_PRELOAD2,
@@ -25,6 +29,7 @@ public class CloseAuto extends PedroAutoBase {
         LAUNCH_PRELOAD3,
         AFTER_PRELOAD_LAUNCHES,
         PREP_PICKUP1, // pick up 1st set ---------------
+        HALF_PICKUP1,
         COLLECT_PICKUP1,
         PICKUP3_ARTIFACT1,
         SCORE_PICKUP1,
@@ -36,6 +41,7 @@ public class CloseAuto extends PedroAutoBase {
         LAUNCH_PICKUP1_3,
         AFTER_PICKUP1_LAUNCHES,
         PREP_PICKUP2, // pick up 2nd set ---------------
+        HALF_PICKUP2,
         COLLECT_PICKUP2,
         PICKUP3_ARTIFACT2,
         SCORE_PICKUP2,
@@ -47,6 +53,7 @@ public class CloseAuto extends PedroAutoBase {
         LAUNCH_PICKUP2_3,
         AFTER_PICKUP2_LAUNCHES,
         PREP_PICKUP3, // pick up 3rd set ---------------
+        HALF_PICKUP3,
         COLLECT_PICKUP3,
         PICKUP3_ARTIFACT3,
         SCORE_PICKUP3,
@@ -63,14 +70,18 @@ public class CloseAuto extends PedroAutoBase {
     private PathState pathState;
 
     private final Pose scorePose = new Pose(48, 105, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose scanObeliskPose = new Pose (50, 105, Math.toRadians(70));
     private final Pose prepPickup1Pose = new Pose(50, 96, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup1Pose = new Pose(36, 96, Math.toRadians(180));
     private final Pose collect1Pose = new Pose(22, 96, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 65, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup2Pose = new Pose(36, 65, Math.toRadians(180));
     private final Pose collect2Pose = new Pose(22, 65, Math.toRadians(180));
     private final Pose prepPickup3Pose = new Pose(50, 41, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup3Pose = new Pose(36, 41, Math.toRadians(180));
     private final Pose collect3Pose = new Pose(22, 41, Math.toRadians(180));
-    public Pose getStartPose(){
-        return new Pose(24, 122, Math.toRadians(31)); // Start Pose of our robot.
+    public Pose getStartPose() {
+        return new Pose(18.5, 119, Math.toRadians(54)); // Start Pose of our robot.
     }
 
 
@@ -79,20 +90,30 @@ public class CloseAuto extends PedroAutoBase {
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
-    private PathChain prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3;
+    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, prepPickup3, halfPickup3, collectPickup3, scorePickup3;
     public void buildPaths() {
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
-        scorePreload = new Path(new BezierLine(startPose, scorePose));
-        scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
+        scorePreload = new Path(new BezierLine(scanObeliskPose, scorePose));
+        scorePreload.setLinearHeadingInterpolation(scanObeliskPose.getHeading(), scorePose.getHeading());
+
+        prepScan = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, scanObeliskPose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scanObeliskPose.getHeading())
+                .build();
 
         prepPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup1Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup1Pose.getHeading())
                 .build();
 
+        halfPickup1 = follower.pathBuilder()
+                .addPath(new BezierLine(prepPickup1Pose, halfPickup1Pose))
+                .setLinearHeadingInterpolation(prepPickup1Pose.getHeading(), halfPickup1Pose.getHeading())
+                .build();
+
         collectPickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup1Pose, collect1Pose))
-                .setLinearHeadingInterpolation(prepPickup1Pose.getHeading(), collect1Pose.getHeading())
+                .addPath(new BezierLine(halfPickup1Pose, collect1Pose))
+                .setLinearHeadingInterpolation(halfPickup1Pose.getHeading(), collect1Pose.getHeading())
                 .build();
 
         scorePickup1 = follower.pathBuilder()
@@ -105,9 +126,14 @@ public class CloseAuto extends PedroAutoBase {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
                 .build();
 
+        halfPickup2 = follower.pathBuilder()
+                .addPath(new BezierLine(prepPickup2Pose, halfPickup2Pose))
+                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), halfPickup2Pose.getHeading())
+                .build();
+
         collectPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup2Pose, collect2Pose))
-                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), collect2Pose.getHeading())
+                .addPath(new BezierLine(halfPickup2Pose, collect2Pose))
+                .setLinearHeadingInterpolation(halfPickup2Pose.getHeading(), collect2Pose.getHeading())
                 .build();
 
         scorePickup2 = follower.pathBuilder()
@@ -134,6 +160,17 @@ public class CloseAuto extends PedroAutoBase {
     public void autonomousPathUpdate() {
         switch (pathState) {
 
+            case PREP_SCAN_OBELISK:
+                follower.followPath(prepScan);
+                setPathState(PathState.DRIVE_TO_SCAN);
+                break;
+
+            case DRIVE_TO_SCAN:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.DETECT_OBELISK);
+                }
+                break;
+
             case DETECT_OBELISK:
                 AprilTagLimelight.ObeliskOrder obeliskOrder = aprilTagLimeLight.findObeliskArtifactOrder();
                 if (obeliskOrder != AprilTagLimelight.ObeliskOrder.NONE) {
@@ -147,14 +184,26 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PRELOAD:
-                follower.followPath(scorePreload);
-
+                follower.turnToDegrees(135);
                 artifactSystem.setLauncherRpm(2420);
                 artifactSystem.startLauncher();
-                setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                setPathState(CloseAuto.PathState.SCORE_PRELOAD_AIM);
                 break;
+
+            case SCORE_PRELOAD_AIM:
+                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                   setPathState(PathState.AUTO_AIM_PRELOAD);
+                }
+                break;
+            case AUTO_AIM_PRELOAD:
+                if(autoRotateTowardGoal(1) ){
+                    stopAutoRotating();
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                }
+                break;
+
             case PREPARE_TO_LAUNCH_PRELOAD1:
-                if ((!follower.isBusy()) && (artifactSystem.getActualLauncherRpm() > 2400)) {
+                if (artifactSystem.getActualLauncherRpm() > 2400) {
                     artifactSystem.moveCarouselToLaunchFirstColor(artifact1);
                     setPathState(CloseAuto.PathState.LAUNCH_PRELOAD1);
                 }
@@ -196,10 +245,17 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break; // stop launch
             case PREP_PICKUP1:
-                follower.followPath(prepPickup1);
+                follower.followPath(prepPickup1); // prep to collect 1
                 artifactSystem.startIntake();
-                setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
-                break; // prep to intake
+                setPathState(CloseAuto.PathState.HALF_PICKUP1);
+                break;
+
+            case HALF_PICKUP1:
+                if (!follower.isBusy()) {
+                    follower.followPath(halfPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
+                }
+                break;
 
             case COLLECT_PICKUP1:
                 if (!follower.isBusy()) {
@@ -219,7 +275,9 @@ public class CloseAuto extends PedroAutoBase {
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_1:
                 if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 2400){
-                    artifactSystem.moveCarouselToPosition(1);
+                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
+                    }
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_1);
                 }
                 break;
@@ -231,7 +289,9 @@ public class CloseAuto extends PedroAutoBase {
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_2:
                 if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToPosition(2);
+                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact2)) {
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
+                    }
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_2);
                 }
                 break;
@@ -243,7 +303,10 @@ public class CloseAuto extends PedroAutoBase {
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_3:
                 if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToPosition(3);
+                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact3
+                    )) {
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
+                    }
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_3);
                 }
                 break;
@@ -259,6 +322,78 @@ public class CloseAuto extends PedroAutoBase {
                     setPathState(CloseAuto.PathState.STOP);
                 }
                 break;
+
+                // next set of artifacts 2
+
+//            case PREP_PICKUP2:
+//                follower.followPath(prepPickup2); // prep to collect 1
+//                artifactSystem.startIntake();
+//                setPathState(CloseAuto.PathState.HALF_PICKUP2);
+//                break;
+//
+//            case HALF_PICKUP2:
+//                follower.followPath(halfPickup2);
+//                setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
+//                break;
+//
+//            case COLLECT_PICKUP2:
+//                if (!follower.isBusy()) {
+//                    follower.followPath(collectPickup2, 0.2, Constants.followerConstants.automaticHoldEnd);
+//                    setPathState(CloseAuto.PathState.SCORE_PICKUP2);
+//                }
+//                break;
+//
+//            case SCORE_PICKUP2:
+//                if (!follower.isBusy()) {
+//                    artifactSystem.stopIntake();
+//                    follower.followPath(scorePickup2, 1.0, Constants.followerConstants.automaticHoldEnd);
+//                    artifactSystem.setLauncherRpm(2420);
+//                    artifactSystem.startLauncher();
+//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_1);
+//                }
+//                break;
+//            case PREPARE_TO_LAUNCH_PICKUP2_1:
+//                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 2400){
+//                    artifactSystem.moveCarouselToPosition(1);
+//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_1);
+//                }
+//                break;
+//            case LAUNCH_PICKUP2_1:
+//                if (artifactSystem.isCarouselAtTarget()) {
+//                    artifactSystem.raiseFlipper();
+//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_2);
+//                }
+//                break;
+//            case PREPARE_TO_LAUNCH_PICKUP2_2:
+//                if (!artifactSystem.isFlipperRaised()) {
+//                    artifactSystem.moveCarouselToPosition(2);
+//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_2);
+//                }
+//                break;
+//            case LAUNCH_PICKUP2_2:
+//                if (artifactSystem.isCarouselAtTarget()) {
+//                    artifactSystem.raiseFlipper();
+//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_3);
+//                }
+//                break;
+//            case PREPARE_TO_LAUNCH_PICKUP2_3:
+//                if (!artifactSystem.isFlipperRaised()) {
+//                    artifactSystem.moveCarouselToPosition(3);
+//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_3);
+//                }
+//                break;
+//            case LAUNCH_PICKUP2_3:
+//                if (artifactSystem.isCarouselAtTarget()) {
+//                    artifactSystem.raiseFlipper();
+//                    setPathState(CloseAuto.PathState.AFTER_PICKUP2_LAUNCHES);
+//                }
+//                break;
+//            case AFTER_PICKUP2_LAUNCHES:
+//                if (!artifactSystem.isFlipperRaised()) {
+//                    artifactSystem.stopLauncher();
+//                    setPathState(CloseAuto.PathState.STOP);
+//                }
+//                break;
         }
     }
 
@@ -270,7 +405,7 @@ public class CloseAuto extends PedroAutoBase {
     @Override
     public void start() {
         opmodeTimer.resetTimer();
-        setPathState(PathState.DETECT_OBELISK);
+        setPathState(PathState.PREP_SCAN_OBELISK);
     }
 
     @Override

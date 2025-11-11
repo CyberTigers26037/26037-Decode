@@ -234,7 +234,7 @@ public class FarAuto extends PedroAutoBase {
                 if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 3200){
                     if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact1))
                      {
-                        artifactSystem.moveCarouselToPosition(1);
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
                     }
                     setPathState(PathState.LAUNCH_PICKUP3_1);
                 }
@@ -249,7 +249,7 @@ public class FarAuto extends PedroAutoBase {
             case PREPARE_TO_LAUNCH_PICKUP3_2:
                 if (!artifactSystem.isFlipperRaised()) {
                     if(!artifactSystem.moveCarouselToLaunchFirstColor(artifact2)){
-                        artifactSystem.moveCarouselToPosition(2);
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
                     }
                     setPathState(PathState.LAUNCH_PICKUP3_2);
                 }
@@ -264,7 +264,7 @@ public class FarAuto extends PedroAutoBase {
             case PREPARE_TO_LAUNCH_PICKUP3_3:
                 if (!artifactSystem.isFlipperRaised()) {
                     if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact3)){
-                        artifactSystem.moveCarouselToPosition(3);
+                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
                     }
                     setPathState(PathState.LAUNCH_PICKUP3_3);
                 }

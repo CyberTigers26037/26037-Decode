@@ -140,7 +140,7 @@ public class FarAuto extends PedroAutoBase {
 
             case AUTO_AIM_PRELOAD:
                 if(!follower.isBusy()){
-                    if(autoRotateTowardGoal(1) ){
+                    if(autoRotateTowardGoal(1)){
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                     }

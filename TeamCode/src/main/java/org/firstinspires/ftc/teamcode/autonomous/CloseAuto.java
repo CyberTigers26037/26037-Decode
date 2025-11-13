@@ -69,17 +69,17 @@ public class CloseAuto extends PedroAutoBase {
 
     private PathState pathState;
 
-    private final Pose scorePose = new Pose(48, 105, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose scanObeliskPose = new Pose (50, 105, Math.toRadians(70));
-    private final Pose prepPickup1Pose = new Pose(50, 96, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup1Pose = new Pose(36, 96, Math.toRadians(180));
-    private final Pose collect1Pose = new Pose(22, 96, Math.toRadians(180));
-    private final Pose prepPickup2Pose = new Pose(50, 65, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup2Pose = new Pose(36, 65, Math.toRadians(180));
-    private final Pose collect2Pose = new Pose(22, 65, Math.toRadians(180));
-    private final Pose prepPickup3Pose = new Pose(50, 41, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup3Pose = new Pose(36, 41, Math.toRadians(180));
-    private final Pose collect3Pose = new Pose(22, 41, Math.toRadians(180));
+    private final Pose scorePose = new Pose(48, 100, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose scanObeliskPose = new Pose (48, 100, Math.toRadians(70));
+    private final Pose prepPickup1Pose = new Pose(48, 92, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup1Pose = new Pose(34, 92, Math.toRadians(180));
+    private final Pose collect1Pose = new Pose(18, 92, Math.toRadians(180));
+    private final Pose prepPickup2Pose = new Pose(50, 61, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup2Pose = new Pose(36, 61, Math.toRadians(180));
+    private final Pose collect2Pose = new Pose(22, 61, Math.toRadians(180));
+    private final Pose prepPickup3Pose = new Pose(50, 37, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose halfPickup3Pose = new Pose(36, 37, Math.toRadians(180));
+    private final Pose collect3Pose = new Pose(20, 37, Math.toRadians(180));
     public Pose getStartPose() {
         return new Pose(18.5, 119, Math.toRadians(54)); // Start Pose of our robot.
     }
@@ -184,7 +184,8 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PRELOAD:
-                follower.turnToDegrees(135);
+                beginDetectingGoal();
+                follower.turnToDegrees(145);
                 artifactSystem.setLauncherRpm(2420);
                 artifactSystem.startLauncher();
                 setPathState(CloseAuto.PathState.SCORE_PRELOAD_AIM);
@@ -193,49 +194,59 @@ public class CloseAuto extends PedroAutoBase {
             case SCORE_PRELOAD_AIM:
                 if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                    setPathState(PathState.AUTO_AIM_PRELOAD);
+                   //follower.breakFollowing();
                 }
                 break;
             case AUTO_AIM_PRELOAD:
-                if(autoRotateTowardGoal(1) ){
-                    stopAutoRotating();
-                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
-                }
+                setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+
+                //if(autoRotateTowardGoalUsingPedroPathing(1) || pathTimer.getElapsedTimeSeconds() > 5.0 ){
+                //    //stopAutoRotating();
+                //    follower.breakFollowing();
+                //    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                // }
                 break;
 
             case PREPARE_TO_LAUNCH_PRELOAD1:
-                if (artifactSystem.getActualLauncherRpm() > 2400) {
-                    artifactSystem.moveCarouselToLaunchFirstColor(artifact1);
+                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
                     setPathState(CloseAuto.PathState.LAUNCH_PRELOAD1);
                 }
                 break;
             case LAUNCH_PRELOAD1:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD2);
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD2);
+                    }
                 }
                 break; // launched 1st artifact
+
             case PREPARE_TO_LAUNCH_PRELOAD2:
                 if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToLaunchFirstColor(artifact2);
-                    setPathState(CloseAuto.PathState.LAUNCH_PRELOAD2);
+                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact2)) {
+                        setPathState(CloseAuto.PathState.LAUNCH_PRELOAD2);
+                    }
                 }
                 break;
             case LAUNCH_PRELOAD2:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD3);
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD3);
+                    }
                 }
                 break; // launched 2nd artifact
+
             case PREPARE_TO_LAUNCH_PRELOAD3:
                 if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.moveCarouselToLaunchFirstColor(artifact3);
-                    setPathState(CloseAuto.PathState.LAUNCH_PRELOAD3);
+                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact3)) {
+                        setPathState(CloseAuto.PathState.LAUNCH_PRELOAD3);
+                    }
                 }
                 break;
             case LAUNCH_PRELOAD3:
                 if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.AFTER_PRELOAD_LAUNCHES);
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.AFTER_PRELOAD_LAUNCHES);
+                    }
                 }
                 break; // Launched 3rd artifact
             case AFTER_PRELOAD_LAUNCHES:
@@ -265,7 +276,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if (!follower.isBusy()) {
+                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.0)) {
                     artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);
@@ -274,46 +285,42 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_1:
-                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 2400){
-                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
-                    }
+                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_1);
                 }
                 break;
             case LAUNCH_PICKUP1_1:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_2);
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_2);
+                    }
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_2:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact2)) {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
-                    }
+                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_2);
                 }
                 break;
             case LAUNCH_PICKUP1_2:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_3);
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_3);
+                    }
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_3:
                 if (!artifactSystem.isFlipperRaised()) {
-                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact3
-                    )) {
+                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact3)) {
                         artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
                     }
                     setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_3);
                 }
                 break;
             case LAUNCH_PICKUP1_3:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    artifactSystem.raiseFlipper();
-                    setPathState(CloseAuto.PathState.AFTER_PICKUP1_LAUNCHES);
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                    if (artifactSystem.raiseFlipper()) {
+                        setPathState(CloseAuto.PathState.AFTER_PICKUP1_LAUNCHES);
+                    }
                 }
                 break;
             case AFTER_PICKUP1_LAUNCHES:

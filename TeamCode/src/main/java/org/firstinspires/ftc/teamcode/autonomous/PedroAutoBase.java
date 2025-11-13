@@ -76,6 +76,11 @@ public abstract class PedroAutoBase extends OpMode {
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
+        Double goalAngle = aprilTagLimeLight.detectGoalAngle();
+
+        if (goalAngle != null) {
+            telemetry.addData("Goal Angle", goalAngle);
+        }
         artifactSystem.outputTelemetry(telemetry);
     }
 
@@ -131,7 +136,24 @@ public abstract class PedroAutoBase extends OpMode {
             drive.drive(axial, lateral, yaw);
             return (yawError < 0.5);
         }
-        return true;
+
+        return false;
+    }
+
+    protected boolean autoRotateTowardGoalUsingPedroPathing(double delta) {
+        Double goalAngle = aprilTagLimeLight.detectGoalAngle();
+
+        if (goalAngle != null) {
+            double axial = 0;
+            double lateral = 0;
+            double yawError = goalAngle + delta;
+            double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+            follower.turnDegrees(Math.abs(yawError), (yawError < 0.0));
+            return (yawError < 0.5);
+        }
+
+        return false;
+
     }
 
     protected void stopAutoRotating() {

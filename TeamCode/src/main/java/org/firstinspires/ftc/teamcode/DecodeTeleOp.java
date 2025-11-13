@@ -39,7 +39,10 @@ public class DecodeTeleOp extends OpMode {
         }
     }
 
-
+    @Override
+    public void start() {
+        artifactSystem.moveCarouselToStartPosition();
+    }
 
     @Override
     public void loop() {
@@ -100,7 +103,6 @@ public class DecodeTeleOp extends OpMode {
 
         if (gamepad1.aWasPressed() || gamepad2.aWasPressed()){ // toggle intake
             artifactSystem.toggleIntake();
-            artifactSystem.moveCarouselToPosition(1);
         }
 
 

@@ -214,7 +214,7 @@ public class FarAuto extends PedroAutoBase {
            */
             case SCORE_PICKUP3:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.stopIntake();
+                    artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(3240);
                     artifactSystem.startLauncher();

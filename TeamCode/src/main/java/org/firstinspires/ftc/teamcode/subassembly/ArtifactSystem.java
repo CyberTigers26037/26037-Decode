@@ -39,18 +39,30 @@ public class ArtifactSystem {
 
     public void startIntake() {
         intake.start();
-        moveCarouselToPosition(1);
+        int emptyPosition = tracker.getFirstEmptyArtifactPosition();
+        if (emptyPosition != 0) {
+            moveCarouselToPosition(emptyPosition);
+        }
+        else {
+            moveCarouselToPosition(1);
+        }
     }
 
-    public void stopIntake() {
+    public void stopIntake(boolean rotateCarousel) {
         intake.stop();
+        if (rotateCarousel) {
+            int filledPosition = tracker.getFirstFilledArtifactPosition();
+            if (filledPosition != 0) {
+                moveCarouselToPosition(filledPosition);
+            }
+        }
     }
 
     public void toggleIntake() {
         if (!intake.isRunning()) {
             startIntake();
         } else {
-            stopIntake();
+            stopIntake(true);
         }
     }
 
@@ -104,6 +116,12 @@ public class ArtifactSystem {
         }
 
         updateArtifactLight();
+    }
+
+    public void moveCarouselToStartPosition(){
+        if (launcher.isFlipperRaised()) return;
+
+        carousel.moveCarouselToIntakePosition(1);
     }
 
 
@@ -183,7 +201,7 @@ public class ArtifactSystem {
                 }
                 else {
                     if (!intake.isRunningInReverse()) {
-                        stopIntake();
+                        stopIntake(false);
                     }
                 }
             }

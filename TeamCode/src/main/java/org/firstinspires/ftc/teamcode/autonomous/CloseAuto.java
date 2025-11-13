@@ -266,7 +266,7 @@ public class CloseAuto extends PedroAutoBase {
 
             case SCORE_PICKUP1:
                 if (!follower.isBusy()) {
-                    artifactSystem.stopIntake();
+                    artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);
                     artifactSystem.startLauncher();

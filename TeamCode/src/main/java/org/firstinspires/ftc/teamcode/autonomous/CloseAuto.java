@@ -76,7 +76,7 @@ public class CloseAuto extends PedroAutoBase {
         // Start Pose of our robot.
         return isBlueAlliance ?
                 new Pose(18.5, 119, Math.toRadians(54)) : // blue
-                new Pose(18.5, 119, Math.toRadians(54));  // red
+                new Pose(125.5, 119, Math.toRadians(126));  // red
     }
 
 
@@ -89,37 +89,37 @@ public class CloseAuto extends PedroAutoBase {
     public void buildPaths() {
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
                 new Pose(48, 100, Math.toRadians(135)) : // blue
-                new Pose(48, 100, Math.toRadians(135));  // red
+                new Pose(96, 100, Math.toRadians(45));  // red
         Pose scanObeliskPose = isBlueAlliance ?
                 new Pose (48, 100, Math.toRadians(70)) : // blue
-                new Pose (48, 100, Math.toRadians(70));  // red
+                new Pose (96, 100, Math.toRadians(110));  // red
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
                 new Pose(48, 92, Math.toRadians(180)) : // blue
-                new Pose(48, 92, Math.toRadians(180));  // red
+                new Pose(96, 92, Math.toRadians(0));  // red
         Pose halfPickup1Pose = isBlueAlliance ?
                 new Pose(34, 92, Math.toRadians(180)) : // blue
-                new Pose(34, 92, Math.toRadians(180));  // red
+                new Pose(110, 92, Math.toRadians(0));  // red
         Pose collect1Pose = isBlueAlliance ?
                 new Pose(18, 92, Math.toRadians(180)) : // blue
-                new Pose(18, 92, Math.toRadians(180));  // red
+                new Pose(126, 92, Math.toRadians(0));  // red
         Pose prepPickup2Pose = isBlueAlliance ? // Middle (Second Set) of Artifacts from the Spike Mark.
                 new Pose(50, 61, Math.toRadians(180)) : // blue
-                new Pose(50, 61, Math.toRadians(180));  // red
+                new Pose(94, 61, Math.toRadians(0));  // red
         Pose halfPickup2Pose = isBlueAlliance ?
                 new Pose(36, 61, Math.toRadians(180)) : // blue
-                new Pose(36, 61, Math.toRadians(180));  // red
+                new Pose(108, 61, Math.toRadians(0));  // red
         Pose collect2Pose = isBlueAlliance ?
                 new Pose(22, 61, Math.toRadians(180)) : // blue
-                new Pose(22, 61, Math.toRadians(180));  // red
+                new Pose(122, 61, Math.toRadians(0));  // red
         Pose prepPickup3Pose = isBlueAlliance ? // Lowest (Third Set) of Artifacts from the Spike Mark.
                 new Pose(50, 37, Math.toRadians(180)) : // blue
-                new Pose(50, 37, Math.toRadians(180));  // red
+                new Pose(94, 37, Math.toRadians(0));  // red
         Pose halfPickup3Pose = isBlueAlliance ?
                 new Pose(36, 37, Math.toRadians(180)) : // blue
-                new Pose(36, 37, Math.toRadians(180));  // red
+                new Pose(108, 37, Math.toRadians(0));  // red
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 37, Math.toRadians(180)) : // blue
-                new Pose(20, 37, Math.toRadians(180));  // red
+                new Pose(124, 37, Math.toRadians(0));  // red
 
 
 

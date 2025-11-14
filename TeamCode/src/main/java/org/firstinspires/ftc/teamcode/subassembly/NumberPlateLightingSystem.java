@@ -20,7 +20,6 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
 
     private boolean initialized;
     private Servo rgbLight;
-    private NumberPlateSensor numberPlateSensor;
 
     @OnCreateEventLoop
     public static void attachEventLoop(Context context, FtcEventLoop eventLoop) {
@@ -39,7 +38,7 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
     @Override
     public void onOpModePreInit(OpMode opMode) {
         rgbLight = opMode.hardwareMap.tryGet(Servo.class, "artifactLight");
-        numberPlateSensor = new NumberPlateSensor(opMode.hardwareMap);
+        NumberPlateSensor numberPlateSensor = new NumberPlateSensor(opMode.hardwareMap);
 
         if (rgbLight == null) {
             opMode.telemetry.addLine("Unable to init lighting system, cannot find allianceLight");

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
+import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 
 @SuppressWarnings("unused")
 @Autonomous(name= "CloseAuto", group="Pedro")
@@ -33,6 +34,7 @@ public class CloseAuto extends PedroAutoBase {
         COLLECT_PICKUP1,
         PICKUP3_ARTIFACT1,
         SCORE_PICKUP1,
+        SCORE_PICKUP1_WAIT_FOR_DRIVING,
         PREPARE_TO_LAUNCH_PICKUP1_1,
         LAUNCH_PICKUP1_1,
         PREPARE_TO_LAUNCH_PICKUP1_2,
@@ -193,24 +195,19 @@ public class CloseAuto extends PedroAutoBase {
 
             case SCORE_PRELOAD_AIM:
                 if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
-                   setPathState(PathState.AUTO_AIM_PRELOAD);
-                   //follower.breakFollowing();
+                    follower.breakFollowing();
+                    setPathState(PathState.AUTO_AIM_PRELOAD);
                 }
                 break;
             case AUTO_AIM_PRELOAD:
-                setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
-
-                //if(autoRotateTowardGoalUsingPedroPathing(1) || pathTimer.getElapsedTimeSeconds() > 5.0 ){
-                //    //stopAutoRotating();
-                //    follower.breakFollowing();
-                //    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
-                // }
+                if(autoRotateTowardGoal(0) || pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    stopAutoRotating();
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                }
                 break;
 
             case PREPARE_TO_LAUNCH_PRELOAD1:
-                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                    setPathState(CloseAuto.PathState.LAUNCH_PRELOAD1);
-                }
+                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PRELOAD1, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD1:
                 if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
@@ -221,11 +218,8 @@ public class CloseAuto extends PedroAutoBase {
                 break; // launched 1st artifact
 
             case PREPARE_TO_LAUNCH_PRELOAD2:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact2)) {
-                        setPathState(CloseAuto.PathState.LAUNCH_PRELOAD2);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PRELOAD2, PathState.AFTER_PRELOAD_LAUNCHES);
+
                 break;
             case LAUNCH_PRELOAD2:
                 if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
@@ -236,11 +230,8 @@ public class CloseAuto extends PedroAutoBase {
                 break; // launched 2nd artifact
 
             case PREPARE_TO_LAUNCH_PRELOAD3:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact3)) {
-                        setPathState(CloseAuto.PathState.LAUNCH_PRELOAD3);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PRELOAD3, PathState.AFTER_PRELOAD_LAUNCHES);
+
                 break;
             case LAUNCH_PRELOAD3:
                 if (artifactSystem.isCarouselAtTarget()) {
@@ -276,18 +267,24 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.0)) {
+                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                     artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);
                     artifactSystem.startLauncher();
-                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_1);
+                    setPathState(PathState.SCORE_PICKUP1_WAIT_FOR_DRIVING);
                 }
                 break;
-            case PREPARE_TO_LAUNCH_PICKUP1_1:
-                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_1);
+
+            case SCORE_PICKUP1_WAIT_FOR_DRIVING:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP1_1);
                 }
+                break;
+
+            case PREPARE_TO_LAUNCH_PICKUP1_1:
+                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP1_1, PathState.AFTER_PICKUP1_LAUNCHES);
+
                 break;
             case LAUNCH_PICKUP1_1:
                 if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
@@ -297,9 +294,8 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_2:
-                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_2);
-                }
+                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP1_2, PathState.AFTER_PICKUP1_LAUNCHES);
+
                 break;
             case LAUNCH_PICKUP1_2:
                 if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
@@ -309,12 +305,8 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP1_3:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (!artifactSystem.moveCarouselToLaunchFirstColor(artifact3)) {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
-                    }
-                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP1_3);
-                }
+                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP1_3, PathState.AFTER_PICKUP1_LAUNCHES);
+
                 break;
             case LAUNCH_PICKUP1_3:
                 if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
@@ -401,6 +393,19 @@ public class CloseAuto extends PedroAutoBase {
 //                    setPathState(CloseAuto.PathState.STOP);
 //                }
 //                break;
+        }
+    }
+
+    private void moveCarouselToNextLaunchPosition(ArtifactColor preferredColor, CloseAuto.PathState successPathState, CloseAuto.PathState failedPathState) {
+        int position = artifactSystem.getNextArtifactPositionToLaunch(preferredColor);
+        if(position != 0) {
+            if (artifactSystem.moveCarouselToPosition(position)) {
+                setPathState(successPathState);
+            }
+        }
+        else {
+            // Nothing to launch...
+            setPathState(failedPathState);
         }
     }
 

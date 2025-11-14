@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
+import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 
 @SuppressWarnings("unused")
 @Autonomous(name= "FarAuto", group="Pedro")
@@ -154,9 +155,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PRELOAD1:
-                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                    setPathState(PathState.LAUNCH_PRELOAD1);
-                }
+                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PRELOAD1, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD1:
                 if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3250)) {
@@ -166,11 +165,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PRELOAD2:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact2)) {
-                        setPathState(PathState.LAUNCH_PRELOAD2);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PRELOAD2, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD2:
                 if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3250)) {
@@ -180,11 +175,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PRELOAD3:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact3)) {
-                        setPathState(PathState.LAUNCH_PRELOAD3);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PRELOAD3, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD3:
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3250)) {
@@ -246,22 +237,13 @@ public class FarAuto extends PedroAutoBase {
                 break;
 
             case AUTO_AIM_PRELOAD_3:
-                if(autoRotateTowardGoal(6) ){
+                if(autoRotateTowardGoal(1) ){
                     stopAutoRotating();
                     setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP3_1:
-                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                    setPathState(PathState.LAUNCH_PICKUP3_1);
-                }
-                else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
-                    setPathState(PathState.LAUNCH_PICKUP3_1);
-                }
-                else {
-                    // No artifacts in the carousel...
-                    setPathState(PathState.DRIVE_OUT_BOX);
-                }
+                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP3_1, PathState.DRIVE_OUT_BOX);
                 break;
             case LAUNCH_PICKUP3_1:
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3150)) {
@@ -271,18 +253,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP3_2:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if(artifactSystem.moveCarouselToLaunchFirstColor(artifact2)){
-                        setPathState(PathState.LAUNCH_PICKUP3_2);
-                    }
-                    else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
-                        setPathState(PathState.LAUNCH_PICKUP3_2);
-                    }
-                    else {
-                        // No artifacts in the carousel...
-                        setPathState(PathState.DRIVE_OUT_BOX);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP3_2, PathState.DRIVE_OUT_BOX);
                 break;
             case LAUNCH_PICKUP3_2:
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3150)) {
@@ -292,18 +263,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP3_3:
-                if (!artifactSystem.isFlipperRaised()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact3)){
-                        setPathState(PathState.LAUNCH_PICKUP3_3);
-                    }
-                    else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
-                        setPathState(PathState.LAUNCH_PICKUP3_3);
-                    }
-                    else {
-                        // No artifacts in the carousel...
-                        setPathState(PathState.DRIVE_OUT_BOX);
-                    }
-                }
+                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP3_3, PathState.DRIVE_OUT_BOX);
                 break;
             case LAUNCH_PICKUP3_3:
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3150)) {
@@ -338,6 +298,19 @@ public class FarAuto extends PedroAutoBase {
     public void start() {
         opmodeTimer.resetTimer();
         setPathState(PathState.DETECT_OBELISK);
+    }
+
+    private void moveCarouselToNextLaunchPosition(ArtifactColor preferredColor, PathState successPathState, PathState failedPathState) {
+        int position = artifactSystem.getNextArtifactPositionToLaunch(preferredColor);
+        if(position != 0) {
+            if (artifactSystem.moveCarouselToPosition(position)) {
+                setPathState(successPathState);
+            }
+        }
+        else {
+            // Nothing to launch...
+            setPathState(failedPathState);
+        }
     }
 
     @Override

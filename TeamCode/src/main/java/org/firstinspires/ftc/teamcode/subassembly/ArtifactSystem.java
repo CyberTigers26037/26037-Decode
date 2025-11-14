@@ -162,6 +162,13 @@ public class ArtifactSystem {
         return false;
     }
 
+    public int getNextArtifactPositionToLaunch(ArtifactColor preferredColor) {
+        int position = tracker.getFirstForArtifactColor(preferredColor);
+        if (position != 0) return position;
+
+        return tracker.getFirstFilledArtifactPosition();
+    }
+
     public void resetCarouselDetection() {
         if (launcher.isFlipperRaised()) return;
 

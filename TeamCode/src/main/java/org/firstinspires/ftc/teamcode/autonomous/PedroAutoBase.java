@@ -29,7 +29,8 @@ public abstract class PedroAutoBase extends OpMode {
     protected ArtifactColor artifact2;
     protected ArtifactColor artifact3;
 
-    protected final Pose startPose = getStartPose();
+    protected Pose startPose;
+    protected boolean isBlueAlliance;
 
     /**
      * This method is called once at the init of the OpMode.
@@ -40,6 +41,7 @@ public abstract class PedroAutoBase extends OpMode {
         drive.init(hardwareMap);
 
         numberPlateSensor = new NumberPlateSensor(hardwareMap);
+        isBlueAlliance = numberPlateSensor.isNumberPlateBlue();
 
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
@@ -53,6 +55,8 @@ public abstract class PedroAutoBase extends OpMode {
         artifactSystem.initializeArtifactColors(ArtifactColor.GREEN, ArtifactColor.PURPLE, ArtifactColor.PURPLE);
 
         follower = Constants.createFollower(hardwareMap);
+
+        startPose = getStartPose();
         buildPaths();
         follower.setStartingPose(startPose);
     }
@@ -138,22 +142,6 @@ public abstract class PedroAutoBase extends OpMode {
         }
 
         return false;
-    }
-
-    protected boolean autoRotateTowardGoalUsingPedroPathing(double delta) {
-        Double goalAngle = aprilTagLimeLight.detectGoalAngle();
-
-        if (goalAngle != null) {
-            double axial = 0;
-            double lateral = 0;
-            double yawError = goalAngle + delta;
-            double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
-            follower.turnDegrees(Math.abs(yawError), (yawError < 0.0));
-            return (Math.abs(yawError) < 0.5);
-        }
-
-        return false;
-
     }
 
     protected void stopAutoRotating() {

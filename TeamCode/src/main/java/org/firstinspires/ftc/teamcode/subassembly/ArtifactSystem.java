@@ -157,8 +157,7 @@ public class ArtifactSystem {
 
         int position = tracker.getFirstForArtifactColor(artifactColor);
         if (position != 0) {
-            moveCarouselToPosition(position);
-            return true;
+            return moveCarouselToPosition(position);
         }
         return false;
     }

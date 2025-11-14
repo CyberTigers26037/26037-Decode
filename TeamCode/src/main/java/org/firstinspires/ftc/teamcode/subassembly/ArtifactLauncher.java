@@ -34,6 +34,7 @@ public class ArtifactLauncher {
         flywheelMotor = hwMap.get(DcMotorEx.class, "flywheelMotor");
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flywheelMotor.setVelocityPIDFCoefficients(260, 16, 26, 0);
+        flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         flipperServo = new AxonServo(hwMap.get(
                 Servo.class, "flipperServo"),

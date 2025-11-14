@@ -39,7 +39,10 @@ public class DecodeTeleOp extends OpMode {
         }
     }
 
-
+    @Override
+    public void start() {
+        artifactSystem.moveCarouselToStartPosition();
+    }
 
     @Override
     public void loop() {
@@ -68,10 +71,7 @@ public class DecodeTeleOp extends OpMode {
         }
 
 
-        if (gamepad1.aWasPressed() || gamepad2.aWasPressed()){
-            artifactSystem.toggleIntake();
-            artifactSystem.moveCarouselToPosition(1);
-        }
+
 
 
         if (gamepad1.rightStickButtonWasPressed() || gamepad2.rightStickButtonWasPressed()) {
@@ -96,6 +96,19 @@ public class DecodeTeleOp extends OpMode {
         if (gamepad2.bWasPressed()) {
             artifactSystem.moveCarouselToPosition(3);
         }
+
+        if ((gamepad1.backWasPressed()) || (gamepad2.backWasPressed())) { // reverse intake
+            artifactSystem.startReverseIntake();
+        }
+        if ((gamepad1.backWasReleased()) || (gamepad2.backWasReleased())) { // reverse intake
+            artifactSystem.stopReverseIntake();
+        }
+
+        if (gamepad1.aWasPressed() || gamepad2.aWasPressed()){ // toggle intake
+            artifactSystem.toggleIntake();
+        }
+
+
 
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 

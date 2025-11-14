@@ -39,18 +39,30 @@ public class ArtifactSystem {
 
     public void startIntake() {
         intake.start();
-        moveCarouselToPosition(1);
+        int emptyPosition = tracker.getFirstEmptyArtifactPosition();
+        if (emptyPosition != 0) {
+            moveCarouselToPosition(emptyPosition);
+        }
+        else {
+            moveCarouselToPosition(1);
+        }
     }
 
-    public void stopIntake() {
+    public void stopIntake(boolean rotateCarousel) {
         intake.stop();
+        if (rotateCarousel) {
+            int filledPosition = tracker.getFirstFilledArtifactPosition();
+            if (filledPosition != 0) {
+                moveCarouselToPosition(filledPosition);
+            }
+        }
     }
 
     public void toggleIntake() {
         if (!intake.isRunning()) {
             startIntake();
         } else {
-            stopIntake();
+            stopIntake(true);
         }
     }
 
@@ -58,15 +70,16 @@ public class ArtifactSystem {
         launcher.startFlywheelMotor();
     }
 
-    public void raiseFlipper() {
-        if (!carousel.isInLaunchPosition()) return;
-        if (!carousel.isAtTargetPosition()) return;
-        if (!launcher.isLauncherAboveMinSpeed()) return;
+    public boolean raiseFlipper() {
+        if (!carousel.isInLaunchPosition()) return false;
+        if (!carousel.isAtTargetPosition()) return false;
+        if (!launcher.isLauncherAboveMinSpeed()) return false;
 
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
         updateArtifactLight();
         flipperTimer.start();
+        return true;
     }
 
     public void parkFlipper() {
@@ -91,18 +104,25 @@ public class ArtifactSystem {
         return launcher.getActualFlywheelRpm();
     }
 
-    public void moveCarouselToPosition(int position) {
-        if (launcher.isFlipperRaised()) return;
+    public boolean moveCarouselToPosition(int position) {
+        if (launcher.isFlipperRaised()) return false;
 
         if (intake.isRunning()){
             carousel.moveCarouselToIntakePosition(position);
-
         }
         else{
             carousel.moveCarouselToLaunchPosition(position);
         }
 
         updateArtifactLight();
+
+        return true;
+    }
+
+    public void moveCarouselToStartPosition(){
+        if (launcher.isFlipperRaised()) return;
+
+        carousel.moveCarouselToIntakePosition(1);
     }
 
 
@@ -132,13 +152,21 @@ public class ArtifactSystem {
         }
     }
 
-    public void moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
-        if (isIntakeRunning()) return;
+    public boolean moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
+        if (isIntakeRunning()) return false;
 
         int position = tracker.getFirstForArtifactColor(artifactColor);
         if (position != 0) {
-            moveCarouselToPosition(position);
+            return moveCarouselToPosition(position);
         }
+        return false;
+    }
+
+    public int getNextArtifactPositionToLaunch(ArtifactColor preferredColor) {
+        int position = tracker.getFirstForArtifactColor(preferredColor);
+        if (position != 0) return position;
+
+        return tracker.getFirstFilledArtifactPosition();
     }
 
     public void resetCarouselDetection() {
@@ -177,10 +205,11 @@ public class ArtifactSystem {
                 int emptyArtifactPosition = tracker.getFirstEmptyArtifactPosition();
                 if (emptyArtifactPosition != 0) {
                     carousel.moveCarouselToIntakePosition(emptyArtifactPosition);
-
                 }
                 else {
-                    stopIntake();
+                    if (!intake.isRunningInReverse()) {
+                        stopIntake(false);
+                    }
                 }
             }
             updateArtifactLight();
@@ -221,13 +250,17 @@ public class ArtifactSystem {
         return carousel.isAtTargetPosition();
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isFlipperRaised() {
         return launcher.isFlipperRaised();
     }
 
-    public boolean isTargetRPMReached(){
-        return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 100);
+    public void startReverseIntake() {
+        intake.startReverse();
+    }
+    public void stopReverseIntake() {
+        if (intake.isRunningInReverse()) {
+            intake.stop();
+        }
     }
 
     public void outputTelemetry(Telemetry telemetry) {
@@ -244,5 +277,13 @@ public class ArtifactSystem {
     }
 
 
+    public boolean moveCarouselToLaunchFirstNonEmptyPosition() {
+        int position = tracker.getFirstFilledArtifactPosition();
+        if (position != 0) {
+            return moveCarouselToPosition(position);
+        }
+
+        return false;
+    }
 }
 

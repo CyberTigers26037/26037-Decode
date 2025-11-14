@@ -134,7 +134,7 @@ public abstract class PedroAutoBase extends OpMode {
             double yawError = goalAngle + delta;
             double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
             drive.drive(axial, lateral, yaw);
-            return (yawError < 0.5);
+            return (Math.abs(yawError) < 0.5);
         }
 
         return false;
@@ -149,7 +149,7 @@ public abstract class PedroAutoBase extends OpMode {
             double yawError = goalAngle + delta;
             double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
             follower.turnDegrees(Math.abs(yawError), (yawError < 0.0));
-            return (yawError < 0.5);
+            return (Math.abs(yawError) < 0.5);
         }
 
         return false;

@@ -104,18 +104,19 @@ public class ArtifactSystem {
         return launcher.getActualFlywheelRpm();
     }
 
-    public void moveCarouselToPosition(int position) {
-        if (launcher.isFlipperRaised()) return;
+    public boolean moveCarouselToPosition(int position) {
+        if (launcher.isFlipperRaised()) return false;
 
         if (intake.isRunning()){
             carousel.moveCarouselToIntakePosition(position);
-
         }
         else{
             carousel.moveCarouselToLaunchPosition(position);
         }
 
         updateArtifactLight();
+
+        return true;
     }
 
     public void moveCarouselToStartPosition(){
@@ -270,11 +271,13 @@ public class ArtifactSystem {
     }
 
 
-    public void moveCarouselToLaunchFirstNonEmptyPosition() {
+    public boolean moveCarouselToLaunchFirstNonEmptyPosition() {
         int position = tracker.getFirstFilledArtifactPosition();
         if (position != 0) {
-            moveCarouselToPosition(position);
+            return moveCarouselToPosition(position);
         }
+
+        return false;
     }
 }
 

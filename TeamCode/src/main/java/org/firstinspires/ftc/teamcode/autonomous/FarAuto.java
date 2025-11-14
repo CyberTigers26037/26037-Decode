@@ -15,6 +15,7 @@ public class FarAuto extends PedroAutoBase {
     private enum PathState {
         DETECT_OBELISK,
         SCORE_PRELOAD,
+        SCORE_PRELOAD_FINISH_DRIVING,
         AUTO_AIM_PRELOAD,
         PREPARE_TO_LAUNCH_PRELOAD1,
         LAUNCH_PRELOAD1,
@@ -27,6 +28,7 @@ public class FarAuto extends PedroAutoBase {
         COLLECT_PICKUP3,
         PICKUP3_ARTIFACT3,
         SCORE_PICKUP3,
+        SCORE_PICKUP3_FINISH_DRIVING,
         AUTO_AIM_PRELOAD_3,
         PREPARE_TO_LAUNCH_PICKUP3_1,
         LAUNCH_PICKUP3_1,
@@ -41,7 +43,7 @@ public class FarAuto extends PedroAutoBase {
 
     private PathState pathState;
 
-    private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose scorePose = new Pose(60, 15, Math.toRadians(100)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup3Pose = new Pose(48, 40, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose collect1Pose = new Pose (19, 35, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
@@ -135,23 +137,25 @@ public class FarAuto extends PedroAutoBase {
 
                 artifactSystem.setLauncherRpm(3300);
                 artifactSystem.startLauncher();
-                setPathState(PathState.AUTO_AIM_PRELOAD);
+                setPathState(PathState.SCORE_PRELOAD_FINISH_DRIVING);
                 break;
 
-            case AUTO_AIM_PRELOAD:
-                if(!follower.isBusy()){
-                    if(autoRotateTowardGoal(1)){
-                        stopAutoRotating();
-                        setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
-                    }
+            case SCORE_PRELOAD_FINISH_DRIVING:
+                if(!follower.isBusy()) {
+                    // Stop pedro pathing following so we can auto-rotate the robot to aim
+                    follower.breakFollowing();
+                    setPathState(PathState.AUTO_AIM_PRELOAD);
                 }
                 break;
-
+            case AUTO_AIM_PRELOAD:
+                if(autoRotateTowardGoal(1)){
+                    stopAutoRotating();
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                }
+                break;
             case PREPARE_TO_LAUNCH_PRELOAD1:
-                if (!follower.isBusy()) {
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                        setPathState(PathState.LAUNCH_PRELOAD1);
-                    }
+                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
+                    setPathState(PathState.LAUNCH_PRELOAD1);
                 }
                 break;
             case LAUNCH_PRELOAD1:
@@ -229,27 +233,34 @@ public class FarAuto extends PedroAutoBase {
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(3192);
                     artifactSystem.startLauncher();
+                    setPathState(PathState.SCORE_PICKUP3_FINISH_DRIVING);
+                }
+                break;
+
+            case SCORE_PICKUP3_FINISH_DRIVING:
+                if(!follower.isBusy()){
+                    // Stop pedro pathing following so we can auto-rotate the robot to aim
+                    follower.breakFollowing();
                     setPathState(PathState.AUTO_AIM_PRELOAD_3);
                 }
                 break;
 
             case AUTO_AIM_PRELOAD_3:
-                if(!follower.isBusy()){
-                    if(autoRotateTowardGoal(6) ){
-                        stopAutoRotating();
-                        setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
-                    }
+                if(autoRotateTowardGoal(6) ){
+                    stopAutoRotating();
+                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                 }
                 break;
             case PREPARE_TO_LAUNCH_PICKUP3_1:
-                if (!follower.isBusy()){
-                    if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
-                        setPathState(PathState.LAUNCH_PICKUP3_1);
-                    }
-                    else {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
-                        setPathState(PathState.LAUNCH_PICKUP3_1);
-                    }
+                if (artifactSystem.moveCarouselToLaunchFirstColor(artifact1)) {
+                    setPathState(PathState.LAUNCH_PICKUP3_1);
+                }
+                else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
+                    setPathState(PathState.LAUNCH_PICKUP3_1);
+                }
+                else {
+                    // No artifacts in the carousel...
+                    setPathState(PathState.DRIVE_OUT_BOX);
                 }
                 break;
             case LAUNCH_PICKUP3_1:
@@ -264,9 +275,12 @@ public class FarAuto extends PedroAutoBase {
                     if(artifactSystem.moveCarouselToLaunchFirstColor(artifact2)){
                         setPathState(PathState.LAUNCH_PICKUP3_2);
                     }
-                    else {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
+                    else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
                         setPathState(PathState.LAUNCH_PICKUP3_2);
+                    }
+                    else {
+                        // No artifacts in the carousel...
+                        setPathState(PathState.DRIVE_OUT_BOX);
                     }
                 }
                 break;
@@ -282,9 +296,12 @@ public class FarAuto extends PedroAutoBase {
                     if (artifactSystem.moveCarouselToLaunchFirstColor(artifact3)){
                         setPathState(PathState.LAUNCH_PICKUP3_3);
                     }
-                    else {
-                        artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition();
+                    else if (artifactSystem.moveCarouselToLaunchFirstNonEmptyPosition()){
                         setPathState(PathState.LAUNCH_PICKUP3_3);
+                    }
+                    else {
+                        // No artifacts in the carousel...
+                        setPathState(PathState.DRIVE_OUT_BOX);
                     }
                 }
                 break;

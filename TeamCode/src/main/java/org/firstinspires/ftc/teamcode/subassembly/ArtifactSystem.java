@@ -221,8 +221,13 @@ public class ArtifactSystem {
         return carousel.isAtTargetPosition();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isFlipperRaised() {
         return launcher.isFlipperRaised();
+    }
+
+    public boolean isTargetRPMReached(){
+        return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 100);
     }
 
     public void outputTelemetry(Telemetry telemetry) {

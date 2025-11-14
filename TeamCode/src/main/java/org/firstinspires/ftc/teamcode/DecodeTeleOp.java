@@ -80,7 +80,10 @@ public class DecodeTeleOp extends OpMode {
 
 
         if (gamepad2.right_trigger > 0.1) {
-            artifactSystem.raiseFlipper();
+            if (artifactSystem.isTargetRPMReached()){
+                artifactSystem.raiseFlipper();
+            }
+
         }
 
 

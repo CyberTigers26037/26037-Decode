@@ -43,7 +43,7 @@ public class FarAuto extends PedroAutoBase {
 
     private PathState pathState;
 
-    private final Pose scorePose = new Pose(60, 15, Math.toRadians(100)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     private final Pose prepPickup3Pose = new Pose(48, 40, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose collect1Pose = new Pose (19, 35, Math.toRadians(180));
     private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.

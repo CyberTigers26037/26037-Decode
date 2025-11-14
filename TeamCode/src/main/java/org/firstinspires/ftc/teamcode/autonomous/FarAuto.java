@@ -44,19 +44,10 @@ public class FarAuto extends PedroAutoBase {
 
     private PathState pathState;
 
-    private final Pose scorePose = new Pose(60, 15, Math.toRadians(110)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose prepPickup3Pose = new Pose(48, 40, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose collect1Pose = new Pose (19, 35, Math.toRadians(180));
-    private final Pose prepPickup2Pose = new Pose(50, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose collect2Pose = new Pose(26, 60, Math.toRadians(180));
-    // private final Pose prepPickup3Pose = new Pose(50, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose collect3Pose = new Pose(20, 40, Math.toRadians(180));
-    private final Pose collect3Pose2 = new Pose(30, 40, Math.toRadians(180));
-    private final Pose scorePoseNotHitWall = new Pose (56, 18, Math.toRadians(110));
-    private final Pose driveOutWhiteBoxPose = new Pose (56, 40, Math.toRadians(110));
-
     public Pose getStartPose(){
-        return new Pose(48, 8, Math.toRadians(90)); // Start Pose of our robot.
+        return isBlueAlliance ?
+                new Pose(48, 8, Math.toRadians(90)) :
+                new Pose(96, 8, Math.toRadians(90)); // Start Pose of our robot.
     }
 
     /** We do not use this because everything should automatically disable **/
@@ -65,6 +56,33 @@ public class FarAuto extends PedroAutoBase {
     private PathChain   driveOutBox, prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3, pickup3Artifact3;
 
     public void buildPaths() {
+        Pose scorePose = isBlueAlliance ?
+                new Pose(60, 15, Math.toRadians(110)) :
+                new Pose(84, 15, Math.toRadians(70)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+        Pose prepPickup3Pose = isBlueAlliance ?
+                new Pose(48, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
+                new Pose(96, 40, Math.toRadians(0));
+        Pose collect1Pose = isBlueAlliance ?
+                new Pose (19, 35, Math.toRadians(180)) :
+                new Pose (125, 35, Math.toRadians(0));
+        Pose prepPickup2Pose = isBlueAlliance ?
+                new Pose(50, 60, Math.toRadians(180)) : // Middle (Second Set) of Artifacts from the Spike Mark.
+                new Pose(94, 60, Math.toRadians(0));
+        Pose collect2Pose = isBlueAlliance ?
+                new Pose(26, 60, Math.toRadians(180)) :
+                new Pose(118, 60, Math.toRadians(0));
+        Pose collect3Pose = isBlueAlliance ?
+                new Pose(20, 40, Math.toRadians(180)) :
+                new Pose(124, 40, Math.toRadians(0));
+        Pose collect3Pose2 = isBlueAlliance ?
+                new Pose(30, 40, Math.toRadians(180)) :
+                new Pose(114, 40, Math.toRadians(0));
+        Pose scorePoseNotHitWall = isBlueAlliance ?
+                new Pose (56, 18, Math.toRadians(110)) :
+                new Pose (88, 18, Math.toRadians(70));
+        Pose driveOutWhiteBoxPose = isBlueAlliance ?
+                new Pose (56, 40, Math.toRadians(110)) :
+                new Pose (88, 40, Math.toRadians(70));
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());

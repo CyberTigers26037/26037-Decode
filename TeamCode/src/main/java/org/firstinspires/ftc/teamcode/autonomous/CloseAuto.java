@@ -71,19 +71,12 @@ public class CloseAuto extends PedroAutoBase {
 
     private PathState pathState;
 
-    private final Pose scorePose = new Pose(48, 100, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose scanObeliskPose = new Pose (48, 100, Math.toRadians(70));
-    private final Pose prepPickup1Pose = new Pose(48, 92, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup1Pose = new Pose(34, 92, Math.toRadians(180));
-    private final Pose collect1Pose = new Pose(18, 92, Math.toRadians(180));
-    private final Pose prepPickup2Pose = new Pose(50, 61, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup2Pose = new Pose(36, 61, Math.toRadians(180));
-    private final Pose collect2Pose = new Pose(22, 61, Math.toRadians(180));
-    private final Pose prepPickup3Pose = new Pose(50, 37, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose halfPickup3Pose = new Pose(36, 37, Math.toRadians(180));
-    private final Pose collect3Pose = new Pose(20, 37, Math.toRadians(180));
+
     public Pose getStartPose() {
-        return new Pose(18.5, 119, Math.toRadians(54)); // Start Pose of our robot.
+        // Start Pose of our robot.
+        return isBlueAlliance ?
+                new Pose(18.5, 119, Math.toRadians(54)) : // blue
+                new Pose(18.5, 119, Math.toRadians(54));  // red
     }
 
 
@@ -94,6 +87,42 @@ public class CloseAuto extends PedroAutoBase {
     private Path scorePreload;
     private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, prepPickup3, halfPickup3, collectPickup3, scorePickup3;
     public void buildPaths() {
+        Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+                new Pose(48, 100, Math.toRadians(135)) : // blue
+                new Pose(48, 100, Math.toRadians(135));  // red
+        Pose scanObeliskPose = isBlueAlliance ?
+                new Pose (48, 100, Math.toRadians(70)) : // blue
+                new Pose (48, 100, Math.toRadians(70));  // red
+        Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
+                new Pose(48, 92, Math.toRadians(180)) : // blue
+                new Pose(48, 92, Math.toRadians(180));  // red
+        Pose halfPickup1Pose = isBlueAlliance ?
+                new Pose(34, 92, Math.toRadians(180)) : // blue
+                new Pose(34, 92, Math.toRadians(180));  // red
+        Pose collect1Pose = isBlueAlliance ?
+                new Pose(18, 92, Math.toRadians(180)) : // blue
+                new Pose(18, 92, Math.toRadians(180));  // red
+        Pose prepPickup2Pose = isBlueAlliance ? // Middle (Second Set) of Artifacts from the Spike Mark.
+                new Pose(50, 61, Math.toRadians(180)) : // blue
+                new Pose(50, 61, Math.toRadians(180));  // red
+        Pose halfPickup2Pose = isBlueAlliance ?
+                new Pose(36, 61, Math.toRadians(180)) : // blue
+                new Pose(36, 61, Math.toRadians(180));  // red
+        Pose collect2Pose = isBlueAlliance ?
+                new Pose(22, 61, Math.toRadians(180)) : // blue
+                new Pose(22, 61, Math.toRadians(180));  // red
+        Pose prepPickup3Pose = isBlueAlliance ? // Lowest (Third Set) of Artifacts from the Spike Mark.
+                new Pose(50, 37, Math.toRadians(180)) : // blue
+                new Pose(50, 37, Math.toRadians(180));  // red
+        Pose halfPickup3Pose = isBlueAlliance ?
+                new Pose(36, 37, Math.toRadians(180)) : // blue
+                new Pose(36, 37, Math.toRadians(180));  // red
+        Pose collect3Pose = isBlueAlliance ?
+                new Pose(20, 37, Math.toRadians(180)) : // blue
+                new Pose(20, 37, Math.toRadians(180));  // red
+
+
+
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(scanObeliskPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(scanObeliskPose.getHeading(), scorePose.getHeading());
@@ -187,7 +216,7 @@ public class CloseAuto extends PedroAutoBase {
 
             case SCORE_PRELOAD:
                 beginDetectingGoal();
-                follower.turnToDegrees(145);
+                follower.turnToDegrees( isBlueAlliance ? 145 : 35);
                 artifactSystem.setLauncherRpm(2420);
                 artifactSystem.startLauncher();
                 setPathState(CloseAuto.PathState.SCORE_PRELOAD_AIM);
@@ -267,7 +296,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.0)) {
                     artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);

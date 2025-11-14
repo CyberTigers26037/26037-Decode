@@ -152,16 +152,6 @@ public class ArtifactSystem {
         }
     }
 
-    public boolean moveCarouselToLaunchFirstColor(ArtifactColor artifactColor) {
-        if (isIntakeRunning()) return false;
-
-        int position = tracker.getFirstForArtifactColor(artifactColor);
-        if (position != 0) {
-            return moveCarouselToPosition(position);
-        }
-        return false;
-    }
-
     public int getNextArtifactPositionToLaunch(ArtifactColor preferredColor) {
         int position = tracker.getFirstForArtifactColor(preferredColor);
         if (position != 0) return position;
@@ -250,6 +240,7 @@ public class ArtifactSystem {
         return carousel.isAtTargetPosition();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isFlipperRaised() {
         return launcher.isFlipperRaised();
     }
@@ -278,16 +269,6 @@ public class ArtifactSystem {
 
         telemetry.addData("Flipper at Target", launcher.isFlipperAtTargetPosition());
         telemetry.addData("Carousel at Target", carousel.isAtTargetPosition());
-    }
-
-
-    public boolean moveCarouselToLaunchFirstNonEmptyPosition() {
-        int position = tracker.getFirstFilledArtifactPosition();
-        if (position != 0) {
-            return moveCarouselToPosition(position);
-        }
-
-        return false;
     }
 }
 

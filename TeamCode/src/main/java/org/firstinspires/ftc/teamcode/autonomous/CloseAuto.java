@@ -35,6 +35,7 @@ public class CloseAuto extends PedroAutoBase {
         PICKUP3_ARTIFACT1,
         SCORE_PICKUP1,
         SCORE_PICKUP1_WAIT_FOR_DRIVING,
+        AUTO_AIM_PICKUP1,
         PREPARE_TO_LAUNCH_PICKUP1_1,
         LAUNCH_PICKUP1_1,
         PREPARE_TO_LAUNCH_PICKUP1_2,
@@ -47,6 +48,7 @@ public class CloseAuto extends PedroAutoBase {
         COLLECT_PICKUP2,
         PICKUP3_ARTIFACT2,
         SCORE_PICKUP2,
+        AUTO_AIM_PICKUP2,
         PREPARE_TO_LAUNCH_PICKUP2_1,
         LAUNCH_PICKUP2_1,
         PREPARE_TO_LAUNCH_PICKUP2_2,
@@ -59,6 +61,7 @@ public class CloseAuto extends PedroAutoBase {
         COLLECT_PICKUP3,
         PICKUP3_ARTIFACT3,
         SCORE_PICKUP3,
+        AUTO_AIM_PICKUP3,
         PREPARE_TO_LAUNCH_PICKUP3_1,
         LAUNCH_PICKUP3_1,
         PREPARE_TO_LAUNCH_PICKUP3_2,
@@ -296,7 +299,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.0)) {
+                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.5)) {
                     artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);
@@ -307,6 +310,13 @@ public class CloseAuto extends PedroAutoBase {
 
             case SCORE_PICKUP1_WAIT_FOR_DRIVING:
                 if (!follower.isBusy()) {
+                    follower.breakFollowing();
+                    setPathState(PathState.AUTO_AIM_PICKUP1);
+                }
+                break;
+            case AUTO_AIM_PICKUP1:
+                if(autoRotateTowardGoal(0) || pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    stopAutoRotating();
                     setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP1_1);
                 }
                 break;

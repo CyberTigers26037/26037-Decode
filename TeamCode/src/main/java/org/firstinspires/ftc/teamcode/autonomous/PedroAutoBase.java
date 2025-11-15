@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 public abstract class PedroAutoBase extends OpMode {
     private static final double TURN_GAIN     = 0.034;
     private static final double MAX_AUTO_TURN = 0.2;
-    private static final double TURN_GAIN_AUTO = 0.068;
+    private static final double TURN_GAIN_AUTO = 0.051;
 
     protected MecanumDrive drive;
     private NumberPlateSensor numberPlateSensor;

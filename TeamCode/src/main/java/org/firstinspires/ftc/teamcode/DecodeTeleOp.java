@@ -13,6 +13,34 @@ import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 @SuppressWarnings("unused")
 @TeleOp(name="DecodeTeleOp")
 public class DecodeTeleOp extends OpMode {
+    /*
+    Control hub
+        Motors
+            Port 0 : front_left_drive
+            Port 1 : back_left_drive
+            Port 2 : back_right_drive
+            Port 3 : front_right_drive
+        Digital
+            Port 1 : numberPlateSensor
+     Expansion hub
+        Motors
+            Port 0 : intakeMotor
+            Port 1 : flywheelMotor
+        Servos
+            Port 1 :
+            Port 2 : artifactLight
+            Port 3 :
+            Port 4 : carouselServo
+            Port 5 : flipperServo
+        I2C
+            Port 0 : sensor_color_distance_one
+            Port 1 : sensor_color_distance_two
+            Port 2 : pinpoint
+         Analog Input
+            Port 0 : carouselServoEncoder
+            Port 1 : flipperServoEncoder
+     */
+
     private ArtifactSystem artifactSystem;
     private MecanumDrive drive;
     private final double flywheelPower = 0.5;

@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -90,7 +89,6 @@ public class CloseAuto extends PedroAutoBase {
 
     /** We do not use this because everything should automatically disable **/
 
-    private Path scorePreload;
     private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, prepPickup3, halfPickup3, collectPickup3, scorePickup3, park;
     public void buildPaths() {
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -127,14 +125,9 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(20, 37, Math.toRadians(180)) : // blue
                 new Pose(124, 37, Math.toRadians(0));  // red
         Pose parkPose = isBlueAlliance ?
-                new Pose(36, 61, Math.toRadians(180)) : // blue
-                new Pose(108, 61, Math.toRadians(0));  // red
+                new Pose(30, 92, Math.toRadians(180)) : // blue
+                new Pose(114, 92, Math.toRadians(0));  // red
 
-
-
-        /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
-        scorePreload = new Path(new BezierLine(scanObeliskPose, scorePose));
-        scorePreload.setLinearHeadingInterpolation(scanObeliskPose.getHeading(), scorePose.getHeading());
 
         prepScan = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, scanObeliskPose))
@@ -161,42 +154,42 @@ public class CloseAuto extends PedroAutoBase {
                 .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePose.getHeading())
                 .build();
 
-        prepPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, prepPickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
-                .build();
+//        prepPickup2 = follower.pathBuilder()
+//                .addPath(new BezierLine(scorePose, prepPickup2Pose))
+//                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
+//                .build();
+//
+//        halfPickup2 = follower.pathBuilder()
+//                .addPath(new BezierLine(prepPickup2Pose, halfPickup2Pose))
+//                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), halfPickup2Pose.getHeading())
+//                .build();
+//
+//        collectPickup2 = follower.pathBuilder()
+//                .addPath(new BezierLine(halfPickup2Pose, collect2Pose))
+//                .setLinearHeadingInterpolation(halfPickup2Pose.getHeading(), collect2Pose.getHeading())
+//                .build();
+//
+//        scorePickup2 = follower.pathBuilder()
+//                .addPath(new BezierLine(collect2Pose, scorePose))
+//                .setLinearHeadingInterpolation(collect2Pose.getHeading(), scorePose.getHeading())
+//                .build();
+//
+//        prepPickup3 = follower.pathBuilder()
+//                .addPath(new BezierLine(scorePose, prepPickup3Pose))
+//                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
+//                .build();
+//
+//        collectPickup3 = follower.pathBuilder()
+//                .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
+//                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose.getHeading())
+//                .build();
+//
+//        scorePickup3 = follower.pathBuilder()
+//                .addPath(new BezierLine(collect3Pose, scorePose))
+//                .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose.getHeading())
+//                .build();
 
-        halfPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup2Pose, halfPickup2Pose))
-                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), halfPickup2Pose.getHeading())
-                .build();
-
-        collectPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(halfPickup2Pose, collect2Pose))
-                .setLinearHeadingInterpolation(halfPickup2Pose.getHeading(), collect2Pose.getHeading())
-                .build();
-
-        scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(collect2Pose, scorePose))
-                .setLinearHeadingInterpolation(collect2Pose.getHeading(), scorePose.getHeading())
-                .build();
-
-        prepPickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, prepPickup3Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
-                .build();
-
-        collectPickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
-                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose.getHeading())
-                .build();
-
-        scorePickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(collect3Pose, scorePose))
-                .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose.getHeading())
-                .build();
-
-        park = follower.pathBuilder()
+            park = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, parkPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
                 .build();
@@ -373,7 +366,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
             case PARK:
                 if (!follower.isBusy()) {
-                    follower.followPath(halfPickup1);
+                    follower.followPath(park);
                     setPathState(CloseAuto.PathState.STOP);
                 }
                 break;

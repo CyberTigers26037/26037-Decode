@@ -48,6 +48,7 @@ public class CloseAuto extends PedroAutoBase {
         COLLECT_PICKUP2,
         PICKUP3_ARTIFACT2,
         SCORE_PICKUP2,
+        SCORE_PICKUP2_WAIT_FOR_DRIVING,
         AUTO_AIM_PICKUP2,
         PREPARE_TO_LAUNCH_PICKUP2_1,
         LAUNCH_PICKUP2_1,
@@ -61,6 +62,7 @@ public class CloseAuto extends PedroAutoBase {
         COLLECT_PICKUP3,
         PICKUP3_ARTIFACT3,
         SCORE_PICKUP3,
+        SCORE_PICKUP3_WAIT_FOR_DRIVING,
         AUTO_AIM_PICKUP3,
         PREPARE_TO_LAUNCH_PICKUP3_1,
         LAUNCH_PICKUP3_1,
@@ -69,6 +71,7 @@ public class CloseAuto extends PedroAutoBase {
         PREPARE_TO_LAUNCH_PICKUP3_3,
         LAUNCH_PICKUP3_3,
         AFTER_PICKUP3_LAUNCHES,
+        PARK,
         STOP
     }
 
@@ -88,7 +91,7 @@ public class CloseAuto extends PedroAutoBase {
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
-    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, prepPickup3, halfPickup3, collectPickup3, scorePickup3;
+    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, prepPickup3, halfPickup3, collectPickup3, scorePickup3, park;
     public void buildPaths() {
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
                 new Pose(48, 100, Math.toRadians(135)) : // blue
@@ -100,8 +103,8 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(48, 92, Math.toRadians(180)) : // blue
                 new Pose(96, 92, Math.toRadians(0));  // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(34, 92, Math.toRadians(180)) : // blue
-                new Pose(110, 92, Math.toRadians(0));  // red
+                new Pose(30, 92, Math.toRadians(180)) : // blue
+                new Pose(114, 92, Math.toRadians(0));  // red
         Pose collect1Pose = isBlueAlliance ?
                 new Pose(18, 92, Math.toRadians(180)) : // blue
                 new Pose(126, 92, Math.toRadians(0));  // red
@@ -123,6 +126,9 @@ public class CloseAuto extends PedroAutoBase {
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 37, Math.toRadians(180)) : // blue
                 new Pose(124, 37, Math.toRadians(0));  // red
+        Pose parkPose = isBlueAlliance ?
+                new Pose(36, 61, Math.toRadians(180)) : // blue
+                new Pose(108, 61, Math.toRadians(0));  // red
 
 
 
@@ -188,6 +194,11 @@ public class CloseAuto extends PedroAutoBase {
         scorePickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(collect3Pose, scorePose))
                 .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose.getHeading())
+                .build();
+
+        park = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, parkPose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
                 .build();
     }
 
@@ -326,7 +337,7 @@ public class CloseAuto extends PedroAutoBase {
 
                 break;
             case LAUNCH_PICKUP1_1:
-                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2300) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_2);
                     }
@@ -337,7 +348,7 @@ public class CloseAuto extends PedroAutoBase {
 
                 break;
             case LAUNCH_PICKUP1_2:
-                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2300) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_3);
                     }
@@ -348,7 +359,7 @@ public class CloseAuto extends PedroAutoBase {
 
                 break;
             case LAUNCH_PICKUP1_3:
-                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2300) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.AFTER_PICKUP1_LAUNCHES);
                     }
@@ -357,21 +368,28 @@ public class CloseAuto extends PedroAutoBase {
             case AFTER_PICKUP1_LAUNCHES:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
+                    setPathState(CloseAuto.PathState.PARK);
+                }
+                break;
+            case PARK:
+                if (!follower.isBusy()) {
+                    follower.followPath(halfPickup1);
                     setPathState(CloseAuto.PathState.STOP);
                 }
                 break;
-
-                // next set of artifacts 2
-
+//                // next set of artifacts 2 --------------------------------------------------------------------------------
+//
 //            case PREP_PICKUP2:
-//                follower.followPath(prepPickup2); // prep to collect 1
+//                follower.followPath(prepPickup2);
 //                artifactSystem.startIntake();
 //                setPathState(CloseAuto.PathState.HALF_PICKUP2);
 //                break;
 //
 //            case HALF_PICKUP2:
-//                follower.followPath(halfPickup2);
-//                setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
+//                if (!follower.isBusy()) {
+//                    follower.followPath(halfPickup2, 0.2, Constants.followerConstants.automaticHoldEnd);
+//                    setPathState(CloseAuto.PathState.COLLECT_PICKUP2);
+//                }
 //                break;
 //
 //            case COLLECT_PICKUP2:
@@ -382,51 +400,147 @@ public class CloseAuto extends PedroAutoBase {
 //                break;
 //
 //            case SCORE_PICKUP2:
-//                if (!follower.isBusy()) {
-//                    artifactSystem.stopIntake();
+//                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.5)) {
+//                    artifactSystem.stopIntake(false);
 //                    follower.followPath(scorePickup2, 1.0, Constants.followerConstants.automaticHoldEnd);
 //                    artifactSystem.setLauncherRpm(2420);
 //                    artifactSystem.startLauncher();
-//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_1);
+//                    setPathState(PathState.SCORE_PICKUP2_WAIT_FOR_DRIVING);
 //                }
 //                break;
-//            case PREPARE_TO_LAUNCH_PICKUP2_1:
-//                if (!follower.isBusy() && artifactSystem.getActualLauncherRpm() > 2400){
-//                    artifactSystem.moveCarouselToPosition(1);
-//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_1);
+//
+//            case SCORE_PICKUP2_WAIT_FOR_DRIVING:
+//                if (!follower.isBusy()) {
+//                    follower.breakFollowing();
+//                    setPathState(PathState.AUTO_AIM_PICKUP2);
 //                }
+//                break;
+//            case AUTO_AIM_PICKUP2:
+//                if(autoRotateTowardGoal(0) || pathTimer.getElapsedTimeSeconds() > 2.0) {
+//                    stopAutoRotating();
+//                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP2_1);
+//                }
+//                break;
+//
+//            case PREPARE_TO_LAUNCH_PICKUP2_1:
+//                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP2_1, PathState.AFTER_PICKUP2_LAUNCHES);
+//
 //                break;
 //            case LAUNCH_PICKUP2_1:
-//                if (artifactSystem.isCarouselAtTarget()) {
-//                    artifactSystem.raiseFlipper();
-//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_2);
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_2);
+//                    }
 //                }
 //                break;
 //            case PREPARE_TO_LAUNCH_PICKUP2_2:
-//                if (!artifactSystem.isFlipperRaised()) {
-//                    artifactSystem.moveCarouselToPosition(2);
-//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_2);
-//                }
+//                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP2_2, PathState.AFTER_PICKUP2_LAUNCHES);
+//
 //                break;
 //            case LAUNCH_PICKUP2_2:
-//                if (artifactSystem.isCarouselAtTarget()) {
-//                    artifactSystem.raiseFlipper();
-//                    setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_3);
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_3);
+//                    }
 //                }
 //                break;
 //            case PREPARE_TO_LAUNCH_PICKUP2_3:
-//                if (!artifactSystem.isFlipperRaised()) {
-//                    artifactSystem.moveCarouselToPosition(3);
-//                    setPathState(CloseAuto.PathState.LAUNCH_PICKUP2_3);
-//                }
+//                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP2_3, PathState.AFTER_PICKUP2_LAUNCHES);
+//
 //                break;
 //            case LAUNCH_PICKUP2_3:
-//                if (artifactSystem.isCarouselAtTarget()) {
-//                    artifactSystem.raiseFlipper();
-//                    setPathState(CloseAuto.PathState.AFTER_PICKUP2_LAUNCHES);
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.AFTER_PICKUP2_LAUNCHES);
+//                    }
 //                }
 //                break;
 //            case AFTER_PICKUP2_LAUNCHES:
+//                if (!artifactSystem.isFlipperRaised()) {
+//                    artifactSystem.stopLauncher();
+//                    setPathState(CloseAuto.PathState.PREP_PICKUP3);
+//                }
+//                break;
+//
+//            // next set of artifacts 3 --------------------------------------------------------------------------------
+//
+//            case PREP_PICKUP3:
+//                follower.followPath(prepPickup3);
+//                artifactSystem.startIntake();
+//                setPathState(CloseAuto.PathState.HALF_PICKUP3);
+//                break;
+//
+//            case HALF_PICKUP3:
+//                if (!follower.isBusy()) {
+//                    follower.followPath(halfPickup3, 0.2, Constants.followerConstants.automaticHoldEnd);
+//                    setPathState(CloseAuto.PathState.COLLECT_PICKUP3);
+//                }
+//                break;
+//
+//            case COLLECT_PICKUP3:
+//                if (!follower.isBusy()) {
+//                    follower.followPath(collectPickup3, 0.2, Constants.followerConstants.automaticHoldEnd);
+//                    setPathState(CloseAuto.PathState.SCORE_PICKUP3);
+//                }
+//                break;
+//
+//            case SCORE_PICKUP3:
+//                if ((!follower.isBusy()) && (pathTimer.getElapsedTimeSeconds() > 2.5)) {
+//                    artifactSystem.stopIntake(false);
+//                    follower.followPath(scorePickup3, 1.0, Constants.followerConstants.automaticHoldEnd);
+//                    artifactSystem.setLauncherRpm(2420);
+//                    artifactSystem.startLauncher();
+//                    setPathState(PathState.SCORE_PICKUP3_WAIT_FOR_DRIVING);
+//                }
+//                break;
+//
+//            case SCORE_PICKUP3_WAIT_FOR_DRIVING:
+//                if (!follower.isBusy()) {
+//                    follower.breakFollowing();
+//                    setPathState(PathState.AUTO_AIM_PICKUP3);
+//                }
+//                break;
+//            case AUTO_AIM_PICKUP3:
+//                if(autoRotateTowardGoal(0) || pathTimer.getElapsedTimeSeconds() > 2.0) {
+//                    stopAutoRotating();
+//                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
+//                }
+//                break;
+//
+//            case PREPARE_TO_LAUNCH_PICKUP3_1:
+//                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP3_1, PathState.AFTER_PICKUP3_LAUNCHES);
+//
+//                break;
+//            case LAUNCH_PICKUP3_1:
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP3_2);
+//                    }
+//                }
+//                break;
+//            case PREPARE_TO_LAUNCH_PICKUP3_2:
+//                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP3_2, PathState.AFTER_PICKUP3_LAUNCHES);
+//
+//                break;
+//            case LAUNCH_PICKUP3_2:
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP3_3);
+//                    }
+//                }
+//                break;
+//            case PREPARE_TO_LAUNCH_PICKUP3_3:
+//                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP3_3, PathState.AFTER_PICKUP3_LAUNCHES);
+//
+//                break;
+//            case LAUNCH_PICKUP3_3:
+//                if (artifactSystem.isCarouselAtTarget() && artifactSystem.getActualLauncherRpm() > 2400) {
+//                    if (artifactSystem.raiseFlipper()) {
+//                        setPathState(CloseAuto.PathState.AFTER_PICKUP3_LAUNCHES);
+//                    }
+//                }
+//                break;
+//            case AFTER_PICKUP3_LAUNCHES:
 //                if (!artifactSystem.isFlipperRaised()) {
 //                    artifactSystem.stopLauncher();
 //                    setPathState(CloseAuto.PathState.STOP);

@@ -11,15 +11,15 @@ public class RobotConfig {
 
     private static String robotName = "Unknown";
 
-    private static double carouselIntakePosition1 =   15.7;
-    private static double carouselIntakePosition2 =  114.6;
-    private static double carouselIntakePosition3 =  -83.8;
-    private static double carouselLaunchPosition1 = -135.0;
-    private static double carouselLaunchPosition2 =  -34.3;
-    private static double carouselLaunchPosition3 =   63.8;
+    private static double carouselIntakePosition1 =    73.0;
+    private static double carouselIntakePosition2 =   191.9;
+    private static double carouselIntakePosition3 =   312.7;
+    private static double carouselLaunchPosition1 =   250.1;
+    private static double carouselLaunchPosition2 =     9.8;
+    private static double carouselLaunchPosition3 =   128.5;
 
-    private static double flipperParkedPosition = -4.3;
-    private static double flipperRaisedPosition = 93.4;
+    private static double flipperParkedPosition = 173.1;
+    private static double flipperRaisedPosition = 233.3;
 
     private static double goalCalcSlope = 18.85 ;
     private static double goalCalcYIntercept = 1486.0;
@@ -108,15 +108,10 @@ public class RobotConfig {
     private static void initMillenniumRobot() {
         robotName = "Millennium";
 
-        carouselIntakePosition1 =   73.0;
-        carouselIntakePosition2 =  191.9;
-        carouselIntakePosition3 =  312.7;
-        carouselLaunchPosition1 =  250.1;
-        carouselLaunchPosition2 =   12.8;
-        carouselLaunchPosition3 =  130.0;
-
-        flipperParkedPosition = 173.1;
-        flipperRaisedPosition = 233.3;
+        /*
+        DD NOT PUT VALUES HERE!!!
+        USE DEFAULTS AT TOP INSTEAD
+        */
     }
 
     private static void initCoachAnthonyRobot() {

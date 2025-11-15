@@ -53,7 +53,7 @@ public class FarAuto extends PedroAutoBase {
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
-    private PathChain   driveOutBox, prepPickup1, scorePickup1, collectPickup1, prepPickup2, collectPickup2, scorePickup2, prepPickup3, collectPickup3, scorePickup3, pickup3Artifact3;
+    private PathChain   driveOutBox, scorePickup3, prepPickup3, collectPickup3;
 
     public void buildPaths() {
         Pose scorePose = isBlueAlliance ?
@@ -62,77 +62,34 @@ public class FarAuto extends PedroAutoBase {
         Pose prepPickup3Pose = isBlueAlliance ?
                 new Pose(48, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
                 new Pose(96, 40, Math.toRadians(0));
-        Pose collect1Pose = isBlueAlliance ?
-                new Pose (19, 35, Math.toRadians(180)) :
-                new Pose (125, 35, Math.toRadians(0));
-        Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(50, 60, Math.toRadians(180)) : // Middle (Second Set) of Artifacts from the Spike Mark.
-                new Pose(94, 60, Math.toRadians(0));
-        Pose collect2Pose = isBlueAlliance ?
-                new Pose(26, 60, Math.toRadians(180)) :
-                new Pose(118, 60, Math.toRadians(0));
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 40, Math.toRadians(180)) :
                 new Pose(124, 40, Math.toRadians(0));
-        Pose collect3Pose2 = isBlueAlliance ?
-                new Pose(30, 40, Math.toRadians(180)) :
-                new Pose(114, 40, Math.toRadians(0));
-        Pose scorePoseNotHitWall = isBlueAlliance ?
+        Pose scorePose3NotHitWall = isBlueAlliance ?
                 new Pose (56, 18, Math.toRadians(110)) :
                 new Pose (88, 18, Math.toRadians(70));
         Pose driveOutWhiteBoxPose = isBlueAlliance ?
                 new Pose (56, 40, Math.toRadians(110)) :
                 new Pose (88, 40, Math.toRadians(70));
+
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
-
-        prepPickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, prepPickup3Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
-                .build();
-
-        scorePickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(collect1Pose, scorePoseNotHitWall))
-                .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePoseNotHitWall.getHeading())
-                .build();
-
-
-        prepPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, prepPickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
-                .build();
-
-        collectPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup2Pose, collect2Pose))
-                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), collect2Pose.getHeading())
-                .build();
-
-        scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(collect2Pose, scorePose))
-                .setLinearHeadingInterpolation(collect2Pose.getHeading(), scorePose.getHeading())
-                .build();
-
         prepPickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup3Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
                 .build();
-
         collectPickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
-                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose2.getHeading())
-                .build();
-        pickup3Artifact3 = follower.pathBuilder()
-                .addPath(new BezierLine(collect3Pose2, collect3Pose))
-                .setLinearHeadingInterpolation(collect3Pose2.getHeading(), collect3Pose.getHeading())
+                .setLinearHeadingInterpolation(prepPickup3Pose.getHeading(), collect3Pose.getHeading())
                 .build();
         scorePickup3 = follower.pathBuilder()
-                .addPath(new BezierLine(collect3Pose, scorePose))
-                .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(collect3Pose, scorePose3NotHitWall))
+                .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose3NotHitWall.getHeading())
                 .build();
         driveOutBox = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, driveOutWhiteBoxPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), driveOutWhiteBoxPose.getHeading())
+                .addPath(new BezierLine(scorePose3NotHitWall, driveOutWhiteBoxPose))
+                .setLinearHeadingInterpolation(scorePose3NotHitWall.getHeading(), driveOutWhiteBoxPose.getHeading())
                 .build();
 
     }
@@ -225,21 +182,10 @@ public class FarAuto extends PedroAutoBase {
                     setPathState(PathState.SCORE_PICKUP3);
                 }
                 break;
-
-          /*  case PICKUP3_ARTIFACT3:
-                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
-                    follower.followPath(pickup3Artifact3, 0.5, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(PathState.SCORE_PICKUP3);
-                }
-
-
-                break;
-
-           */
             case SCORE_PICKUP3:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     artifactSystem.stopIntake(false);
-                    follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(scorePickup3, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(3192);
                     artifactSystem.startLauncher();
                     setPathState(PathState.SCORE_PICKUP3_FINISH_DRIVING);

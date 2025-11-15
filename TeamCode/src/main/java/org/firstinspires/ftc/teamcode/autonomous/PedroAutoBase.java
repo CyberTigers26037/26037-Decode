@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 public abstract class PedroAutoBase extends OpMode {
     private static final double TURN_GAIN     = 0.034;
     private static final double MAX_AUTO_TURN = 0.2;
+    private static final double TURN_GAIN_AUTO = 0.068;
 
     protected MecanumDrive drive;
     private NumberPlateSensor numberPlateSensor;
@@ -129,19 +130,27 @@ public abstract class PedroAutoBase extends OpMode {
         }
     }
 
-    protected boolean autoRotateTowardGoal(double delta) {
+    protected boolean autoRotateTowardGoal(double delta, double turnGain) {
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 
         if (goalAngle != null) {
             double axial = 0;
             double lateral = 0;
-            double yawError = goalAngle + delta;
-            double yaw = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN);
+            double yawError = goalAngle - delta;
+            double yaw = Range.clip(yawError * turnGain, -MAX_AUTO_TURN, MAX_AUTO_TURN);
             drive.drive(axial, lateral, yaw);
             return (Math.abs(yawError) < 0.5);
         }
 
         return false;
+    }
+
+    protected boolean autoRotateTowardGoal(double delta) {
+        return autoRotateTowardGoal(delta, TURN_GAIN);
+    }
+
+    protected boolean autoRotateTowardGoalAuto(double delta) {
+        return autoRotateTowardGoal(delta, TURN_GAIN_AUTO);
     }
 
     protected void stopAutoRotating() {

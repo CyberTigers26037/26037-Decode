@@ -61,16 +61,16 @@ public class FarAuto extends PedroAutoBase {
                 new Pose(84, 15, Math.toRadians(70)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
         Pose prepPickup3Pose = isBlueAlliance ?
                 new Pose(48, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(96, 40, Math.toRadians(0));
+                new Pose(96, 25, Math.toRadians(0));
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 40, Math.toRadians(180)) :
-                new Pose(124, 40, Math.toRadians(0));
+                new Pose(120, 25, Math.toRadians(0));
         Pose scorePose3NotHitWall = isBlueAlliance ?
                 new Pose (56, 18, Math.toRadians(110)) :
-                new Pose (88, 18, Math.toRadians(70));
+                new Pose (88, 13, Math.toRadians(70));
         Pose driveOutWhiteBoxPose = isBlueAlliance ?
                 new Pose (56, 40, Math.toRadians(110)) :
-                new Pose (88, 40, Math.toRadians(70));
+                new Pose (88, 30, Math.toRadians(70));
 
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
@@ -124,9 +124,11 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case AUTO_AIM_PRELOAD:
-                if(autoRotateTowardGoal(1)){
-                    stopAutoRotating();
-                    setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    if (autoRotateTowardGoalAuto(1) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                        stopAutoRotating();
+                        setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
+                    }
                 }
                 break;
             case PREPARE_TO_LAUNCH_PRELOAD1:
@@ -201,10 +203,13 @@ public class FarAuto extends PedroAutoBase {
                 break;
 
             case AUTO_AIM_PRELOAD_3:
-                if(autoRotateTowardGoal(1) ){
-                    stopAutoRotating();
-                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
+                    if(autoRotateTowardGoalAuto(1) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                        stopAutoRotating();
+                        setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
+                    }
                 }
+
                 break;
             case PREPARE_TO_LAUNCH_PICKUP3_1:
                 moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP3_1, PathState.DRIVE_OUT_BOX);

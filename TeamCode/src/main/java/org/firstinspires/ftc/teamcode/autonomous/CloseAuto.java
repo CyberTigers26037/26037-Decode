@@ -73,7 +73,7 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose (96, 90, Math.toRadians(110)); // red
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
                 new Pose(48, 100, Math.toRadians(135)) : // blue
-                new Pose(96, 85, Math.toRadians(45));   // red
+                new Pose(90, 80, Math.toRadians(45));   // red
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
                 new Pose(48, 92, Math.toRadians(180)) :  // blue
                 new Pose(96, 70, Math.toRadians(0));     // red
@@ -244,7 +244,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 2.5)) {
+                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                     artifactSystem.stopIntake(false);
                     follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2420);

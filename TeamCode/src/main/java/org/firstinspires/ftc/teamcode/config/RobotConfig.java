@@ -134,15 +134,15 @@ public class RobotConfig {
     private static void initErnieRobot() {
         robotName = "Ernie";
 
-        carouselIntakePosition1 =  20.35;
-        carouselIntakePosition2 = 138.90;
-        carouselIntakePosition3 = 258.45;
-        carouselLaunchPosition1 =  81.88;
-        carouselLaunchPosition2 = 201.51;
-        carouselLaunchPosition3 = 322.48;
+        carouselIntakePosition1 =  20.62;
+        carouselIntakePosition2 = 139.48;
+        carouselIntakePosition3 = 259.30;
+        carouselLaunchPosition1 = 198.00;
+        carouselLaunchPosition2 = 80.44;
+        carouselLaunchPosition3 = 320.80;
 
-        flipperParkedPosition = 163;
-        flipperRaisedPosition = 238;
+        flipperParkedPosition = 178;
+        flipperRaisedPosition = 233;
     }
 
     private static void initCoachRobRobot() {

@@ -69,7 +69,7 @@ public class FarAuto extends PedroAutoBase {
                 new Pose (56, 18, Math.toRadians(115)) :
                 new Pose (84, 13, Math.toRadians(65));
         Pose driveOutWhiteBoxPose = isBlueAlliance ?
-                new Pose (56, 40, Math.toRadians(110)) :
+                new Pose (56, 40, Math.toRadians(180)) :
                 new Pose (88, 30, Math.toRadians(70));
 
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
@@ -125,7 +125,7 @@ public class FarAuto extends PedroAutoBase {
                 break;
             case AUTO_AIM_PRELOAD:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if (autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    if (autoRotateTowardGoalAuto(4) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                     }
@@ -210,7 +210,7 @@ public class FarAuto extends PedroAutoBase {
 
             case AUTO_AIM_PRELOAD_3:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if(autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    if(autoRotateTowardGoalAuto(2.5) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                     }

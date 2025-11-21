@@ -46,7 +46,7 @@ public class ArtifactSystemTestOpMode extends OpMode {
 
 
         if (gamepad1.right_trigger > 0.1) {
-            artifactSystem.raiseFlipper();
+            artifactSystem.raiseFlipper(false);
         }
         else {
             artifactSystem.parkFlipper();

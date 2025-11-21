@@ -71,9 +71,13 @@ public class ArtifactSystem {
     }
 
     public boolean raiseFlipper() {
+        return raiseFlipper(true);
+    }
+
+    public boolean raiseFlipper(boolean requireMinLauncherSpeed) {
         if (!carousel.isInLaunchPosition()) return false;
         if (!carousel.isAtTargetPosition()) return false;
-        if (!launcher.isLauncherAboveMinSpeed()) return false;
+        if (requireMinLauncherSpeed && (!launcher.isLauncherAboveMinSpeed())) return false;
 
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());

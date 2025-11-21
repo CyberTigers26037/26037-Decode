@@ -141,7 +141,7 @@ public class RobotConfig {
         carouselLaunchPosition2 = 80.44;
         carouselLaunchPosition3 = 320.80;
 
-        flipperParkedPosition = 178;
+        flipperParkedPosition = 175;
         flipperRaisedPosition = 233;
     }
 

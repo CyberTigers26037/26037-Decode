@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.config.RobotConfig;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
+import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystemAutoLauncher;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 
@@ -42,6 +43,7 @@ public class DecodeTeleOp extends OpMode {
      */
 
     private ArtifactSystem artifactSystem;
+    private ArtifactSystemAutoLauncher autoLauncher;
     private MecanumDrive drive;
     private final double flywheelPower = 0.5;
     private static final double TURN_GAIN     = 0.034;
@@ -53,6 +55,7 @@ public class DecodeTeleOp extends OpMode {
         artifactSystem = new ArtifactSystem(hardwareMap);
         drive = new MecanumDrive();
         drive.init(hardwareMap);
+        autoLauncher = new ArtifactSystemAutoLauncher(artifactSystem);
 
         NumberPlateSensor numberPlateSensor = new NumberPlateSensor(hardwareMap);
 
@@ -78,7 +81,7 @@ public class DecodeTeleOp extends OpMode {
         if (gamepad2.left_trigger > 0.1) {
             artifactSystem.startLauncher();
         }
-        else {
+        else if (!autoLauncher.isRunning()){
             artifactSystem.stopLauncher();
         }
         if (gamepad2.rightBumperWasPressed()) {
@@ -156,9 +159,11 @@ public class DecodeTeleOp extends OpMode {
             }
         }
 
+        autoLauncher.loop();
         artifactSystem.loop();
 
         artifactSystem.outputTelemetry(telemetry);
+        autoLauncher.outputTelemetry(telemetry);
 
         drive.drive(axial, lateral, yaw);
 

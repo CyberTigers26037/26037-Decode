@@ -163,6 +163,10 @@ public class ArtifactSystem {
         return tracker.getFirstFilledArtifactPosition();
     }
 
+    public ArtifactColor getArtifactAtPosition(int position) {
+        return tracker.getArtifactAtPosition(position);
+    }
+
     public void resetCarouselDetection() {
         if (launcher.isFlipperRaised()) return;
 
@@ -208,6 +212,7 @@ public class ArtifactSystem {
             }
             updateArtifactLight();
         }
+
         if (flipperTimer.isExpired() && launcher.isFlipperRaised()) {
             parkFlipper();
         }

@@ -11,6 +11,10 @@ public class ArtifactSystemAutoLauncher {
         START,
         ROTATE_CAROUSEL_1,
         LAUNCH_1,
+        ROTATE_CAROUSEL_2,
+        LAUNCH_2,
+        ROTATE_CAROUSEL_3,
+        LAUNCH_3,
         STOP
     }
     private ArtifactLaunchingState artifactLaunchingState;
@@ -20,6 +24,7 @@ public class ArtifactSystemAutoLauncher {
     }
 
     public void launchAllArtifacts() {
+        if (!artifactSystem.isReadyForTurboLaunch()) return;
         if (!running) {
             running = true;
             setLaunchingState(ArtifactLaunchingState.START);
@@ -45,13 +50,27 @@ public class ArtifactSystemAutoLauncher {
 
                 break;
             case ROTATE_CAROUSEL_1:
-                rotateCarouselOrSkip(1, ArtifactLaunchingState.LAUNCH_1, ArtifactLaunchingState.STOP);
+                rotateCarouselOrSkip(1, ArtifactLaunchingState.LAUNCH_1, ArtifactLaunchingState.ROTATE_CAROUSEL_2);
 
                 break;
             case LAUNCH_1:
-                launchArtifact(ArtifactLaunchingState.STOP);
-
+                launchArtifact(ArtifactLaunchingState.ROTATE_CAROUSEL_2);
                 break;
+
+            case ROTATE_CAROUSEL_2:
+                rotateCarouselOrSkip(3, ArtifactLaunchingState.LAUNCH_2, ArtifactLaunchingState.ROTATE_CAROUSEL_3);
+                break;
+
+            case LAUNCH_2:
+                launchArtifact(ArtifactLaunchingState.ROTATE_CAROUSEL_3);
+                break;
+            case ROTATE_CAROUSEL_3:
+                rotateCarouselOrSkip(2, ArtifactLaunchingState.LAUNCH_3, ArtifactLaunchingState.STOP);
+                break;
+            case LAUNCH_3:
+                launchArtifact(ArtifactLaunchingState.STOP);
+                break;
+
             case STOP:
                 artifactSystem.stopLauncher();
                 running = false;

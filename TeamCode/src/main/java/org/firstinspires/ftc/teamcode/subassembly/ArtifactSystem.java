@@ -98,6 +98,8 @@ public class ArtifactSystem {
         launcher.adjustFlywheelRpm(amount);
     }
 
+
+
     public void setLauncherRpm(int rpm){launcher.setFlywheelRpm(rpm);}
 
     public int getLauncherRpm() {
@@ -243,6 +245,15 @@ public class ArtifactSystem {
         else {
             light.setColor(ArtifactColor.NONE);
         }
+    }
+
+    @SuppressWarnings("RedundantIfStatement")
+    public boolean isReadyForTurboLaunch(){
+        if (launcher.isFlipperRaised())     return false;
+        if (!carousel.isAtTargetPosition()) return false;
+        if (isIntakeRunning())              return false;
+        if (inDetectionMode)                return false;
+        return true;
     }
 
     public boolean isCarouselAtTarget() {

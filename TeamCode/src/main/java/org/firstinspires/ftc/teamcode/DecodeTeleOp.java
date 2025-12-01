@@ -138,7 +138,9 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.toggleIntake();
         }
 
-
+       if (gamepad2.dpadRightWasPressed()){
+           autoLauncher.launchAllArtifacts();
+       }
 
         Double goalAngle = aprilTagLimeLight.detectGoalAngle();
 

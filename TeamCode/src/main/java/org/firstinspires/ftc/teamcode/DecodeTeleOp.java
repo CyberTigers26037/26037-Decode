@@ -23,6 +23,10 @@ public class DecodeTeleOp extends OpMode {
             Port 3 : front_right_drive
         Digital
             Port 1 : numberPlateSensor
+        I2C
+            Port 0 : imu
+            Port 1 : sensor_color_distance_one
+            Port 2 : sensor_color_distance_two
      Expansion hub
         Motors
             Port 0 : intakeMotor
@@ -34,8 +38,6 @@ public class DecodeTeleOp extends OpMode {
             Port 4 : carouselServo
             Port 5 : flipperServo
         I2C
-            Port 0 : sensor_color_distance_one
-            Port 1 : sensor_color_distance_two
             Port 2 : pinpoint
          Analog Input
             Port 0 : carouselServoEncoder

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ArtifactLight {
-    public Servo artifactLight;
+    public final Servo artifactLight;
 
     public ArtifactLight (HardwareMap hwMap) {
         artifactLight = hwMap.get(Servo.class, "artifactLight");

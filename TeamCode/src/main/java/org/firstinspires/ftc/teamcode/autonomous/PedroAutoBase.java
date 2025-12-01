@@ -145,6 +145,7 @@ public abstract class PedroAutoBase extends OpMode {
         return false;
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected boolean autoRotateTowardGoal(double delta) {
         return autoRotateTowardGoal(delta, TURN_GAIN);
     }

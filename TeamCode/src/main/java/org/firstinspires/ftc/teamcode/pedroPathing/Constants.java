@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
-import com.pedropathing.ftc.localization.Encoder;
 import com.pedropathing.ftc.localization.constants.PinpointConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
@@ -15,15 +13,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Constants {
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
+    public static final PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
-    public static FollowerConstants followerConstants = new FollowerConstants()
+    public static final FollowerConstants followerConstants = new FollowerConstants()
             .mass(9.8)
             .forwardZeroPowerAcceleration(-36.67)
             .lateralZeroPowerAcceleration(-54.8);
            // .translationalPIDFCoefficients(new PIDFCoefficients(0.025,0, 0.00001, 0.01));
 
-    public static MecanumConstants driveConstants = new MecanumConstants()
+    public static final MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
             .rightFrontMotorName("front_right_drive")
             .rightRearMotorName("back_right_drive")
@@ -44,7 +42,7 @@ public class Constants {
                 .build();
     }
 
-    public static PinpointConstants localizerConstants = new PinpointConstants()
+    public static final PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(3.47)
             .strafePodX(-6.93)
             .distanceUnit(DistanceUnit.INCH)

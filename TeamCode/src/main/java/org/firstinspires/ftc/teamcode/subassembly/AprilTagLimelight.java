@@ -12,9 +12,9 @@ public class AprilTagLimelight {
         NONE, PPG, PGP, GPP
     }
     private Limelight3A limelight;
-    double limelightMountAngleDegrees = 10.0;
-    double limelightLensHeightInches = 11.25;
-    double goalHeightInches = 29.75;
+    private static final double LIMELIGHT_MOUNT_ANGLE_DEGREES = 10.0;
+    private static final double LIMELIGHT_LENS_HEIGHT_INCHES  = 11.25;
+    private static final double GOAL_HEIGHT_INCHES            = 29.75;
 
     public void init(HardwareMap hardwareMap) {
         // If the robot does not have a limelight camera configured, this will return null
@@ -80,10 +80,10 @@ public class AprilTagLimelight {
         LLResult result = limelight.getLatestResult();
         if (result != null && result.isValid()) {
             double targetOffsetAngle_Vertical = result.getTy();
-            double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
+            double angleToGoalDegrees = LIMELIGHT_MOUNT_ANGLE_DEGREES + targetOffsetAngle_Vertical;
             double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
 
-            return (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
+            return (GOAL_HEIGHT_INCHES - LIMELIGHT_LENS_HEIGHT_INCHES) / Math.tan(angleToGoalRadians);
 
         }
         return null;

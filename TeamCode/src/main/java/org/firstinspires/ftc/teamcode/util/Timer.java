@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.util;
 public class Timer {
     private long timerStartedMillis;
     private boolean running;
-    private final double durationSeconds;
+    private double durationSeconds;
 
     public Timer(double durationSeconds) {
         this(durationSeconds, false);
@@ -15,6 +15,11 @@ public class Timer {
         if (autoStart) {
             start();
         }
+    }
+
+    public void updateDurationSeconds(double durationSeconds) {
+        this.durationSeconds = durationSeconds;
+
     }
 
     public void start() {

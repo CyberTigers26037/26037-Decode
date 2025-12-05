@@ -13,6 +13,8 @@ public class ArtifactSystem {
     private final ArtifactTracker tracker;
     private final ArtifactLight light;
     private final Timer flipperTimer;
+    private static final double FLIPPER_TIMER_SECONDS = 0.5;
+    private static final double FLIPPER_TIMER_AUTO_LAUNCH_SECONDS = 0.3;
 
     private boolean inDetectionMode;
 
@@ -25,7 +27,8 @@ public class ArtifactSystem {
         intake = new ArtifactIntake(hwMap);
         light = new ArtifactLight(hwMap);
         tracker = new ArtifactTracker();
-        flipperTimer = new Timer(0.5);
+        flipperTimer = new Timer(FLIPPER_TIMER_SECONDS);
+
     }
 
     public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
@@ -70,10 +73,15 @@ public class ArtifactSystem {
     }
 
     public boolean raiseFlipper() {
-        return raiseFlipper(true);
+        return raiseFlipper(true, FLIPPER_TIMER_SECONDS);
     }
 
-    public boolean raiseFlipper(boolean requireMinLauncherSpeed) {
+    public boolean raiseFlipperTurbo() {
+        return raiseFlipper(true, FLIPPER_TIMER_AUTO_LAUNCH_SECONDS);
+
+    }
+
+    private boolean raiseFlipper(boolean requireMinLauncherSpeed, double timerDurationSeconds) {
         if (!carousel.isInLaunchPosition()) return false;
         if (!carousel.isAtTargetPosition()) return false;
         if (requireMinLauncherSpeed && (!launcher.isLauncherAboveMinSpeed())) return false;
@@ -81,8 +89,14 @@ public class ArtifactSystem {
         launcher.raiseFlipper();
         tracker.removeArtifactFromPosition(carousel.getCurrentPosition());
         updateArtifactLight();
+        flipperTimer.updateDurationSeconds(timerDurationSeconds);
         flipperTimer.start();
         return true;
+    }
+
+    public boolean raiseFlipper(boolean requireMinLauncherSpeed) {
+        return raiseFlipper(requireMinLauncherSpeed, FLIPPER_TIMER_SECONDS);
+
     }
 
     public void parkFlipper() {

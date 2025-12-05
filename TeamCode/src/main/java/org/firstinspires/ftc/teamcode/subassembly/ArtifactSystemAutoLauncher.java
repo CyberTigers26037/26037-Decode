@@ -93,12 +93,14 @@ public class ArtifactSystemAutoLauncher {
     private void launchArtifact(ArtifactLaunchingState nextState) {
         if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > artifactSystem.getLauncherRpm())) {
             if (stateTimer.getElapsedSeconds() > 0.5) {
-                if (artifactSystem.raiseFlipper()) {
+                if (artifactSystem.raiseFlipperTurbo()) {
                     setLaunchingState(nextState);
                 }
             }
         }
     }
+
+
 
     public void outputTelemetry(Telemetry telemetry) {
         if (!running) return;

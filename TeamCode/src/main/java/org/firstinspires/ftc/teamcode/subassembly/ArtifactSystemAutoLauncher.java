@@ -91,7 +91,7 @@ public class ArtifactSystemAutoLauncher {
     }
 
     private void launchArtifact(ArtifactLaunchingState nextState) {
-        if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > artifactSystem.getLauncherRpm())) {
+        if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > (artifactSystem.getLauncherRpm() - 50))) {
             if (stateTimer.getElapsedSeconds() > 0.5) {
                 if (artifactSystem.raiseFlipperTurbo()) {
                     setLaunchingState(nextState);

@@ -18,12 +18,14 @@ public class ArtifactSystemAutoLauncher {
         STOP
     }
     private ArtifactLaunchingState artifactLaunchingState;
+    private boolean forceAll;
 
     public ArtifactSystemAutoLauncher(ArtifactSystem artifactSystem) {
         this.artifactSystem = artifactSystem;
     }
 
-    public void launchAllArtifacts() {
+    public void launchAllArtifacts(boolean forceAll) {
+        this.forceAll = forceAll;
         if (!artifactSystem.isReadyForTurboLaunch()) return;
         if (!running) {
             running = true;
@@ -80,7 +82,7 @@ public class ArtifactSystemAutoLauncher {
     }
 
     private void rotateCarouselOrSkip(int position, ArtifactLaunchingState launchState, ArtifactLaunchingState skipState) {
-        if (artifactSystem.getArtifactAtPosition(position) != ArtifactColor.NONE) {
+        if ((artifactSystem.getArtifactAtPosition(position) != ArtifactColor.NONE) || forceAll) {
             if (artifactSystem.moveCarouselToPosition(position)) {
                 setLaunchingState(launchState);
             }

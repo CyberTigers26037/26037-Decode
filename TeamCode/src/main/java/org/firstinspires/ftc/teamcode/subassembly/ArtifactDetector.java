@@ -17,8 +17,6 @@ public class ArtifactDetector {
     }
 
     public ArtifactColor detectArtifactColor() {
-
-
         final float[] hsvValues1 = new float[3];
         final float[] hsvValues2 = new float[3];
         NormalizedRGBA colors1 = colorSensor1.getNormalizedColors();

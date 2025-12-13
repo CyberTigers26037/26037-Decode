@@ -149,6 +149,7 @@ public class DecodeTeleOp extends OpMode {
 
         if (gamepad1.aWasPressed() || gamepad2.aWasPressed()){ // toggle intake
             artifactSystem.toggleIntake();
+
         }
 
        if (gamepad2.dpadRightWasPressed()){

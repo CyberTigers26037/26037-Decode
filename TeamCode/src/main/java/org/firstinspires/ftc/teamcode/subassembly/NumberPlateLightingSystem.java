@@ -52,12 +52,21 @@ public class NumberPlateLightingSystem implements OpModeManagerNotifier.Notifica
 
         initialized = true;
 
-        if (numberPlateSensor.isNumberPlateBlue()) {
+        setLightColor(numberPlateSensor.isNumberPlateBlue());
+    }
+
+    private void setLightColor(boolean isBlue) {
+        if (isBlue) {
             rgbLight.setPosition(BLUE);
         }
         else {
             rgbLight.setPosition(RED);
         }
+    }
+
+
+    public void overrideNumberPlateColor(boolean isBlue) {
+        setLightColor(isBlue);
     }
 
     @Override

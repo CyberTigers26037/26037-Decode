@@ -350,6 +350,8 @@ public class CloseAuto extends PedroAutoBase {
 
     @Override
     public void start() {
+        super.start();
+
         opmodeTimer.resetTimer();
         setPathState(PathState.PREP_SCAN_OBELISK);
     }

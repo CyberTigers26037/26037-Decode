@@ -277,6 +277,8 @@ public class FarAuto extends PedroAutoBase {
 
     @Override
     public void start() {
+        super.start();
+
         opmodeTimer.resetTimer();
         setPathState(PathState.DETECT_OBELISK);
     }

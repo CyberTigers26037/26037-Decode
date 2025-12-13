@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.config.RobotConfig;
+import org.firstinspires.ftc.teamcode.subassembly.AllianceOverrideMenu;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystemAutoLauncher;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 
 @SuppressWarnings("unused")
 @TeleOp(name="DecodeTeleOp")
@@ -44,6 +44,7 @@ public class DecodeTeleOp extends OpMode {
             Port 1 : flipperServoEncoder
      */
 
+    private AllianceOverrideMenu allianceOverrideMenu;
     private ArtifactSystem artifactSystem;
     private ArtifactSystemAutoLauncher autoLauncher;
     private MecanumDrive drive;
@@ -59,21 +60,27 @@ public class DecodeTeleOp extends OpMode {
         drive.init(hardwareMap);
         autoLauncher = new ArtifactSystemAutoLauncher(artifactSystem);
 
-        NumberPlateSensor numberPlateSensor = new NumberPlateSensor(hardwareMap);
-
+        allianceOverrideMenu = new AllianceOverrideMenu();
+        allianceOverrideMenu.init(hardwareMap);
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
-        if (numberPlateSensor.isNumberPlateBlue()) {
-            aprilTagLimeLight.beginDetectingTeamBlue();
-        }
-        else {
-            aprilTagLimeLight.beginDetectingTeamRed();
-        }
+
+    }
+
+    @Override
+    public void init_loop() {
+        allianceOverrideMenu.init_loop(gamepad1, telemetry);
     }
 
     @Override
     public void start() {
         artifactSystem.moveCarouselToStartPosition();
+        if (allianceOverrideMenu.isBlueAlliance()) {
+            aprilTagLimeLight.beginDetectingTeamBlue();
+        }
+        else {
+            aprilTagLimeLight.beginDetectingTeamRed();
+        }
     }
 
     @Override

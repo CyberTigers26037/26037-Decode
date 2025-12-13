@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.subassembly.AllianceOverrideMenu;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subassembly.NumberPlateSensor;
 
 public abstract class PedroAutoBase extends OpMode {
     private static final double TURN_GAIN     = 0.034;
@@ -19,7 +19,6 @@ public abstract class PedroAutoBase extends OpMode {
     private static final double TURN_GAIN_AUTO = 0.051;
 
     protected MecanumDrive drive;
-    private NumberPlateSensor numberPlateSensor;
     protected Follower follower;
     protected ArtifactSystem artifactSystem;
     protected AprilTagLimelight aprilTagLimeLight;
@@ -33,6 +32,9 @@ public abstract class PedroAutoBase extends OpMode {
     protected Pose startPose;
     protected boolean isBlueAlliance;
 
+    private AllianceOverrideMenu allianceOverrideMenu;
+
+
     /**
      * This method is called once at the init of the OpMode.
      **/
@@ -40,9 +42,6 @@ public abstract class PedroAutoBase extends OpMode {
     public void init() {
         drive = new MecanumDrive();
         drive.init(hardwareMap);
-
-        numberPlateSensor = new NumberPlateSensor(hardwareMap);
-        isBlueAlliance = numberPlateSensor.isNumberPlateBlue();
 
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
@@ -57,9 +56,23 @@ public abstract class PedroAutoBase extends OpMode {
 
         follower = Constants.createFollower(hardwareMap);
 
+        allianceOverrideMenu = new AllianceOverrideMenu();
+        allianceOverrideMenu.init(hardwareMap);
+    }
+
+    @Override
+    public void init_loop() {
+        allianceOverrideMenu.init_loop(gamepad1, telemetry);
+    }
+
+
+    @Override
+    public void start() {
+        isBlueAlliance = allianceOverrideMenu.isBlueAlliance();
         startPose = getStartPose();
-        buildPaths();
         follower.setStartingPose(startPose);
+        buildPaths();
+
     }
 
     /**
@@ -122,7 +135,7 @@ public abstract class PedroAutoBase extends OpMode {
     }
 
     protected void beginDetectingGoal() {
-        if (numberPlateSensor.isNumberPlateBlue()) {
+        if (isBlueAlliance) {
             aprilTagLimeLight.beginDetectingTeamBlue();
         }
         else {

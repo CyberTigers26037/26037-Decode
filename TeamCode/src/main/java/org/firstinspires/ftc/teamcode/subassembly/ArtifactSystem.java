@@ -14,7 +14,9 @@ public class ArtifactSystem {
     private final ArtifactLight light;
     private final Timer flipperTimer;
     private static final double FLIPPER_TIMER_SECONDS = 0.5;
+    private static final double INTAKE_REVERSE_TIMER_SECONDS = 0.5;
     private static final double FLIPPER_TIMER_AUTO_LAUNCH_SECONDS = 0.3;
+    private final Timer intakeReverseTimer;
 
     private boolean inDetectionMode;
 
@@ -28,7 +30,7 @@ public class ArtifactSystem {
         light = new ArtifactLight(hwMap);
         tracker = new ArtifactTracker();
         flipperTimer = new Timer(FLIPPER_TIMER_SECONDS);
-
+        intakeReverseTimer = new Timer(INTAKE_REVERSE_TIMER_SECONDS);
     }
 
     public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
@@ -221,13 +223,17 @@ public class ArtifactSystem {
                 }
                 else {
                     if (!intake.isRunningInReverse()) {
-                        stopIntake(false);
+                        intake.startReverse();
+                        intakeReverseTimer.start();
                     }
                 }
             }
             updateArtifactLight();
         }
-
+        if (intakeReverseTimer.isRunning() && intakeReverseTimer.isExpired()){
+            intake.stop();
+            intakeReverseTimer.stop();
+        }
         if (flipperTimer.isExpired() && launcher.isFlipperRaised()) {
             parkFlipper();
         }

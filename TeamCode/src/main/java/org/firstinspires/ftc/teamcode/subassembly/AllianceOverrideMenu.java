@@ -17,7 +17,7 @@ public class AllianceOverrideMenu {
     }
 
     public void init_loop(Gamepad gamepad, Telemetry telemetry) {
-        telemetry.addData("Alliance", "A = Blue, B = Red");
+        telemetry.addData("Alliance", "X = Blue, B = Red");
         telemetry.addData("Alliance", isBlueAlliance ? "Blue" : "Red");
         telemetry.update();
         if (gamepad.xWasPressed()) {

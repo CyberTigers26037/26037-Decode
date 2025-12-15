@@ -42,12 +42,13 @@ public class ArtifactSystem {
 
 
     public void startIntake() {
+        intake.start();
         int targetPosition = tracker.getFirstEmptyArtifactPosition();
         if (targetPosition == 0) {
             targetPosition = 1;
         }
-        if (moveCarouselToPosition(targetPosition)){
-            intake.start();
+        if (!moveCarouselToPosition(targetPosition)){
+            intake.stop();
         }
     }
 

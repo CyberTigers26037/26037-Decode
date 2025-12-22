@@ -21,6 +21,9 @@ public class RobotConfig {
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;
 
+    private static double launcherParkedPosition = 0; // need to be tested
+    private static double launcherRaisedPosition = 0;
+
     private static double goalCalcSlope = 18.85 ;
     private static double goalCalcYIntercept = 1486.0;
 
@@ -77,6 +80,18 @@ public class RobotConfig {
         init();
 
         return flipperRaisedPosition;
+    }
+
+    public static double getLauncherParkedPosition() {
+        init();
+
+        return launcherParkedPosition;
+    }
+
+    public static double getLauncherRaisedPosition() {
+        init();
+
+        return launcherRaisedPosition;
     }
 
     private static void init() {

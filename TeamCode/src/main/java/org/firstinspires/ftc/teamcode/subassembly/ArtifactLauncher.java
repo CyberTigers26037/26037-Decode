@@ -59,7 +59,7 @@ public class ArtifactLauncher {
     }
 
     public void stopFlywheelMotor() {
-        flywheelMotor.setVelocity(rpmToTps(1000));
+        flywheelMotor.setVelocity(0);
         isRunning = false;
     }
 

@@ -14,8 +14,8 @@ public class AutoMenu {
 
 
     public void init_loop(Gamepad gamepad, Telemetry telemetry) {
-        telemetry.addData("Pickup Middle", "A = Yes, B = No");
-        telemetry.addData("Pickup Middle", pickupMiddle ? "Yes" : "No");
+        //telemetry.addData("Pickup Middle", "A = Yes, B = No");
+        telemetry.addData("Pickup Middle", pickupMiddle ? "Yes (B to Change)" : "No (A to Change)");
         if (gamepad.aWasPressed()) {
             pickupMiddle = true;
         }

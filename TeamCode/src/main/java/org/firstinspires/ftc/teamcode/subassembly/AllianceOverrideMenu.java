@@ -17,8 +17,8 @@ public class AllianceOverrideMenu {
     }
 
     public void init_loop(Gamepad gamepad, Telemetry telemetry) {
-        telemetry.addData("Alliance", "X = Blue, Y = Red");
-        telemetry.addData("Alliance", isBlueAlliance ? "Blue" : "Red");
+        //telemetry.addData("Alliance", "X = Blue, Y = Red");
+        telemetry.addData("Alliance", isBlueAlliance ? "Blue (Y to Change)" : "Red (X to Change)");
         if (gamepad.xWasPressed()) {
             isBlueAlliance = true;
             NumberPlateLightingSystem.getInstance().overrideNumberPlateColor(isBlueAlliance);

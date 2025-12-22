@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.subassembly.AllianceOverrideMenu;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
+import org.firstinspires.ftc.teamcode.subassembly.AutoMenu;
 import org.firstinspires.ftc.teamcode.subassembly.MecanumDrive;
 
 public abstract class PedroAutoBase extends OpMode {
@@ -33,6 +34,8 @@ public abstract class PedroAutoBase extends OpMode {
     protected boolean isBlueAlliance;
 
     private AllianceOverrideMenu allianceOverrideMenu;
+    protected AutoMenu autoMenu;
+
 
 
     /**
@@ -56,6 +59,9 @@ public abstract class PedroAutoBase extends OpMode {
 
         follower = Constants.createFollower(hardwareMap);
 
+        autoMenu = new AutoMenu();
+        autoMenu.init();
+
         allianceOverrideMenu = new AllianceOverrideMenu();
         allianceOverrideMenu.init(hardwareMap);
     }
@@ -63,8 +69,9 @@ public abstract class PedroAutoBase extends OpMode {
     @Override
     public void init_loop() {
         allianceOverrideMenu.init_loop(gamepad1, telemetry);
-    }
+        autoMenu.init_loop(gamepad1, telemetry);
 
+    }
 
     @Override
     public void start() {

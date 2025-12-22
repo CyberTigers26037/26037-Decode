@@ -25,6 +25,7 @@ public class FarAuto extends PedroAutoBase {
         PREPARE_TO_LAUNCH_PRELOAD3,
         LAUNCH_PRELOAD3,
         AFTER_PRELOAD_LAUNCHES,
+        // ============== Pickup 3 ==============
         PREP_PICKUP3,
         COLLECT_PICKUP3,
         PICKUP3_ARTIFACT3,
@@ -38,6 +39,8 @@ public class FarAuto extends PedroAutoBase {
         PREPARE_TO_LAUNCH_PICKUP3_3,
         LAUNCH_PICKUP3_3,
         AFTER_PICKUP3_LAUNCHES,
+        // ============== Pickup 2 ==============
+        PREP_PICKUP2,
         DRIVE_OUT_BOX,
         STOP
     }
@@ -53,7 +56,7 @@ public class FarAuto extends PedroAutoBase {
     /** We do not use this because everything should automatically disable **/
 
     private Path scorePreload;
-    private PathChain   driveOutBox, scorePickup3, prepPickup3, collectPickup3;
+    private PathChain   driveOutBox, scorePickup3, prepPickup3, collectPickup3, prepPickup2;
 
     public void buildPaths() {
         Pose scorePose = isBlueAlliance ?
@@ -68,6 +71,10 @@ public class FarAuto extends PedroAutoBase {
         Pose scorePose3NotHitWall = isBlueAlliance ?
                 new Pose (56, 18, Math.toRadians(115)) :
                 new Pose (84, 13, Math.toRadians(65));
+        // ============== Pickup 2 ==============
+        Pose prepPickup2Pose = isBlueAlliance ?
+                new Pose(56, 50, Math.toRadians(180)) :
+                new Pose(88, 40, Math.toRadians(0));
         Pose driveOutWhiteBoxPose = isBlueAlliance ?
                 new Pose (56, 40, Math.toRadians(180)) :
                 new Pose (88, 30, Math.toRadians(70));
@@ -86,6 +93,10 @@ public class FarAuto extends PedroAutoBase {
         scorePickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(collect3Pose, scorePose3NotHitWall))
                 .setLinearHeadingInterpolation(collect3Pose.getHeading(), scorePose3NotHitWall.getHeading())
+                .build();
+        prepPickup2 = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, prepPickup2Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
                 .build();
         driveOutBox = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose3NotHitWall, driveOutWhiteBoxPose))
@@ -248,10 +259,20 @@ public class FarAuto extends PedroAutoBase {
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3300)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
-                            setPathState(PathState.DRIVE_OUT_BOX);
+                            if (autoMenu.getPickupMiddle()){
+                                setPathState(PathState.PREP_PICKUP2);
+                            }
+                            else {
+                                setPathState(PathState.DRIVE_OUT_BOX);
+                            }
                         }
                     }
                 }
+                break;
+
+            case PREP_PICKUP2:
+                follower.followPath(prepPickup2);
+                setPathState(PathState.DRIVE_OUT_BOX);
                 break;
 
             case DRIVE_OUT_BOX:

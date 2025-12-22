@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
+import org.firstinspires.ftc.teamcode.subassembly.AutoMenu;
 
 @SuppressWarnings("unused")
 @Autonomous(name= "CloseAuto", group="Pedro")
@@ -31,7 +32,8 @@ public class CloseAuto extends PedroAutoBase {
         WAIT_FOR_CAROUSEL_PRELOAD3,
         LAUNCH_PRELOAD3,
         AFTER_PRELOAD_LAUNCHES,
-        PREP_PICKUP1, // pick up 1st set ---------------
+        // ============== Pickup 1 ==============
+        PREP_PICKUP1,
         HALF_PICKUP1,
         COLLECT_PICKUP1,
         SCORE_PICKUP1,
@@ -47,11 +49,15 @@ public class CloseAuto extends PedroAutoBase {
         WAIT_FOR_CAROUSEL_PICKUP1_3,
         LAUNCH_PICKUP1_3,
         AFTER_PICKUP1_LAUNCHES,
+        // ============== Pickup 2 ==============
+        PREP_PICKUP2,
         PARK,
         STOP
     }
 
     private PathState pathState;
+
+
 
 
     public Pose getStartPose() {
@@ -66,7 +72,7 @@ public class CloseAuto extends PedroAutoBase {
 
     /** We do not use this because everything should automatically disable **/
 
-    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, park;
+    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, park;
     public void buildPaths() {
         Pose scanObeliskPose = isBlueAlliance ?
                 new Pose (48, 100, Math.toRadians(70)) : // blue
@@ -83,6 +89,10 @@ public class CloseAuto extends PedroAutoBase {
         Pose collect1Pose = isBlueAlliance ?
                 new Pose(18, 92, Math.toRadians(180)) : // blue
                 new Pose(120, 70, Math.toRadians(0));  // red
+        // ============== Pickup 2 ==============
+        Pose prepPickup2Pose = isBlueAlliance ?
+                new Pose(30, 82, Math.toRadians(180)) :  // blue
+                new Pose(108, 60, Math.toRadians(0));    // red
         Pose parkPose = isBlueAlliance ?
                 new Pose(30, 92, Math.toRadians(180)) : // blue
                 new Pose(114, 70, Math.toRadians(0));  // red
@@ -113,9 +123,14 @@ public class CloseAuto extends PedroAutoBase {
                 .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePose.getHeading())
                 .build();
 
+        prepPickup2 = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, prepPickup2Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
+                .build();
+
         park = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, parkPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(prepPickup2Pose, parkPose))
+                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), parkPose.getHeading())
                 .build();
     }
 
@@ -216,12 +231,14 @@ public class CloseAuto extends PedroAutoBase {
                     }
                 }
                 break; // Launched 3rd artifact
+
             case AFTER_PRELOAD_LAUNCHES:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
                     setPathState(CloseAuto.PathState.PREP_PICKUP1);
                 }
                 break; // stop launch
+            // ===================================== Pickup 1 =====================================
             case PREP_PICKUP1:
                 follower.followPath(prepPickup1); // prep to collect 1
                 artifactSystem.startIntake();
@@ -318,9 +335,20 @@ public class CloseAuto extends PedroAutoBase {
             case AFTER_PICKUP1_LAUNCHES:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
-                    setPathState(CloseAuto.PathState.PARK);
+                    if (autoMenu.getPickupMiddle()){
+                        setPathState(CloseAuto.PathState.PREP_PICKUP2);
+                    }
+                    else {
+                        setPathState(CloseAuto.PathState.PARK);
+                    }
                 }
                 break;
+                // ===================================== Pickup 2 =====================================
+            case PREP_PICKUP2:
+                follower.followPath(prepPickup2);
+                setPathState(CloseAuto.PathState.PARK);
+                break;
+
             case PARK:
                 if (!follower.isBusy()) {
                     follower.followPath(park);

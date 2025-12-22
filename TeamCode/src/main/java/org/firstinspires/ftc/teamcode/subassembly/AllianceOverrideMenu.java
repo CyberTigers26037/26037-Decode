@@ -17,14 +17,13 @@ public class AllianceOverrideMenu {
     }
 
     public void init_loop(Gamepad gamepad, Telemetry telemetry) {
-        telemetry.addData("Alliance", "X = Blue, B = Red");
+        telemetry.addData("Alliance", "X = Blue, Y = Red");
         telemetry.addData("Alliance", isBlueAlliance ? "Blue" : "Red");
-        telemetry.update();
         if (gamepad.xWasPressed()) {
             isBlueAlliance = true;
             NumberPlateLightingSystem.getInstance().overrideNumberPlateColor(isBlueAlliance);
         }
-        if (gamepad.bWasPressed()) {
+        if (gamepad.yWasPressed()) {
             isBlueAlliance = false;
             NumberPlateLightingSystem.getInstance().overrideNumberPlateColor(isBlueAlliance);
         }

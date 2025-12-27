@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.test;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.subassembly.AdjustLauncherAngle;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactLauncher;
 
 
@@ -11,10 +12,12 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactLauncher;
 @TeleOp(name = "ArtifactLauncherTestOpMode", group = "Test")
 public class ArtifactLauncherTestOpMode extends OpMode {
     private ArtifactLauncher launcher;
+    private AdjustLauncherAngle adjustLauncherAngle;
 
     @Override
     public void init() {
         launcher = new ArtifactLauncher(hardwareMap);
+        adjustLauncherAngle = new AdjustLauncherAngle(hardwareMap);
     }
 
 
@@ -39,6 +42,22 @@ public class ArtifactLauncherTestOpMode extends OpMode {
         } else {
             launcher.parkFlipper();
         }
+
+        if (gamepad1.yWasPressed()) {
+            adjustLauncherAngle.adjustCloseAngle();
+        }
+        if (gamepad1.xWasPressed()) {
+            adjustLauncherAngle.adjustFarAngle();
+        }
+
+        if (gamepad1.dpadRightWasPressed()) {
+            adjustLauncherAngle.adjustAngle(1);
+        }
+        if (gamepad1.dpadLeftWasPressed()) {
+            adjustLauncherAngle.adjustAngle(- 1);
+        }
+
+
         telemetry.addData("Flywheel RPM: ", launcher.getFlywheelRpm());
 
     }

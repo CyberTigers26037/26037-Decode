@@ -57,14 +57,20 @@ public class AxonServo {
     }
 
     public double getCurrentAngle() {
+        if (servoEncoder == null) return 0.0;
+
         return ((1.0 - (servoEncoder.getVoltage() / servoEncoder.getMaxVoltage())) * 360.0) - SERVO_UNUSABLE_DEGREES;
     }
 
     public double getVoltage() {
+        if (servoEncoder == null) return 0.0;
+
         return servoEncoder.getVoltage();
     }
 
     public double getRawMaxVoltage() {
+        if (servoEncoder == null) return 0.0;
+
         return servoEncoder.getMaxVoltage();
     }
 

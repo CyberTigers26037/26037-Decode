@@ -12,9 +12,11 @@ import org.firstinspires.ftc.teamcode.subassembly.AxonServo;
 public class CarouselAndFlipperTuningOpMode extends OpMode {
     private boolean adjustingCarousel;
     private boolean adjustingFlipper;
+    private boolean adjustingLauncher;
     private AxonServo carouselServo;
     private AxonServo flipperServo;
     private double targetAngle;
+    private AxonServo launcherServo;
 
     @Override
     public void init() {
@@ -24,6 +26,9 @@ public class CarouselAndFlipperTuningOpMode extends OpMode {
         flipperServo = new AxonServo(
                 hardwareMap.get(Servo.class, "flipperServo"),
                 hardwareMap.get(AnalogInput.class, "flipperServoEncoder"));
+        launcherServo = new AxonServo(
+                hardwareMap.get(Servo.class, "launcherServo"),
+                null);
     }
 
     @Override
@@ -34,10 +39,14 @@ public class CarouselAndFlipperTuningOpMode extends OpMode {
         else if (adjustingFlipper) {
             telemetry.addLine("Adjusting Flipper");
         }
+        else if (adjustingLauncher) {
+            telemetry.addLine("Adjusting Launcher");
+        }
         else {
-            telemetry.addLine("A for Carousel, B for Flipper");
+            telemetry.addLine("A for Carousel, B for Flipper, Y for Launcher");
             if (gamepad1.aWasPressed()) adjustingCarousel = true;
-            if (gamepad1.bWasPressed()) adjustingFlipper = true;
+            if (gamepad1.bWasPressed()) adjustingFlipper  = true;
+            if (gamepad1.yWasPressed()) adjustingLauncher = true;
         }
 
         AxonServo servo = null;
@@ -46,6 +55,9 @@ public class CarouselAndFlipperTuningOpMode extends OpMode {
         }
         else if (adjustingFlipper) {
             servo = flipperServo;
+        }
+        else if (adjustingLauncher) {
+            servo = launcherServo;
         }
 
         if (servo != null) {

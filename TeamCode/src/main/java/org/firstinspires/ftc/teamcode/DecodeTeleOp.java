@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.config.RobotConfig;
+import org.firstinspires.ftc.teamcode.subassembly.AdjustLauncherAngle;
 import org.firstinspires.ftc.teamcode.subassembly.AllianceOverrideMenu;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactSystem;
@@ -21,6 +22,8 @@ public class DecodeTeleOp extends OpMode {
             Port 1 : back_left_drive
             Port 2 : back_right_drive
             Port 3 : front_right_drive
+        Servos
+            Port 0 : launcherServo
         Digital
             Port 1 : numberPlateSensor
         I2C
@@ -52,10 +55,13 @@ public class DecodeTeleOp extends OpMode {
     private static final double TURN_GAIN     = 0.034;
     private static final double MAX_AUTO_TURN = 0.2;
     private AprilTagLimelight aprilTagLimeLight;
+    private AdjustLauncherAngle adjustLauncherAngle;
+
 
     @Override
     public void init() {
         artifactSystem = new ArtifactSystem(hardwareMap);
+        adjustLauncherAngle = new AdjustLauncherAngle(hardwareMap);
         drive = new MecanumDrive();
         drive.init(hardwareMap);
         autoLauncher = new ArtifactSystemAutoLauncher(artifactSystem);
@@ -64,7 +70,6 @@ public class DecodeTeleOp extends OpMode {
         allianceOverrideMenu.init(hardwareMap);
         aprilTagLimeLight = new AprilTagLimelight();
         aprilTagLimeLight.init(hardwareMap);
-
     }
 
     @Override
@@ -173,6 +178,21 @@ public class DecodeTeleOp extends OpMode {
             if (goalDistance != null){
                 artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
             }
+        }
+
+        // for testing
+        if (gamepad1.yWasPressed()) {
+            adjustLauncherAngle.adjustCloseAngle();
+        }
+        if (gamepad1.xWasPressed()) {
+            adjustLauncherAngle.adjustFarAngle();
+        }
+
+        if (gamepad1.dpadRightWasPressed()) {
+            adjustLauncherAngle.adjustAngle(1);
+        }
+        if (gamepad1.dpadLeftWasPressed()) {
+            adjustLauncherAngle.adjustAngle(- 1);
         }
 
         autoLauncher.loop();

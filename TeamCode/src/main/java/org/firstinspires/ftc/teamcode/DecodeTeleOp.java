@@ -176,7 +176,15 @@ public class DecodeTeleOp extends OpMode {
         if (gamepad2.dpad_left) {
             Double goalDistance = aprilTagLimeLight.detectGoalDistance();
             if (goalDistance != null){
-                artifactSystem.setLauncherRpm(calculateRpmFromDistance(goalDistance));
+                if (goalDistance > 80) {
+                    artifactSystem.setLauncherRpm(calculateCloseRpmFromDistance(goalDistance));
+                    adjustLauncherAngle.adjustCloseAngle();
+                }
+                else {
+                    artifactSystem.setLauncherRpm(calculateFarRpmFromDistance(goalDistance));
+                    adjustLauncherAngle.adjustFarAngle();
+                }
+
             }
         }
 
@@ -200,6 +208,7 @@ public class DecodeTeleOp extends OpMode {
 
         artifactSystem.outputTelemetry(telemetry);
         autoLauncher.outputTelemetry(telemetry);
+        adjustLauncherAngle.outputTelemetry(telemetry);
 
         drive.drive(axial, lateral, yaw);
 
@@ -208,7 +217,12 @@ public class DecodeTeleOp extends OpMode {
 
     }
 
-    private int calculateRpmFromDistance(Double goalDistance) {
-        return (int)((RobotConfig.getGoalCalcSlope() * goalDistance) + RobotConfig.getGoalCalcYIntercept());
+    private int calculateCloseRpmFromDistance(Double goalDistance) {
+        return (int)((RobotConfig.getCloseGoalCalcSlope() * goalDistance) + RobotConfig.getCloseGoalCalcYIntercept());
     }
+
+    private int calculateFarRpmFromDistance(Double goalDistance) { // need to recalculate this auto aim
+        return (int)((RobotConfig.getFarGoalCalcSlope() * goalDistance) + RobotConfig.getFarGoalCalcYIntercept());
+    }
+
 }

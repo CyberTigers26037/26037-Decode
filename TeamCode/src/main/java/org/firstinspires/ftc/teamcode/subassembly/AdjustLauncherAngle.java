@@ -1,16 +1,17 @@
 package org.firstinspires.ftc.teamcode.subassembly;
 
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.config.RobotConfig;
 
 // 45 close, 50 far
 public class AdjustLauncherAngle {
     private final AxonServo launcherServo;
     private boolean isLauncherRaised;
+
 
 
 
@@ -36,6 +37,10 @@ public class AdjustLauncherAngle {
         double newAngle = launcherServo.getTargetAngle() + angle;
         newAngle = Range.clip(newAngle, RobotConfig.getLauncherParkedPosition(), RobotConfig.getLauncherRaisedPosition());
         launcherServo.setTargetAngle(newAngle);
+    }
+
+    public void outputTelemetry(Telemetry telemetry) {
+        telemetry.addData("Launcher Angle", launcherServo.getTargetAngle());
     }
 
 }

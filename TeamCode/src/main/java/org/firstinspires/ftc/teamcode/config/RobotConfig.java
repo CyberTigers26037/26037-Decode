@@ -21,8 +21,10 @@ public class RobotConfig {
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;
 
-    private static double launcherParkedPosition = 273.6;
-    private static double launcherRaisedPosition = 305.2;
+    private static double launcherClosePosition = 139.2;
+    private static double launcherParkedPosition = 139.2;
+    private static double launcherFarPosition = 110.2;
+    private static double launcherRaisedPosition = 110.2;
 
     private static double closeGoalCalcSlope = 18.85 ;
     private static double closeGoalCalcYIntercept = 1486.0;
@@ -94,6 +96,20 @@ public class RobotConfig {
         init();
 
         return launcherRaisedPosition;
+    }
+
+
+    public static double getLauncherClosePosition() {
+        init();
+
+        return launcherClosePosition;
+    }
+
+
+    public static double getLauncherFarPosition() {
+        init();
+
+        return launcherFarPosition;
     }
 
     private static void init() {

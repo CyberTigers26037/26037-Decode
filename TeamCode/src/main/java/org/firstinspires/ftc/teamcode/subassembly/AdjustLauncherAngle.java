@@ -10,19 +10,16 @@ import org.firstinspires.ftc.teamcode.config.RobotConfig;
 // 45 close, 50 far
 public class AdjustLauncherAngle {
     private final AxonServo launcherServo;
-    private boolean isLauncherRaised;
 
 
 
 
     public void adjustCloseAngle() {
-        launcherServo.setTargetAngle(RobotConfig.getLauncherRaisedPosition());
-        isLauncherRaised = false;
+        launcherServo.setTargetAngle(RobotConfig.getLauncherClosePosition());
     }
 
     public void adjustFarAngle() {
-        launcherServo.setTargetAngle(RobotConfig.getLauncherParkedPosition());
-        isLauncherRaised = true;
+        launcherServo.setTargetAngle(RobotConfig.getLauncherFarPosition());
     }
 
     public AdjustLauncherAngle(HardwareMap hwMap) {
@@ -34,8 +31,15 @@ public class AdjustLauncherAngle {
     }
 
     public void adjustAngle(double angle) {
+        double min = RobotConfig.getLauncherParkedPosition();
+        double max = RobotConfig.getLauncherRaisedPosition();
+        if (RobotConfig.getLauncherParkedPosition() > RobotConfig.getLauncherRaisedPosition()) {
+            angle *= -1.0;
+            min = RobotConfig.getLauncherRaisedPosition();
+            max = RobotConfig.getLauncherParkedPosition();
+        }
         double newAngle = launcherServo.getTargetAngle() + angle;
-        newAngle = Range.clip(newAngle, RobotConfig.getLauncherParkedPosition(), RobotConfig.getLauncherRaisedPosition());
+        newAngle = Range.clip(newAngle, min, max);
         launcherServo.setTargetAngle(newAngle);
     }
 

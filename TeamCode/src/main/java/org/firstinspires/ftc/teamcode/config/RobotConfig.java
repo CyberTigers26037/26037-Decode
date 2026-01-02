@@ -21,10 +21,10 @@ public class RobotConfig {
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;
 
-    private static double launcherClosePosition = 139.2;
-    private static double launcherParkedPosition = 139.2;
-    private static double launcherFarPosition = 110.2;
-    private static double launcherRaisedPosition = 110.2;
+    private static double launcherClosePosition = 33.1;
+    private static double launcherParkedPosition = 33.1;
+    private static double launcherFarPosition = 114.9;
+    private static double launcherRaisedPosition = 114.9;
 
     private static double closeGoalCalcSlope = 18.85 ;
     private static double closeGoalCalcYIntercept = 1486.0;

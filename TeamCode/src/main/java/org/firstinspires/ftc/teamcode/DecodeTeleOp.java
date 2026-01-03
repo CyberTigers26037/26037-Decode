@@ -177,12 +177,12 @@ public class DecodeTeleOp extends OpMode {
             Double goalDistance = aprilTagLimeLight.detectGoalDistance();
             if (goalDistance != null){
                 if (goalDistance > 80) {
-                    artifactSystem.setLauncherRpm(calculateCloseRpmFromDistance(goalDistance));
-                    adjustLauncherAngle.adjustCloseAngle();
-                }
-                else {
                     artifactSystem.setLauncherRpm(calculateFarRpmFromDistance(goalDistance));
                     adjustLauncherAngle.adjustFarAngle();
+                }
+                else {
+                    artifactSystem.setLauncherRpm(calculateCloseRpmFromDistance(goalDistance));
+                    adjustLauncherAngle.adjustCloseAngle();
                 }
 
             }

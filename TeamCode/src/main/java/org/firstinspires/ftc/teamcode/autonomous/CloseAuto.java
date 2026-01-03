@@ -94,7 +94,7 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose (96, 90, Math.toRadians(110));  // red
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
                 new Pose(52, 100, Math.toRadians(140)) : // blue
-                new Pose(90, 80, Math.toRadians(45));    // red
+                new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
                 new Pose(48, 92, Math.toRadians(180)) :  // blue
@@ -108,13 +108,13 @@ public class CloseAuto extends PedroAutoBase {
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
                 new Pose(48, 60, Math.toRadians(180)) :  // blue
-                new Pose(108, 60, Math.toRadians(0));    // red
+                new Pose(96, 60, Math.toRadians(0));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
                 new Pose(30, 60, Math.toRadians(180)) :  // blue
-                new Pose(108, 70, Math.toRadians(0));    // red
+                new Pose(114, 60, Math.toRadians(0));    // red
         Pose collect2Pose = isBlueAlliance ?
                 new Pose(18, 60, Math.toRadians(180)) : // blue
-                new Pose(120, 70, Math.toRadians(0));   // red
+                new Pose(126, 60, Math.toRadians(0));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
                 new Pose(30, 92, Math.toRadians(180)) : // blue

@@ -21,15 +21,15 @@ public class RobotConfig {
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;
 
-    private static double launcherClosePosition = 33.1;
+    private static double launcherClosePosition = 42.0;
     private static double launcherParkedPosition = 33.1;
-    private static double launcherFarPosition = 114.9;
+    private static double launcherFarPosition = 54.9;
     private static double launcherRaisedPosition = 114.9;
 
-    private static double closeGoalCalcSlope = 18.85 ;
-    private static double closeGoalCalcYIntercept = 1486.0;
-    private static double farGoalCalcSlope = 18.85 ;
-    private static double farGoalCalcYIntercept = 1486.0;
+    private static double closeGoalCalcSlope = 2.29 ;
+    private static double closeGoalCalcYIntercept = 2090.25;
+    private static double farGoalCalcSlope = 2.76 ;
+    private static double farGoalCalcYIntercept = 2480.92;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {
@@ -160,9 +160,9 @@ public class RobotConfig {
         flipperParkedPosition = 173.0;
         flipperRaisedPosition = 232.6;
 
-        launcherClosePosition = 100;
+        launcherClosePosition = 112;
         launcherParkedPosition = 100;
-        launcherFarPosition = 182;
+        launcherFarPosition = 120;
         launcherRaisedPosition = 182;
 
         closeGoalCalcSlope = 9.060;

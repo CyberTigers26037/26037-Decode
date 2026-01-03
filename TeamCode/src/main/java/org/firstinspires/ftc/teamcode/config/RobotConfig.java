@@ -160,6 +160,11 @@ public class RobotConfig {
         flipperParkedPosition = 173.0;
         flipperRaisedPosition = 232.6;
 
+        launcherClosePosition = 100;
+        launcherParkedPosition = 100;
+        launcherFarPosition = 182;
+        launcherRaisedPosition = 182;
+
         closeGoalCalcSlope = 9.060;
         closeGoalCalcYIntercept = 1901.0;
     }

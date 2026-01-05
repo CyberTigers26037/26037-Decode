@@ -9,8 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
-import org.firstinspires.ftc.teamcode.subassembly.AutoMenu;
-
 
 @SuppressWarnings("unused")
 @Autonomous(name= "FarAuto", group="Pedro")
@@ -400,12 +398,7 @@ public class FarAuto extends PedroAutoBase {
                 if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
-                            if (autoMenu.getPickupMiddle()){
-                                setPathState(PathState.DRIVE_OUT_BOX);
-                            }
-                            else {
-                                setPathState(PathState.DRIVE_OUT_BOX);
-                            }
+                            setPathState(PathState.DRIVE_OUT_BOX);
                         }
                     }
                 }

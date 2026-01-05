@@ -28,8 +28,8 @@ public class RobotConfig {
 
     private static double closeGoalCalcSlope = 2.29 ;
     private static double closeGoalCalcYIntercept = 2090.25;
-    private static double farGoalCalcSlope = 2.76 ;
-    private static double farGoalCalcYIntercept = 2480.92;
+    private static double farGoalCalcSlope = -1.484;
+    private static double farGoalCalcYIntercept = 2846.49;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {
@@ -167,6 +167,8 @@ public class RobotConfig {
 
         closeGoalCalcSlope = 9.060;
         closeGoalCalcYIntercept = 1901.0;
+        farGoalCalcSlope = -3.603;
+        farGoalCalcYIntercept = 3047.38;
     }
 
     private static void initOscarRobot() {

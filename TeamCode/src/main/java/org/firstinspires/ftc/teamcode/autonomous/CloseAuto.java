@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
-import org.firstinspires.ftc.teamcode.subassembly.AutoMenu;
 
 @SuppressWarnings("unused")
 @Autonomous(name= "CloseAuto", group="Pedro")
@@ -484,12 +483,7 @@ public class CloseAuto extends PedroAutoBase {
             case AFTER_PICKUP2_LAUNCHES:
                 if (!artifactSystem.isFlipperRaised()) {
                     artifactSystem.stopLauncher();
-                    if (autoMenu.getPickupMiddle()){
-                        setPathState(CloseAuto.PathState.PARK);
-                    }
-                    else {
-                        setPathState(CloseAuto.PathState.PARK);
-                    }
+                    setPathState(CloseAuto.PathState.PARK);
                 }
                 break;
 

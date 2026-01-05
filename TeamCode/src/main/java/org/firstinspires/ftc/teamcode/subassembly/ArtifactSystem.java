@@ -97,6 +97,7 @@ public class ArtifactSystem {
         return true;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public boolean raiseFlipper(boolean requireMinLauncherSpeed) {
         return raiseFlipper(requireMinLauncherSpeed, FLIPPER_TIMER_SECONDS);
 

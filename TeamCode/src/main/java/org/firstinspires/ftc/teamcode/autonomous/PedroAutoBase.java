@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+import org.firstinspires.ftc.teamcode.subassembly.AdjustLauncherAngle;
 import org.firstinspires.ftc.teamcode.subassembly.AllianceOverrideMenu;
 import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
@@ -22,6 +23,7 @@ public abstract class PedroAutoBase extends OpMode {
     protected MecanumDrive drive;
     protected Follower follower;
     protected ArtifactSystem artifactSystem;
+    protected AdjustLauncherAngle adjustLauncherAngle;
     protected AprilTagLimelight aprilTagLimeLight;
 
     protected Timer pathTimer, opmodeTimer;
@@ -51,6 +53,7 @@ public abstract class PedroAutoBase extends OpMode {
         aprilTagLimeLight.beginDetectingObelisk();
 
         artifactSystem = new ArtifactSystem(hardwareMap);
+        adjustLauncherAngle = new AdjustLauncherAngle(hardwareMap);
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();

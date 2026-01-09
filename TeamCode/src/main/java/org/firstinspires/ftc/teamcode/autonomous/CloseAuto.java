@@ -96,23 +96,23 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(46, 92, Math.toRadians(183)) :  // blue
+                new Pose(48, 92, Math.toRadians(183)) :  // blue
                 new Pose(96, 70, Math.toRadians(0));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(36, 92, Math.toRadians(180)) :  // blue
+                new Pose(30, 92, Math.toRadians(180)) :  // blue
                 new Pose(108, 70, Math.toRadians(0));    // red
         Pose collect1Pose = isBlueAlliance ?
-                new Pose(18, 92, Math.toRadians(180)) : // blue
+                new Pose(16, 92, Math.toRadians(180)) : // blue
                 new Pose(120, 70, Math.toRadians(0));   // red
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(48, 60, Math.toRadians(180)) :  // blue
+                new Pose(48, 72, Math.toRadians(180)) :  // blue
                 new Pose(96, 60, Math.toRadians(0));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
-                new Pose(30, 60, Math.toRadians(180)) :  // blue
+                new Pose(36, 72, Math.toRadians(180)) :  // blue
                 new Pose(114, 60, Math.toRadians(0));    // red
         Pose collect2Pose = isBlueAlliance ?
-                new Pose(18, 60, Math.toRadians(180)) : // blue
+                new Pose(16, 72, Math.toRadians(180)) : // blue
                 new Pose(126, 60, Math.toRadians(0));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
@@ -205,7 +205,7 @@ public class CloseAuto extends PedroAutoBase {
             case SCORE_PRELOAD:
                 beginDetectingGoal();
                 follower.turnToDegrees(isBlueAlliance ? 145 : 35);
-                artifactSystem.setLauncherRpm(2420);
+                artifactSystem.setLauncherRpm(2320);
                 artifactSystem.startLauncher();
                 setPathState(CloseAuto.PathState.SCORE_PRELOAD_AIM);
                 break;
@@ -234,7 +234,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case LAUNCH_PRELOAD1:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2400)) {
+                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2300)) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD2);
                     }
@@ -251,7 +251,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PRELOAD2:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2400)) {
+                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2300)) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD3);
                     }
@@ -268,7 +268,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PRELOAD3:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2400)) {
+                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2300)) {
                     if (artifactSystem.raiseFlipper()) {
                         setPathState(CloseAuto.PathState.AFTER_PRELOAD_LAUNCHES);
                     }
@@ -289,7 +289,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case HALF_PICKUP1:
-                if (!follower.isBusy()) {
+                if (!follower.isBusy() && (pathTimer.getElapsedTimeSeconds() > 1.5)) {
                     follower.followPath(halfPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
                 }
@@ -303,7 +303,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case SCORE_PICKUP1:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.5) {
                     artifactSystem.stopIntake(false);
                     if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);

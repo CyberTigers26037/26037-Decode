@@ -96,10 +96,10 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(48, 92, Math.toRadians(180)) :  // blue
+                new Pose(46, 92, Math.toRadians(183)) :  // blue
                 new Pose(96, 70, Math.toRadians(0));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(30, 92, Math.toRadians(180)) :  // blue
+                new Pose(36, 92, Math.toRadians(180)) :  // blue
                 new Pose(108, 70, Math.toRadians(0));    // red
         Pose collect1Pose = isBlueAlliance ?
                 new Pose(18, 92, Math.toRadians(180)) : // blue

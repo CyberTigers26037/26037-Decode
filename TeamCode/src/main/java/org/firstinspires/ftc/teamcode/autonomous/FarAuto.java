@@ -43,17 +43,6 @@ public class FarAuto extends PedroAutoBase {
         PREP_PICKUP2,
         COLLECT_PICKUP2,
         PICKUP2_ARTIFACT3,
-        SCORE_PICKUP2,
-        SCORE_PICKUP2_FINISH_DRIVING,
-        AUTO_AIM_PRELOAD_2,
-        PREPARE_TO_LAUNCH_PICKUP2_1,
-        LAUNCH_PICKUP2_1,
-        PREPARE_TO_LAUNCH_PICKUP2_2,
-        LAUNCH_PICKUP2_2,
-        PREPARE_TO_LAUNCH_PICKUP2_3,
-        LAUNCH_PICKUP_3,
-        AFTER_PICKUP2_LAUNCHES,
-        LAUNCH_PICKUP2_3,
         // ============== PARK ==============
         DRIVE_OUT_BOX,
         STOP
@@ -130,16 +119,12 @@ public class FarAuto extends PedroAutoBase {
                 .addPath(new BezierLine(prepPickup2Pose, collect2Pose))
                 .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), collect2Pose.getHeading())
                 .build();
-        scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(collect2Pose, scorePose2NotHitWall))
-                .setLinearHeadingInterpolation(collect2Pose.getHeading(), scorePose2NotHitWall.getHeading())
-                .build();
 
         // ===================================== PARK =====================================
 
         driveOutBox = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose2NotHitWall, driveOutWhiteBoxPose))
-                .setLinearHeadingInterpolation(scorePose2NotHitWall.getHeading(), driveOutWhiteBoxPose.getHeading())
+                .addPath(new BezierLine(collect2Pose, driveOutWhiteBoxPose))
+                .setLinearHeadingInterpolation(collect2Pose.getHeading(), driveOutWhiteBoxPose.getHeading())
                 .build();
 
     }
@@ -161,7 +146,7 @@ public class FarAuto extends PedroAutoBase {
                 beginDetectingGoal();
                 follower.followPath(scorePreload);
 
-                artifactSystem.setLauncherRpm(3300);
+                artifactSystem.setLauncherRpm(2800);
                 artifactSystem.startLauncher();
                 setPathState(PathState.SCORE_PRELOAD_FINISH_DRIVING);
                 break;
@@ -185,7 +170,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PRELOAD1, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD1:
-                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3250)) {
+                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 2750)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD2);
@@ -197,7 +182,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PRELOAD2, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD2:
-                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3250)) {
+                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 2750)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD3);
@@ -209,7 +194,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PRELOAD3, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD3:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3250)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2750)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.AFTER_PRELOAD_LAUNCHES);
@@ -275,7 +260,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP3_1, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_1:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2700)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_2);
@@ -287,7 +272,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP3_2, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_2:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2700)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_3);
@@ -299,7 +284,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP3_3, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_3:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2700)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.AFTER_PICKUP3_LAUNCHES);
@@ -337,70 +322,7 @@ public class FarAuto extends PedroAutoBase {
                 break;
             case PICKUP2_ARTIFACT3:
                 if (!follower.isBusy()) {
-                    setPathState(PathState.SCORE_PICKUP2);
-                }
-                break;
-            case SCORE_PICKUP2:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    artifactSystem.stopIntake(false);
-                    follower.followPath(scorePickup2, 1.0, Constants.followerConstants.automaticHoldEnd);
-                    artifactSystem.setLauncherRpm(2842);
-                    artifactSystem.startLauncher();
-                    setPathState(PathState.SCORE_PICKUP2_FINISH_DRIVING);
-                }
-                break;
-
-            case SCORE_PICKUP2_FINISH_DRIVING:
-                if(!follower.isBusy()){
-                    // Stop pedro pathing following so we can auto-rotate the robot to aim
-                    follower.breakFollowing();
-                    setPathState(PathState.AUTO_AIM_PRELOAD_2);
-                }
-                break;
-
-            case AUTO_AIM_PRELOAD_2:
-                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if(autoRotateTowardGoalAuto(2.5) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
-                        stopAutoRotating();
-                        setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP2_1);
-                    }
-                }
-
-                break;
-            case PREPARE_TO_LAUNCH_PICKUP2_1:
-                moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP2_1, PathState.DRIVE_OUT_BOX);
-                break;
-            case LAUNCH_PICKUP2_1:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
-                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        if (artifactSystem.raiseFlipper()) {
-                            setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP2_2);
-                        }
-                    }
-                }
-                break;
-            case PREPARE_TO_LAUNCH_PICKUP2_2:
-                moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP2_2, PathState.DRIVE_OUT_BOX);
-                break;
-            case LAUNCH_PICKUP2_2:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
-                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        if (artifactSystem.raiseFlipper()) {
-                            setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP2_3);
-                        }
-                    }
-                }
-                break;
-            case PREPARE_TO_LAUNCH_PICKUP2_3:
-                moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP2_3, PathState.DRIVE_OUT_BOX);
-                break;
-            case LAUNCH_PICKUP2_3:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 2800)) {
-                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        if (artifactSystem.raiseFlipper()) {
-                            setPathState(PathState.DRIVE_OUT_BOX);
-                        }
-                    }
+                    setPathState(PathState.DRIVE_OUT_BOX);
                 }
                 break;
 

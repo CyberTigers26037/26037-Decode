@@ -52,19 +52,6 @@ public class CloseAuto extends PedroAutoBase {
         PREP_PICKUP2,
         HALF_PICKUP2,
         COLLECT_PICKUP2,
-        SCORE_PICKUP2,
-        SCORE_PICKUP2_WAIT_FOR_DRIVING,
-        AUTO_AIM_PICKUP2,
-        PREPARE_TO_LAUNCH_PICKUP2_1,
-        WAIT_FOR_CAROUSEL_PICKUP2_1,
-        LAUNCH_PICKUP2_1,
-        PREPARE_TO_LAUNCH_PICKUP2_2,
-        WAIT_FOR_CAROUSEL_PICKUP2_2,
-        LAUNCH_PICKUP2_2,
-        PREPARE_TO_LAUNCH_PICKUP2_3,
-        WAIT_FOR_CAROUSEL_PICKUP2_3,
-        LAUNCH_PICKUP2_3,
-        AFTER_PICKUP2_LAUNCHES,
         PARK,
         STOP
     }
@@ -86,7 +73,7 @@ public class CloseAuto extends PedroAutoBase {
 
     /** We do not use this because everything should automatically disable **/
 
-    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, scorePickup2, park;
+    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, park;
     public void buildPaths() {
         Pose scanObeliskPose = isBlueAlliance ?
                 new Pose (48, 100, Math.toRadians(70)) : // blue
@@ -96,28 +83,28 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(48, 92, Math.toRadians(183)) :  // blue
-                new Pose(96, 70, Math.toRadians(0));     // red
+                new Pose(52, 92, Math.toRadians(183)) :  // blue
+                new Pose(94, 70, Math.toRadians(0));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(30, 92, Math.toRadians(180)) :  // blue
-                new Pose(108, 70, Math.toRadians(0));    // red
+                new Pose(35, 92, Math.toRadians(180)) :  // blue
+                new Pose(100, 70, Math.toRadians(0));    // red
         Pose collect1Pose = isBlueAlliance ?
-                new Pose(16, 92, Math.toRadians(180)) : // blue
-                new Pose(120, 70, Math.toRadians(0));   // red
+                new Pose(20, 92, Math.toRadians(180)) : // blue
+                new Pose(118, 70, Math.toRadians(0));   // red
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(48, 72, Math.toRadians(180)) :  // blue
-                new Pose(96, 60, Math.toRadians(0));    // red
+                new Pose(48, 68, Math.toRadians(180)) :  // blue
+                new Pose(96, 46, Math.toRadians(0));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
-                new Pose(36, 72, Math.toRadians(180)) :  // blue
-                new Pose(114, 60, Math.toRadians(0));    // red
+                new Pose(36, 68, Math.toRadians(180)) :  // blue
+                new Pose(114, 46, Math.toRadians(0));    // red
         Pose collect2Pose = isBlueAlliance ?
-                new Pose(16, 72, Math.toRadians(180)) : // blue
-                new Pose(126, 60, Math.toRadians(0));   // red
+                new Pose(16, 68, Math.toRadians(180)) : // blue
+                new Pose(120, 46, Math.toRadians(0));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
-                new Pose(30, 92, Math.toRadians(180)) : // blue
-                new Pose(114, 70, Math.toRadians(0));   // red
+                new Pose(36, 68, Math.toRadians(180)) : // blue
+                new Pose(114, 46, Math.toRadians(0));   // red
 
 
         prepScan = follower.pathBuilder()
@@ -136,6 +123,7 @@ public class CloseAuto extends PedroAutoBase {
                 .addPath(new BezierLine(prepPickup1Pose, halfPickup1Pose))
                 .setLinearHeadingInterpolation(prepPickup1Pose.getHeading(), halfPickup1Pose.getHeading())
                 .build();
+
 
         collectPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(halfPickup1Pose, collect1Pose))
@@ -164,16 +152,12 @@ public class CloseAuto extends PedroAutoBase {
                 .setLinearHeadingInterpolation(halfPickup2Pose.getHeading(), collect2Pose.getHeading())
                 .build();
 
-        scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(collect2Pose, scorePose))
-                .setLinearHeadingInterpolation(collect2Pose.getHeading(), scorePose.getHeading())
-                .build();
-
         // ===================================== PARK =====================================
 
         park = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, parkPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(collect2Pose, parkPose))
+                .setLinearHeadingInterpolation(collect2Pose
+                        .getHeading(), parkPose.getHeading())
                 .build();
     }
 
@@ -289,7 +273,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case HALF_PICKUP1:
-                if (!follower.isBusy() && (pathTimer.getElapsedTimeSeconds() > 1.5)) {
+                if (!follower.isBusy() || (pathTimer.getElapsedTimeSeconds() > 1.5)) {
                     follower.followPath(halfPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
                 }
@@ -403,86 +387,6 @@ public class CloseAuto extends PedroAutoBase {
             case COLLECT_PICKUP2:
                 if (!follower.isBusy()) {
                     follower.followPath(collectPickup2, 0.2, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(CloseAuto.PathState.SCORE_PICKUP2);
-                }
-                break;
-
-            case SCORE_PICKUP2:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
-                    artifactSystem.stopIntake(false);
-                    if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
-                        follower.followPath(scorePickup2, 1.0, Constants.followerConstants.automaticHoldEnd);
-                        artifactSystem.setLauncherRpm(2370);
-                        artifactSystem.startLauncher();
-                        setPathState(PathState.SCORE_PICKUP2_WAIT_FOR_DRIVING);
-                    }
-                }
-                break;
-
-            case SCORE_PICKUP2_WAIT_FOR_DRIVING:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 2.0)) {
-                    follower.breakFollowing();
-                    setPathState(PathState.AUTO_AIM_PICKUP2);
-                }
-                break;
-            case AUTO_AIM_PICKUP2:
-                if(autoRotateTowardGoal(2) || pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    stopAutoRotating();
-                    setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP2_1);
-                }
-                break;
-
-            case PREPARE_TO_LAUNCH_PICKUP2_1:
-                moveCarouselToNextLaunchPosition(artifact1, PathState.WAIT_FOR_CAROUSEL_PICKUP2_1, PathState.AFTER_PICKUP2_LAUNCHES);
-
-                break;
-            case WAIT_FOR_CAROUSEL_PICKUP2_1:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    setPathState(PathState.LAUNCH_PICKUP2_1);
-                }
-                break;
-            case LAUNCH_PICKUP2_1:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2250)) {
-                    if (artifactSystem.raiseFlipper()) {
-                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_2);
-                    }
-                }
-                break;
-            case PREPARE_TO_LAUNCH_PICKUP2_2:
-                moveCarouselToNextLaunchPosition(artifact2, PathState.WAIT_FOR_CAROUSEL_PICKUP2_2, PathState.AFTER_PICKUP2_LAUNCHES);
-
-                break;
-            case WAIT_FOR_CAROUSEL_PICKUP2_2:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    setPathState(PathState.LAUNCH_PICKUP2_2);
-                }
-                break;
-            case LAUNCH_PICKUP2_2:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2250)) {
-                    if (artifactSystem.raiseFlipper()) {
-                        setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP2_3);
-                    }
-                }
-                break;
-            case PREPARE_TO_LAUNCH_PICKUP2_3:
-                moveCarouselToNextLaunchPosition(artifact3, PathState.WAIT_FOR_CAROUSEL_PICKUP2_3, PathState.AFTER_PICKUP2_LAUNCHES);
-
-                break;
-            case WAIT_FOR_CAROUSEL_PICKUP2_3:
-                if (artifactSystem.isCarouselAtTarget()) {
-                    setPathState(PathState.LAUNCH_PICKUP2_3);
-                }
-                break;
-            case LAUNCH_PICKUP2_3:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2250)) {
-                    if (artifactSystem.raiseFlipper()) {
-                        setPathState(CloseAuto.PathState.AFTER_PICKUP2_LAUNCHES);
-                    }
-                }
-                break;
-            case AFTER_PICKUP2_LAUNCHES:
-                if (!artifactSystem.isFlipperRaised()) {
-                    artifactSystem.stopLauncher();
                     setPathState(CloseAuto.PathState.PARK);
                 }
                 break;

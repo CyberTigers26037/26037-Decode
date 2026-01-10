@@ -15,6 +15,7 @@ public class ArtifactSystemAutoLauncher {
         LAUNCH_2,
         ROTATE_CAROUSEL_3,
         LAUNCH_3,
+        PAUSE_FOR_LAUNCH,
         STOP
     }
     private ArtifactLaunchingState artifactLaunchingState;
@@ -70,7 +71,12 @@ public class ArtifactSystemAutoLauncher {
                 rotateCarouselOrSkip(2, ArtifactLaunchingState.LAUNCH_3, ArtifactLaunchingState.STOP);
                 break;
             case LAUNCH_3:
-                launchArtifact(ArtifactLaunchingState.STOP);
+                launchArtifact(ArtifactLaunchingState.PAUSE_FOR_LAUNCH);
+                break;
+            case PAUSE_FOR_LAUNCH:
+                if (stateTimer.getElapsedSeconds() > 1.0) {
+                    setLaunchingState(ArtifactLaunchingState.STOP);
+                }
                 break;
 
             case STOP:

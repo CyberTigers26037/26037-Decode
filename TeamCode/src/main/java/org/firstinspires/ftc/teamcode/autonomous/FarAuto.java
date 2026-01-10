@@ -66,7 +66,7 @@ public class FarAuto extends PedroAutoBase {
                 new Pose(60, 15, Math.toRadians(120)) :
                 new Pose(84, 12, Math.toRadians(60)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
         Pose prepPickup3Pose = isBlueAlliance ?
-                new Pose(48, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
+                new Pose(46, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
                 new Pose(92, 25, Math.toRadians(0));
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 40, Math.toRadians(180)) :
@@ -76,7 +76,7 @@ public class FarAuto extends PedroAutoBase {
                 new Pose (84, 13, Math.toRadians(65));
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(48, 64, Math.toRadians(180)) :
+                new Pose(46, 64, Math.toRadians(180)) :
                 new Pose(93, 49, Math.toRadians(0));
         Pose collect2Pose = isBlueAlliance ?
                 new Pose(20, 64, Math.toRadians(180)) :
@@ -99,6 +99,7 @@ public class FarAuto extends PedroAutoBase {
         prepPickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup3Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup3Pose.getHeading())
+                .setTimeoutConstraint(0.5)
                 .build();
         collectPickup3 = follower.pathBuilder()
                 .addPath(new BezierLine(prepPickup3Pose, collect3Pose))
@@ -114,6 +115,7 @@ public class FarAuto extends PedroAutoBase {
         prepPickup2 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, prepPickup2Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
+                .setTimeoutConstraint(0.5)
                 .build();
         collectPickup2 = follower.pathBuilder()
                 .addPath(new BezierLine(prepPickup2Pose, collect2Pose))
@@ -148,8 +150,7 @@ public class FarAuto extends PedroAutoBase {
 
                 artifactSystem.setLauncherRpm(2800);
                 artifactSystem.startLauncher();
-                adjustLauncherAngle.adjustFarAngle();
-                adjustLauncherAngle.adjustAngle(2.0);
+                adjustLauncherAngle.adjustFarAngleAuto();
                 setPathState(PathState.SCORE_PRELOAD_FINISH_DRIVING);
                 break;
 
@@ -237,8 +238,7 @@ public class FarAuto extends PedroAutoBase {
                     follower.followPath(scorePickup3, 1.0, Constants.followerConstants.automaticHoldEnd);
                     artifactSystem.setLauncherRpm(2800);
                     artifactSystem.startLauncher();
-                    adjustLauncherAngle.adjustFarAngle();
-                    adjustLauncherAngle.adjustAngle(2.0);
+                    adjustLauncherAngle.adjustFarAngleAuto();
 
                     setPathState(PathState.SCORE_PICKUP3_FINISH_DRIVING);
                 }

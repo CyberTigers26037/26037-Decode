@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.config.RobotConfig;
 
-// 45 close, 50 far
+// 45 close, 52 far
 public class AdjustLauncherAngle {
     private final AxonServo launcherServo;
 
@@ -20,6 +20,10 @@ public class AdjustLauncherAngle {
 
     public void adjustFarAngle() {
         launcherServo.setTargetAngle(RobotConfig.getLauncherFarPosition());
+    }
+
+    public void adjustFarAngleAuto() {
+        launcherServo.setTargetAngle(RobotConfig.getLauncherFarPositionAuto());
     }
 
     public AdjustLauncherAngle(HardwareMap hwMap) {

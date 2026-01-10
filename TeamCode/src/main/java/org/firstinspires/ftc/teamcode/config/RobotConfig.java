@@ -23,13 +23,13 @@ public class RobotConfig {
 
     private static double launcherClosePosition = 42.0;
     private static double launcherParkedPosition = 33.1;
-    private static double launcherFarPosition = 54.9;
+    private static double launcherFarPosition = 80.0;
+    private static double launcherFarPositionAuto = 56.9;
     private static double launcherRaisedPosition = 114.9;
 
     private static double closeGoalCalcSlope = 2.29 ;
     private static double closeGoalCalcYIntercept = 2090.25;
-    private static double farGoalCalcSlope = -1.484;
-    private static double farGoalCalcYIntercept = 2846.49;
+    private static double farGoalRPM = 3400.0;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {
@@ -112,6 +112,12 @@ public class RobotConfig {
         return launcherFarPosition;
     }
 
+    public static double getLauncherFarPositionAuto() {
+        init();
+
+        return launcherFarPositionAuto;
+    }
+
     private static void init() {
         if (initialized) return;
 
@@ -167,8 +173,7 @@ public class RobotConfig {
 
         closeGoalCalcSlope = 9.060;
         closeGoalCalcYIntercept = 1901.0;
-        farGoalCalcSlope = -3.603;
-        farGoalCalcYIntercept = 3047.38;
+
     }
 
     private static void initOscarRobot() {
@@ -199,11 +204,8 @@ public class RobotConfig {
         return closeGoalCalcYIntercept;
     }
 
-    public static double getFarGoalCalcSlope() {
-        return farGoalCalcSlope;
+    public static double getFarGoalRPM() {
+        return farGoalRPM;
     }
 
-    public static double getFarGoalCalcYIntercept() {
-        return farGoalCalcYIntercept;
-    }
 }

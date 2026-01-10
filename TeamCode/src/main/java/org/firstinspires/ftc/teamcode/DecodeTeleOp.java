@@ -222,7 +222,7 @@ public class DecodeTeleOp extends OpMode {
     }
 
     private int calculateFarRpmFromDistance(Double goalDistance) { // need to recalculate this auto aim
-        return (int)((RobotConfig.getFarGoalCalcSlope() * goalDistance) + RobotConfig.getFarGoalCalcYIntercept());
+        return (int)(RobotConfig.getFarGoalRPM());
     }
 
 }

@@ -1,97 +1,131 @@
 {
   "startPoint": {
-    "x": 96,
-    "y": 8,
+    "x": 18.5,
+    "y": 119,
     "heading": "linear",
     "startDeg": 90,
     "endDeg": 180
   },
   "lines": [
     {
+      "name": "Scan Obelisk",
+      "endPoint": {
+        "x": 48,
+        "y": 100,
+        "heading": "linear",
+        "startDeg": 54,
+        "endDeg": 70
+      },
+      "controlPoints": [],
+      "color": "#2f3192",
+      "id": "line-seqvboh82um",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
       "name": "Aim Towards Goal",
       "endPoint": {
-        "x": 84,
-        "y": 15,
-        "heading": "linear",
-        "startDeg": 90,
-        "endDeg": 70
-      },
-      "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-h9xd94uvy0t",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
-      "name": "Prep Pickup 3",
-      "endPoint": {
-        "x": 96,
-        "y": 36,
+        "x": 48,
+        "y": 100,
         "heading": "linear",
         "reverse": false,
         "startDeg": 70,
-        "endDeg": 0
+        "endDeg": 135
       },
       "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-hphyt9j3mpu",
+      "color": "#2f3192",
+      "id": "line-stqy56fcp7e",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": ""
     },
     {
-      "name": "Collect Pickup 3",
+      "name": "Prep Pickup 1",
       "endPoint": {
-        "x": 126,
-        "y": 36,
+        "x": 48,
+        "y": 84,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 0,
-        "endDeg": 0
+        "startDeg": 135,
+        "endDeg": 180
       },
       "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-amuqos0o4vm",
+      "color": "#2f3192",
+      "id": "line-cpaxxcuo27t",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": ""
     },
     {
-      "name": "Score Pickup 3",
+      "name": "Collect Pickup 1",
       "endPoint": {
-        "x": 84,
-        "y": 15,
-        "heading": "linear",
+        "x": 18,
+        "y": 84,
+        "heading": "constant",
         "reverse": false,
-        "startDeg": 0,
-        "endDeg": 70,
-        "degrees": 0
+        "startDeg": 180,
+        "endDeg": 180,
+        "degrees": 180
       },
       "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-df2bla9857",
+      "color": "#2f3192",
+      "id": "line-oum8pummf5m",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": ""
     },
     {
-      "name": "Leave",
+      "name": "Score Pickup 1",
       "endPoint": {
-        "x": 88,
-        "y": 40,
+        "x": 48,
+        "y": 100,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 70,
-        "endDeg": 70
+        "startDeg": 180,
+        "endDeg": 135
       },
       "controlPoints": [],
-      "color": "#999999",
-      "id": "line-5sx6fngu9p2",
+      "color": "#2f3192",
+      "id": "line-jdrx8hu6ymm",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Prep Pickup 2",
+      "endPoint": {
+        "x": 48,
+        "y": 61,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 135,
+        "endDeg": 180
+      },
+      "controlPoints": [],
+      "color": "#2f3192",
+      "id": "line-i1jbe2d8zl",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Collect Pickup 2",
+      "endPoint": {
+        "x": 18,
+        "y": 61,
+        "heading": "tangential",
+        "reverse": false
+      },
+      "controlPoints": [],
+      "color": "#2f3192",
+      "id": "line-mh85zjgix8",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -102,23 +136,31 @@
   "sequence": [
     {
       "kind": "path",
-      "lineId": "line-h9xd94uvy0t"
+      "lineId": "line-seqvboh82um"
     },
     {
       "kind": "path",
-      "lineId": "line-hphyt9j3mpu"
+      "lineId": "line-stqy56fcp7e"
     },
     {
       "kind": "path",
-      "lineId": "line-amuqos0o4vm"
+      "lineId": "line-cpaxxcuo27t"
     },
     {
       "kind": "path",
-      "lineId": "line-df2bla9857"
+      "lineId": "line-oum8pummf5m"
     },
     {
       "kind": "path",
-      "lineId": "line-5sx6fngu9p2"
+      "lineId": "line-jdrx8hu6ymm"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-i1jbe2d8zl"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-mh85zjgix8"
     }
   ],
   "settings": {
@@ -142,5 +184,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-16T03:19:10.949Z"
+  "timestamp": "2026-01-16T03:11:39.052Z"
 }

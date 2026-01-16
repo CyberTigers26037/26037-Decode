@@ -1,97 +1,131 @@
 {
   "startPoint": {
-    "x": 96,
-    "y": 8,
+    "x": 125.5,
+    "y": 119,
     "heading": "linear",
     "startDeg": 90,
     "endDeg": 180
   },
   "lines": [
     {
-      "name": "Aim Towards Goal",
-      "endPoint": {
-        "x": 84,
-        "y": 15,
-        "heading": "linear",
-        "startDeg": 90,
-        "endDeg": 70
-      },
-      "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-h9xd94uvy0t",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
-      "name": "Prep Pickup 3",
+      "name": "Scan Obelisk",
       "endPoint": {
         "x": 96,
-        "y": 36,
+        "y": 100,
         "heading": "linear",
-        "reverse": false,
-        "startDeg": 70,
-        "endDeg": 0
+        "startDeg": 126,
+        "endDeg": 110
       },
       "controlPoints": [],
       "color": "#ed1d26",
-      "id": "line-hphyt9j3mpu",
+      "id": "line-ao08dn7lrzm",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": ""
     },
     {
-      "name": "Collect Pickup 3",
+      "name": "Aim Towards Goal",
+      "endPoint": {
+        "x": 96,
+        "y": 100,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 110,
+        "endDeg": 45
+      },
+      "controlPoints": [],
+      "color": "#ed1d26",
+      "id": "line-6w5wq6uco7w",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Prep Pickup 1",
+      "endPoint": {
+        "x": 96,
+        "y": 84,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 45,
+        "endDeg": 0
+      },
+      "controlPoints": [],
+      "color": "#ed1d26",
+      "id": "line-s4zdn8c39vs",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Collect Pickup 1",
       "endPoint": {
         "x": 126,
-        "y": 36,
-        "heading": "linear",
+        "y": 84,
+        "heading": "constant",
         "reverse": false,
-        "startDeg": 0,
-        "endDeg": 0
-      },
-      "controlPoints": [],
-      "color": "#ed1d26",
-      "id": "line-amuqos0o4vm",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
-      "name": "Score Pickup 3",
-      "endPoint": {
-        "x": 84,
-        "y": 15,
-        "heading": "linear",
-        "reverse": false,
-        "startDeg": 0,
-        "endDeg": 70,
+        "startDeg": 180,
+        "endDeg": 180,
         "degrees": 0
       },
       "controlPoints": [],
       "color": "#ed1d26",
-      "id": "line-df2bla9857",
+      "id": "line-ln5cdnebx",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": ""
     },
     {
-      "name": "Leave",
+      "name": "Score Pickup 1",
       "endPoint": {
-        "x": 88,
-        "y": 40,
+        "x": 96,
+        "y": 100,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 70,
-        "endDeg": 70
+        "startDeg": 0,
+        "endDeg": 45
       },
       "controlPoints": [],
-      "color": "#999999",
-      "id": "line-5sx6fngu9p2",
+      "color": "#ed1d26",
+      "id": "line-vt6fa3b4e6g",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Prep Pickup 2",
+      "endPoint": {
+        "x": 96,
+        "y": 61,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 45,
+        "endDeg": 0
+      },
+      "controlPoints": [],
+      "color": "#ed1d26",
+      "id": "line-iwjiysgpc5a",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "name": "Collect Pickup 2",
+      "endPoint": {
+        "x": 126,
+        "y": 61,
+        "heading": "tangential",
+        "reverse": false
+      },
+      "controlPoints": [],
+      "color": "#ed1d26",
+      "id": "line-chuvm7r97o",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -102,23 +136,31 @@
   "sequence": [
     {
       "kind": "path",
-      "lineId": "line-h9xd94uvy0t"
+      "lineId": "line-ao08dn7lrzm"
     },
     {
       "kind": "path",
-      "lineId": "line-hphyt9j3mpu"
+      "lineId": "line-6w5wq6uco7w"
     },
     {
       "kind": "path",
-      "lineId": "line-amuqos0o4vm"
+      "lineId": "line-s4zdn8c39vs"
     },
     {
       "kind": "path",
-      "lineId": "line-df2bla9857"
+      "lineId": "line-ln5cdnebx"
     },
     {
       "kind": "path",
-      "lineId": "line-5sx6fngu9p2"
+      "lineId": "line-vt6fa3b4e6g"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-iwjiysgpc5a"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-chuvm7r97o"
     }
   ],
   "settings": {
@@ -142,5 +184,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-16T03:19:10.949Z"
+  "timestamp": "2026-01-16T03:12:11.073Z"
 }

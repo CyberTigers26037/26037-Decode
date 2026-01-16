@@ -80,18 +80,34 @@
       "waitAfterName": ""
     },
     {
-      "name": "Leave",
+      "name": "Prep Pickup 2",
       "endPoint": {
-        "x": 88,
-        "y": 40,
+        "x": 96,
+        "y": 59,
         "heading": "linear",
         "reverse": false,
         "startDeg": 70,
         "endDeg": 70
       },
       "controlPoints": [],
-      "color": "#999999",
+      "color": "#ed1d26",
       "id": "line-5sx6fngu9p2",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "id": "mkgawqcl-djaon1",
+      "name": "Collect Pickup 2",
+      "endPoint": {
+        "x": 126,
+        "y": 59,
+        "heading": "tangential",
+        "reverse": false
+      },
+      "controlPoints": [],
+      "color": "#ed1d26",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -119,6 +135,10 @@
     {
       "kind": "path",
       "lineId": "line-5sx6fngu9p2"
+    },
+    {
+      "kind": "path",
+      "lineId": "mkgawqcl-djaon1"
     }
   ],
   "settings": {
@@ -142,5 +162,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-16T03:19:10.949Z"
+  "timestamp": "2026-01-16T03:18:54.650Z"
 }

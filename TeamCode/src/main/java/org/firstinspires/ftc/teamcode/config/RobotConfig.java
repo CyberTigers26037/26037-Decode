@@ -21,11 +21,14 @@ public class RobotConfig {
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;
 
-    private static double launcherClosePosition = 42.0;
+    // MIN HOOD POSITION
     private static double launcherParkedPosition = 33.1;
+    // MAX HOOD POSITION
+    private static double launcherRaisedPosition = 114.9;
+
+    private static double launcherClosePosition = 42.0;
     private static double launcherFarPosition = 80.0;
     private static double launcherFarPositionAuto = 56.9;
-    private static double launcherRaisedPosition = 114.9;
 
     private static double closeGoalCalcSlope = 2.29 ;
     private static double closeGoalCalcYIntercept = 2090.25;
@@ -188,6 +191,18 @@ public class RobotConfig {
 
         flipperParkedPosition = 175;
         flipperRaisedPosition = 233;
+
+        double millenniumLauncherParkedPosition = launcherParkedPosition;
+        double millenniumLauncherClosePosition = launcherClosePosition;
+        double millenniumLauncherFarPosition = launcherFarPosition;
+        double millenniumLauncherFarPositionAuto = launcherFarPositionAuto;
+
+        launcherParkedPosition = 101.8;
+        launcherRaisedPosition = 186.2;
+
+        launcherClosePosition = launcherParkedPosition + (millenniumLauncherClosePosition - millenniumLauncherParkedPosition);
+        launcherFarPosition = launcherParkedPosition + (millenniumLauncherFarPosition - millenniumLauncherParkedPosition);
+        launcherFarPositionAuto = launcherParkedPosition + (millenniumLauncherFarPositionAuto - millenniumLauncherParkedPosition);
     }
 
     private static void initCoachRobRobot() {

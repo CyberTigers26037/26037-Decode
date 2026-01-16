@@ -31,7 +31,7 @@ public class AdjustLauncherAngle {
                 Servo.class, "launcherServo"),
                 null);
 
-        adjustCloseAngle();
+        //adjustCloseAngle();
     }
 
     public void adjustAngle(double angle) {

@@ -86,24 +86,24 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(49, 92, Math.toRadians(183)) :  // blue
                 new Pose(94, 70, Math.toRadians(0));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(35, 92, Math.toRadians(180)) :  // blue
+                new Pose(33, 92, Math.toRadians(183)) :  // blue
                 new Pose(100, 70, Math.toRadians(0));    // red
         Pose collect1Pose = isBlueAlliance ?
-                new Pose(20, 92, Math.toRadians(180)) : // blue
+                new Pose(20, 92, Math.toRadians(183)) : // blue
                 new Pose(118, 70, Math.toRadians(0));   // red
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(48, 68, Math.toRadians(180)) :  // blue
+                new Pose(48, 68, Math.toRadians(183)) :  // blue
                 new Pose(96, 46, Math.toRadians(0));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
-                new Pose(36, 68, Math.toRadians(180)) :  // blue
+                new Pose(34, 68, Math.toRadians(183)) :  // blue
                 new Pose(114, 46, Math.toRadians(0));    // red
         Pose collect2Pose = isBlueAlliance ?
-                new Pose(16, 68, Math.toRadians(180)) : // blue
+                new Pose(16, 68, Math.toRadians(183)) : // blue
                 new Pose(120, 46, Math.toRadians(0));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
-                new Pose(36, 68, Math.toRadians(180)) : // blue
+                new Pose(30, 68, Math.toRadians(183)) : // blue
                 new Pose(114, 46, Math.toRadians(0));   // red
 
 
@@ -281,14 +281,14 @@ public class CloseAuto extends PedroAutoBase {
 
             case HALF_PICKUP1:
                 if (!follower.isBusy() || (pathTimer.getElapsedTimeSeconds() > 1.5)) {
-                    follower.followPath(halfPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(halfPickup1, 0.19, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
                 }
                 break;
 
             case COLLECT_PICKUP1:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup1, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(collectPickup1, 0.19, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.SCORE_PICKUP1);
                 }
                 break;
@@ -312,7 +312,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case AUTO_AIM_PICKUP1:
-                if(autoRotateTowardGoal(-1) || pathTimer.getElapsedTimeSeconds() > 1.0) {
+                if(autoRotateTowardGoal(2) || pathTimer.getElapsedTimeSeconds() > 1.0) {
                     stopAutoRotating();
                     setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP1_1);
                 }
@@ -392,14 +392,14 @@ public class CloseAuto extends PedroAutoBase {
 
             case HALF_PICKUP2:
                 if (!follower.isBusy()) {
-                    follower.followPath(halfPickup2, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(halfPickup2, 0.19, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP2);
                 }
                 break;
 
             case COLLECT_PICKUP2:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup2, 0.2, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(collectPickup2, 0.19, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.PARK);
                 }
                 break;
@@ -409,6 +409,7 @@ public class CloseAuto extends PedroAutoBase {
             case PARK:
                 if (!follower.isBusy()) {
                     follower.followPath(park);
+                    artifactSystem.stopIntake(false);
                     setPathState(CloseAuto.PathState.STOP);
                 }
                 break;

@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoMenu {
 
-    private boolean pickupMiddle;
+    private boolean pickupMiddle = true;
 
     public void init() {
 

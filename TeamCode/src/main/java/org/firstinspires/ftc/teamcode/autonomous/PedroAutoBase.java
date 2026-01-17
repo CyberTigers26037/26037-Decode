@@ -78,11 +78,11 @@ public abstract class PedroAutoBase extends OpMode {
 
     @Override
     public void start() {
+        adjustLauncherAngle.adjustCloseAngle();
         isBlueAlliance = allianceOverrideMenu.isBlueAlliance();
         startPose = getStartPose();
         follower.setStartingPose(startPose);
         buildPaths();
-
     }
 
     /**

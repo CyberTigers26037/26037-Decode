@@ -67,23 +67,23 @@ public class FarAuto extends PedroAutoBase {
                 new Pose(84, 12, Math.toRadians(60)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
         Pose prepPickup3Pose = isBlueAlliance ?
                 new Pose(46, 40, Math.toRadians(180)) :// Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(92, 25, Math.toRadians(0));
+                new Pose(90, 25, Math.toRadians(0));
         Pose collect3Pose = isBlueAlliance ?
                 new Pose(20, 40, Math.toRadians(180)) :
                 new Pose(116, 25, Math.toRadians(0));
         Pose scorePose3NotHitWall = isBlueAlliance ?
                 new Pose (56, 18, Math.toRadians(115)) :
-                new Pose (84, 13, Math.toRadians(65));
+                new Pose (84, 16, Math.toRadians(60));
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(46, 64, Math.toRadians(180)) :
-                new Pose(93, 49, Math.toRadians(0));
+                new Pose(43, 64, Math.toRadians(180)) :
+                new Pose(90, 49, Math.toRadians(0));
         Pose collect2Pose = isBlueAlliance ?
                 new Pose(20, 64, Math.toRadians(180)) :
                 new Pose(114, 49, Math.toRadians(0));
         Pose scorePose2NotHitWall = isBlueAlliance ?
                 new Pose (56, 18, Math.toRadians(115)) :
-                new Pose (88, 14, Math.toRadians(65));
+                new Pose (88, 16, Math.toRadians(60));
         // ============== PARK ==============
 
         Pose driveOutWhiteBoxPose = isBlueAlliance ?
@@ -163,7 +163,8 @@ public class FarAuto extends PedroAutoBase {
                 break;
             case AUTO_AIM_PRELOAD:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if (autoRotateTowardGoalAuto(4) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    //delta 4 for blue
+                    if (autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                     }
@@ -254,7 +255,8 @@ public class FarAuto extends PedroAutoBase {
 
             case AUTO_AIM_PRELOAD_3:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if(autoRotateTowardGoalAuto(2.5) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    //delta for blue 4
+                    if(autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                     }

@@ -83,28 +83,28 @@ public class CloseAuto extends PedroAutoBase {
                 new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(49, 92, Math.toRadians(183)) :  // blue
-                new Pose(94, 70, Math.toRadians(0));     // red
+                new Pose(50, 92, Math.toRadians(183)) :  // blue
+                new Pose(96, 71, Math.toRadians(2));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
                 new Pose(33, 92, Math.toRadians(183)) :  // blue
-                new Pose(100, 70, Math.toRadians(0));    // red
+                new Pose(100, 71, Math.toRadians(2));    // red
         Pose collect1Pose = isBlueAlliance ?
                 new Pose(20, 92, Math.toRadians(183)) : // blue
-                new Pose(118, 70, Math.toRadians(0));   // red
+                new Pose(119, 71, Math.toRadians(2));   // red
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(48, 68, Math.toRadians(183)) :  // blue
-                new Pose(96, 46, Math.toRadians(0));    // red
+                new Pose(50, 68, Math.toRadians(183)) :  // blue
+                new Pose(96, 45, Math.toRadians(5));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
                 new Pose(34, 68, Math.toRadians(183)) :  // blue
-                new Pose(114, 46, Math.toRadians(0));    // red
+                new Pose(114, 45, Math.toRadians(5));    // red
         Pose collect2Pose = isBlueAlliance ?
                 new Pose(16, 68, Math.toRadians(183)) : // blue
-                new Pose(120, 46, Math.toRadians(0));   // red
+                new Pose(120, 45, Math.toRadians(5));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
                 new Pose(30, 68, Math.toRadians(183)) : // blue
-                new Pose(114, 46, Math.toRadians(0));   // red
+                new Pose(114, 45, Math.toRadians(5));   // red
 
 
         prepScan = follower.pathBuilder()

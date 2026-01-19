@@ -163,8 +163,7 @@ public class FarAuto extends PedroAutoBase {
                 break;
             case AUTO_AIM_PRELOAD:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    //delta 4 for blue
-                    if (autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    if (autoRotateTowardGoalAuto( isBlueAlliance? 4:0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                     }
@@ -255,8 +254,7 @@ public class FarAuto extends PedroAutoBase {
 
             case AUTO_AIM_PRELOAD_3:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    //delta for blue 4
-                    if(autoRotateTowardGoalAuto(0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    if(autoRotateTowardGoalAuto(isBlueAlliance? 4:0) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_1);
                     }

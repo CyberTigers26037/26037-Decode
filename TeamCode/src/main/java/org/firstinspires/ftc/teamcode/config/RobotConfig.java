@@ -11,12 +11,12 @@ public class RobotConfig {
 
     private static String robotName = "Unknown";
 
-    private static double carouselIntakePosition1 =    73.0;
-    private static double carouselIntakePosition2 =   191.9;
-    private static double carouselIntakePosition3 =   312.7;
-    private static double carouselLaunchPosition1 =   250.1;
-    private static double carouselLaunchPosition2 =     9.8;
-    private static double carouselLaunchPosition3 =   128.5;
+    private static double carouselIntakePosition1 =    68.2;
+    private static double carouselIntakePosition2 =   190.2;
+    private static double carouselIntakePosition3 =   309.4;
+    private static double carouselLaunchPosition1 =   248.8;
+    private static double carouselLaunchPosition2 =     9.1;
+    private static double carouselLaunchPosition3 =   129.0;
 
     private static double flipperParkedPosition = 173.1;
     private static double flipperRaisedPosition = 233.3;

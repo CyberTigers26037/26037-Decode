@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode.subassembly;
 
 import android.graphics.Color;
 
+import com.qualcomm.hardware.broadcom.BroadcomColorSensor;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynchSimple;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
@@ -35,6 +38,25 @@ public class ArtifactDetector {
         }
 
         return ArtifactColor.NONE;
+    }
+
+
+    private void reinitializeColorSensorIfNecessary(NormalizedColorSensor normalizedColorSensor) {
+        if (!(normalizedColorSensor instanceof RevColorSensorV3)) return;
+
+        RevColorSensorV3 colorSensorV3 = (RevColorSensorV3) normalizedColorSensor;
+        I2cDeviceSynchSimple deviceClient = colorSensorV3.getDeviceClient();
+        byte mainStatus = deviceClient.read8(BroadcomColorSensor.Register.MAIN_CTRL.bVal);
+        if (mainStatus == 0) {
+            // The color sensor is in the uninitialized state... reinitialize it.
+            colorSensorV3.initialize();
+        }
+    }
+
+    public void reinitialize(){
+        reinitializeColorSensorIfNecessary(colorSensor1);
+        reinitializeColorSensorIfNecessary(colorSensor2);
+
     }
 
 

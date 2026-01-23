@@ -299,6 +299,10 @@ public class ArtifactSystem {
         return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 100);
     }
 
+    public void reinitializeArtifactDetector(){
+        detector.reinitialize();
+    }
+
     public void outputTelemetry(Telemetry telemetry) {
         telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
         telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));

@@ -203,6 +203,9 @@ public class DecodeTeleOp extends OpMode {
         if (gamepad1.dpadLeftWasPressed()) {
             adjustLauncherAngle.adjustAngle(- 1);
         }
+        if (gamepad1.left_stick_button){
+            artifactSystem.reinitializeArtifactDetector();
+        }
 
         autoLauncher.loop();
         artifactSystem.loop();

@@ -34,6 +34,12 @@ public class ArtifactSystemAutoLauncher {
         }
     }
 
+    public void overrideTurbo(){
+        if (running) {
+            setLaunchingState(ArtifactLaunchingState.STOP);
+        }
+    }
+
     public boolean isRunning() {
         return running;
     }

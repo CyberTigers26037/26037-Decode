@@ -81,7 +81,6 @@ public class DecodeTeleOp extends OpMode {
     public void start() {
         adjustLauncherAngle.adjustCloseAngle();
         artifactSystem.resetCarouselDetection();
-        artifactSystem.moveCarouselToStartPosition();
         if (allianceOverrideMenu.isBlueAlliance()) {
             aprilTagLimeLight.beginDetectingTeamBlue();
         }

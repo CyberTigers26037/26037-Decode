@@ -176,6 +176,7 @@ public class RobotConfig {
 
         closeGoalCalcSlope = 9.060;
         closeGoalCalcYIntercept = 1901.0;
+        farGoalRPM = 2600.0;
 
     }
 

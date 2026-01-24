@@ -17,6 +17,9 @@ public class ArtifactSystem {
     private static final double INTAKE_REVERSE_TIMER_SECONDS = 0.5;
     private static final double FLIPPER_TIMER_AUTO_LAUNCH_SECONDS = 0.3;
     private final Timer intakeReverseTimer;
+    private double lastLaunchRPM1;
+    private double lastLaunchRPM2;
+    private double lastLaunchRPM3;
 
     private boolean inDetectionMode;
 
@@ -94,7 +97,14 @@ public class ArtifactSystem {
         updateArtifactLight();
         flipperTimer.updateDurationSeconds(timerDurationSeconds);
         flipperTimer.start();
+        recordLauncherRPM();
         return true;
+    }
+
+    private void recordLauncherRPM() {
+        lastLaunchRPM3 = lastLaunchRPM2;
+        lastLaunchRPM2 = lastLaunchRPM1;
+        lastLaunchRPM1 = getActualLauncherRpm();
     }
 
     @SuppressWarnings("UnusedReturnValue")
@@ -296,7 +306,7 @@ public class ArtifactSystem {
     }
 
     public boolean isTargetRPMReached(){
-        return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 100);
+        return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 20);
     }
 
     public void reinitializeArtifactDetector(){
@@ -314,6 +324,11 @@ public class ArtifactSystem {
 
         telemetry.addData("Flipper at Target", launcher.isFlipperAtTargetPosition());
         telemetry.addData("Carousel at Target", carousel.isAtTargetPosition());
+
+        telemetry.addData("RPM 1: ", lastLaunchRPM1);
+        telemetry.addData("RPM 2: ", lastLaunchRPM2);
+        telemetry.addData("RPM 3: ", lastLaunchRPM3);
+
     }
 }
 

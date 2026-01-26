@@ -13,15 +13,17 @@ public class AutoMenu {
     }
 
 
-    public void init_loop(Gamepad gamepad, Telemetry telemetry) {
+    public void init_loop(Gamepad gamepad, Telemetry telemetry, String autoName) {
         //telemetry.addData("Pickup Middle", "A = Yes, B = No");
         telemetry.addData("Pickup Middle", pickupMiddle ? "Yes (B to Change)" : "No (A to Change)");
+        telemetry.addData("ARE YOU SURE",autoName);
         if (gamepad.aWasPressed()) {
             pickupMiddle = true;
         }
         if (gamepad.bWasPressed()) {
             pickupMiddle = false;
         }
+
     }
 
     public boolean getPickupMiddle() {

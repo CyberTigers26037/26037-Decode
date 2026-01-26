@@ -72,9 +72,11 @@ public abstract class PedroAutoBase extends OpMode {
     @Override
     public void init_loop() {
         allianceOverrideMenu.init_loop(gamepad1, telemetry);
-        autoMenu.init_loop(gamepad1, telemetry);
+        autoMenu.init_loop(gamepad1, telemetry, getAutoName());
 
     }
+
+    protected abstract String getAutoName();
 
     @Override
     public void start() {

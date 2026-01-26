@@ -351,6 +351,11 @@ public class FarAuto extends PedroAutoBase {
     }
 
     @Override
+    protected String getAutoName() {
+        return "Far Auto";
+    }
+
+    @Override
     public void start() {
         super.start();
 

@@ -306,7 +306,8 @@ public class ArtifactSystem {
     }
 
     public boolean isTargetRPMReached(){
-        return (Math.abs(launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm()) < 20);
+        int delta=launcher.getActualFlywheelRpm() - launcher.getFlywheelRpm();
+        return (delta >= -20) && (delta <= 30);
     }
 
     public void reinitializeArtifactDetector(){

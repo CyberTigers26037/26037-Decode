@@ -107,12 +107,12 @@ public class DecodeTeleOp extends OpMode {
         }
 
         if (gamepad2.dpadUpWasPressed()) {
-            artifactSystem.adjustLauncherRpm(+ 100);
+            artifactSystem.adjustLauncherRpm(+ 50);
         }
 
 
         if (gamepad2.dpadDownWasPressed()) {
-            artifactSystem.adjustLauncherRpm(- 100);
+            artifactSystem.adjustLauncherRpm(- 50);
         }
 
         if (gamepad2.leftStickButtonWasPressed()) {
@@ -172,7 +172,6 @@ public class DecodeTeleOp extends OpMode {
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
-
         if (gamepad2.dpad_left && (goalAngle != null)) {
             double yawError = goalAngle;
             axial = 0;

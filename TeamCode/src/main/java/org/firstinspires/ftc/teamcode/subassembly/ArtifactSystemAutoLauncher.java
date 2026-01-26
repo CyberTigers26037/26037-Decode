@@ -115,8 +115,8 @@ public class ArtifactSystemAutoLauncher {
     }
 
     private boolean isLauncherRPMAtTarget() {
-        int delta = Math.abs(artifactSystem.getActualLauncherRpm() - artifactSystem.getLauncherRpm());
-        return (delta < 20);
+        int delta=artifactSystem.getActualLauncherRpm() - artifactSystem.getLauncherRpm();
+        return (delta >= -20) && (delta <= 30);
     }
 
     public void outputTelemetry(Telemetry telemetry) {

@@ -7,10 +7,6 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.subassembly.BottyJamesClaw;
-import org.firstinspires.ftc.teamcode.subassembly.BottyJamesLinearActuator;
-import org.firstinspires.ftc.teamcode.subassembly.BottyJamesTurret;
-import org.firstinspires.ftc.teamcode.subassembly.BottyJamesWormDriveArm;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagLibrary;
@@ -29,11 +25,10 @@ public class BottyJamesWithTurret extends LinearOpMode {
     private DcMotor rightDrive = null;
     private BottyJamesTurret turret;
     private AprilTagProcessor aprilTag;
-    private VisionPortal visionPortal;
 
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         initialize();
         initAprilTag();
         waitForStart();
@@ -105,7 +100,7 @@ public class BottyJamesWithTurret extends LinearOpMode {
 
         builder.addProcessor(aprilTag);
 
-        visionPortal = builder.build();
+        VisionPortal visionPortal = builder.build();
 
 
     }

@@ -22,17 +22,17 @@ public class RobotConfig {
     private static double flipperRaisedPosition = 233.3;
 
     // MIN HOOD POSITION
-    private static double launcherParkedPosition = 33.1;
+    private static double launcherParkedPosition = 47.1;
     // MAX HOOD POSITION
     private static double launcherRaisedPosition = 114.9;
 
     private static double launcherClosePosition = 42.0;
-    private static double launcherFarPosition = 70.0;
+    private static double launcherFarPosition = 63.0;
     private static double launcherFarPositionAuto = 56.9;
 
     private static double closeGoalCalcSlope = 2.29 ;
     private static double closeGoalCalcYIntercept = 2090.25;
-    private static double farGoalRPM = 3400.0;
+    private static double farGoalRPM = 2870.0;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {

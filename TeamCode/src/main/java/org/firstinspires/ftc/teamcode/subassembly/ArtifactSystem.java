@@ -51,7 +51,7 @@ public class ArtifactSystem {
             targetPosition = 1;
         }
         if (moveCarouselToPosition(targetPosition)) {
-            light.setColor(ArtifactLight.LightColor.YELLOW);
+            light.setColor(ArtifactLight.LightColor.WHITE);
         }
         else {
             intake.stop();
@@ -70,7 +70,7 @@ public class ArtifactSystem {
     }
 
     private void turnOffIntakeLight() {
-        if (light.getColor() == ArtifactLight.LightColor.YELLOW) {
+        if (light.getColor() == ArtifactLight.LightColor.WHITE) {
             light.setColor(ArtifactColor.NONE);
         }
     }
@@ -284,7 +284,7 @@ public class ArtifactSystem {
             light.setColor(color);
         }
         else {
-            if (light.getColor() != ArtifactLight.LightColor.YELLOW) {
+            if (light.getColor() != ArtifactLight.LightColor.WHITE) {
                 light.setColor(ArtifactColor.NONE);
             }
         }
@@ -310,7 +310,7 @@ public class ArtifactSystem {
 
     public void startReverseIntake() {
         intake.startReverse();
-        light.setColor(ArtifactLight.LightColor.YELLOW);
+        light.setColor(ArtifactLight.LightColor.WHITE);
     }
     public void stopReverseIntake() {
         if (intake.isRunningInReverse()) {
@@ -324,8 +324,8 @@ public class ArtifactSystem {
         return (delta >= -20) && (delta <= 30);
     }
 
-    public void reinitializeArtifactDetector(){
-        detector.reinitialize();
+    public void reinitializeArtifactDetector(boolean force){
+        detector.reinitialize(force);
     }
 
     public void outputTelemetry(Telemetry telemetry) {

@@ -41,21 +41,21 @@ public class ArtifactDetector {
     }
 
 
-    private void reinitializeColorSensorIfNecessary(NormalizedColorSensor normalizedColorSensor) {
+    private void reinitializeColorSensorIfNecessary(NormalizedColorSensor normalizedColorSensor, boolean force) {
         if (!(normalizedColorSensor instanceof RevColorSensorV3)) return;
 
         RevColorSensorV3 colorSensorV3 = (RevColorSensorV3) normalizedColorSensor;
         I2cDeviceSynchSimple deviceClient = colorSensorV3.getDeviceClient();
         byte mainStatus = deviceClient.read8(BroadcomColorSensor.Register.MAIN_CTRL.bVal);
-        if (mainStatus == 0) {
+        if ((mainStatus == 0) || force) {
             // The color sensor is in the uninitialized state... reinitialize it.
             colorSensorV3.initialize();
         }
     }
 
-    public void reinitialize(){
-        reinitializeColorSensorIfNecessary(colorSensor1);
-        reinitializeColorSensorIfNecessary(colorSensor2);
+    public void reinitialize(boolean force){
+        reinitializeColorSensorIfNecessary(colorSensor1, force);
+        reinitializeColorSensorIfNecessary(colorSensor2, force);
 
     }
 

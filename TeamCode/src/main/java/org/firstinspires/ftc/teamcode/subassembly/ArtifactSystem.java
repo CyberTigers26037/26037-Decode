@@ -50,13 +50,17 @@ public class ArtifactSystem {
         if (targetPosition == 0) {
             targetPosition = 1;
         }
-        if (!moveCarouselToPosition(targetPosition)){
+        if (moveCarouselToPosition(targetPosition)) {
+            light.setColor(ArtifactLight.LightColor.YELLOW);
+        }
+        else {
             intake.stop();
         }
     }
 
     public void stopIntake(boolean rotateCarousel) {
         intake.stop();
+        turnOffIntakeLight();
         if (rotateCarousel) {
             int filledPosition = tracker.getFirstFilledArtifactPosition();
             if (filledPosition != 0) {
@@ -65,10 +69,15 @@ public class ArtifactSystem {
         }
     }
 
+    private void turnOffIntakeLight() {
+        if (light.getColor() == ArtifactLight.LightColor.YELLOW) {
+            light.setColor(ArtifactColor.NONE);
+        }
+    }
+
     public void toggleIntake() {
         if (!intake.isRunning()) {
             startIntake();
-
         } else {
             stopIntake(true);
         }
@@ -244,6 +253,7 @@ public class ArtifactSystem {
         }
         if (intakeReverseTimer.isRunning() && intakeReverseTimer.isExpired()){
             intake.stop();
+            turnOffIntakeLight();
             intakeReverseTimer.stop();
         }
         if (flipperTimer.isExpired() && launcher.isFlipperRaised()) {
@@ -274,7 +284,9 @@ public class ArtifactSystem {
             light.setColor(color);
         }
         else {
-            light.setColor(ArtifactColor.NONE);
+            if (light.getColor() != ArtifactLight.LightColor.YELLOW) {
+                light.setColor(ArtifactColor.NONE);
+            }
         }
     }
 
@@ -298,10 +310,12 @@ public class ArtifactSystem {
 
     public void startReverseIntake() {
         intake.startReverse();
+        light.setColor(ArtifactLight.LightColor.YELLOW);
     }
     public void stopReverseIntake() {
         if (intake.isRunningInReverse()) {
             intake.stop();
+            turnOffIntakeLight();
         }
     }
 

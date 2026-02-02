@@ -30,8 +30,8 @@ public class RobotConfig {
     private static double launcherFarPosition = 63.0;
     private static double launcherFarPositionAuto = 56.9;
 
-    private static double closeGoalCalcSlope = 2.29 ;
-    private static double closeGoalCalcYIntercept = 2090.25;
+    private static double closeGoalCalcSlope = 0.78 ;
+    private static double closeGoalCalcYIntercept = 2210.68;
     private static double farGoalRPM = 2870.0;
 
     @SuppressWarnings("unused")

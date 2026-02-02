@@ -33,6 +33,8 @@ public class LauncherTuningOpMode extends OpMode {
         motor = hardwareMap.get(DcMotorEx.class, "flywheelMotor");
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor.setVelocityPIDFCoefficients(260, 16, 26, 0);
+
 
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
     }

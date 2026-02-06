@@ -17,8 +17,8 @@ public class Constants {
 
     public static final FollowerConstants followerConstants = new FollowerConstants()
             .mass(9.8)
-            .forwardZeroPowerAcceleration(-36.67)
-            .lateralZeroPowerAcceleration(-54.8);
+            .forwardZeroPowerAcceleration(-84.128)
+            .lateralZeroPowerAcceleration(-73.87);
            // .translationalPIDFCoefficients(new PIDFCoefficients(0.025,0, 0.00001, 0.01));
 
     public static final MecanumConstants driveConstants = new MecanumConstants()
@@ -31,8 +31,8 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .yVelocity(48.93)
-            .xVelocity(77.21);
+            .yVelocity(62.59)  //Lateral velocity tuner
+            .xVelocity(83.69); //forward velcoity tuner
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)

@@ -178,7 +178,7 @@ class LocalizationTest extends OpMode {
  * @version 1.0, 5/6/2024
  */
 class ForwardTuner extends OpMode {
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 144;
 
     @Override
     public void init() {
@@ -323,7 +323,7 @@ class TurnTuner extends OpMode {
  */
 class ForwardVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 96;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -429,7 +429,7 @@ class ForwardVelocityTuner extends OpMode {
 class LateralVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 96;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -528,7 +528,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 80;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -632,7 +632,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 59;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;

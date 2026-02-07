@@ -16,6 +16,7 @@ public class Constants {
     public static final PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static final FollowerConstants followerConstants = new FollowerConstants()
+            .centripetalScaling(0.0)
             .mass(9.8)
             .forwardZeroPowerAcceleration(-84.128)
             .lateralZeroPowerAcceleration(-73.87);
@@ -43,7 +44,7 @@ public class Constants {
     }
 
     public static final PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(3.47)
+            .forwardPodY(-3.47)
             .strafePodX(-6.93)
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")

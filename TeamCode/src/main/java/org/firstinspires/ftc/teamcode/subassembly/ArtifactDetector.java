@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 public class ArtifactDetector {
     private final NormalizedColorSensor colorSensor1;
     private final NormalizedColorSensor colorSensor2;
+    private boolean enabled = true;
 
 
     public ArtifactDetector(HardwareMap hwMap){
@@ -20,6 +21,8 @@ public class ArtifactDetector {
     }
 
     public ArtifactColor detectArtifactColor() {
+        if (!enabled) return ArtifactColor.NONE;
+
         final float[] hsvValues1 = new float[3];
         final float[] hsvValues2 = new float[3];
         NormalizedRGBA colors1 = colorSensor1.getNormalizedColors();
@@ -59,5 +62,19 @@ public class ArtifactDetector {
 
     }
 
+    public void disable(){
+        enabled = false;
+    }
 
+    public void enable(){
+        enabled = true;
+    }
+
+    public boolean isEnabled(){
+        return enabled;
+    }
+
+    public void toggleEnabled() {
+        enabled = !enabled;
+    }
 }

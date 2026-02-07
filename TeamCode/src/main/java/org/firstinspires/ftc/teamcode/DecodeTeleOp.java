@@ -115,8 +115,8 @@ public class DecodeTeleOp extends OpMode {
             artifactSystem.adjustLauncherRpm(- 50);
         }
 
-        if (gamepad2.leftStickButtonWasPressed()) {
-            autoLauncher.launchAllArtifacts(true);
+        if (gamepad1.leftStickButtonWasPressed() || gamepad2.leftStickButtonWasPressed()) {
+            artifactSystem.toggleColorSensorEnabled();
         }
 
 
@@ -206,9 +206,6 @@ public class DecodeTeleOp extends OpMode {
         }
         if (gamepad1.dpadLeftWasPressed()) {
             adjustLauncherAngle.adjustAngle(- 1);
-        }
-        if (gamepad1.left_stick_button){
-            artifactSystem.reinitializeArtifactDetector(true);
         }
 
         autoLauncher.loop();

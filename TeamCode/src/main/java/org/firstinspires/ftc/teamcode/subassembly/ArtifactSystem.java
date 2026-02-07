@@ -20,6 +20,7 @@ public class ArtifactSystem {
     private double lastLaunchRPM1;
     private double lastLaunchRPM2;
     private double lastLaunchRPM3;
+    private boolean isBlueAlliance;
 
     private boolean inDetectionMode;
 
@@ -34,6 +35,8 @@ public class ArtifactSystem {
         tracker = new ArtifactTracker();
         flipperTimer = new Timer(FLIPPER_TIMER_SECONDS);
         intakeReverseTimer = new Timer(INTAKE_REVERSE_TIMER_SECONDS);
+        NumberPlateSensor numberPlateSensor = new NumberPlateSensor(hwMap);
+        isBlueAlliance = numberPlateSensor.isNumberPlateBlue();
     }
 
     public void initializeArtifactColors(ArtifactColor position1, ArtifactColor position2, ArtifactColor position3) {
@@ -72,8 +75,10 @@ public class ArtifactSystem {
     private void turnOffIntakeLight() {
         if (light.getColor() == ArtifactLight.LightColor.WHITE) {
             light.setColor(ArtifactColor.NONE);
+            updateArtifactLight();
         }
     }
+
 
     public void toggleIntake() {
         if (!intake.isRunning()) {
@@ -278,14 +283,25 @@ public class ArtifactSystem {
     }
 
     private void updateArtifactLight () {
-        if (carousel.isInLaunchPosition()) {
+        if (carousel.isInLaunchPosition() && detector.isEnabled()) {
             ArtifactColor color =
                     tracker.getArtifactAtPosition(carousel.getCurrentPosition());
             light.setColor(color);
         }
         else {
             if (light.getColor() != ArtifactLight.LightColor.WHITE) {
-                light.setColor(ArtifactColor.NONE);
+                if(detector.isEnabled()){
+                    light.setColor(ArtifactColor.NONE);
+                }
+                else{
+                    if(isBlueAlliance){
+                        light.setColor(ArtifactLight.LightColor.BLUE);
+                    }
+                    else{
+                        light.setColor(ArtifactLight.LightColor.RED);
+                    }
+                }
+
             }
         }
     }
@@ -329,9 +345,16 @@ public class ArtifactSystem {
     }
 
     public void outputTelemetry(Telemetry telemetry) {
-        telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
-        telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
-        telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
+        if(detector.isEnabled()) {
+            telemetry.addData("Position 1", tracker.getArtifactAtPosition(1));
+            telemetry.addData("Position 2", tracker.getArtifactAtPosition(2));
+            telemetry.addData("Position 3", tracker.getArtifactAtPosition(3));
+        }
+        else {
+            telemetry.addData("Position 1", "DISABLED");
+            telemetry.addData("Position 2", "DISABLED");
+            telemetry.addData("Position 3", "DISABLED");
+        }
         telemetry.addData("Flywheel RPM (Target): ", getLauncherRpm());
         telemetry.addData("Flywheel RPM (Actual): ", launcher.getActualFlywheelRpm());
         telemetry.addData("Intake Running: ",   isIntakeRunning());
@@ -344,6 +367,14 @@ public class ArtifactSystem {
         telemetry.addData("RPM 2: ", lastLaunchRPM2);
         telemetry.addData("RPM 3: ", lastLaunchRPM3);
 
+    }
+
+    public void toggleColorSensorEnabled() {
+        detector.toggleEnabled();
+        if (!detector.isEnabled()){
+            tracker.reset();
+        }
+        updateArtifactLight();
     }
 }
 

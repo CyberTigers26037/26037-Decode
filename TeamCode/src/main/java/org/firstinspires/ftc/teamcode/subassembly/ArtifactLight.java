@@ -12,7 +12,7 @@ public class ArtifactLight {
     }
 
     public enum LightColor {
-        NONE, PURPLE, GREEN, WHITE
+        NONE, PURPLE, GREEN, WHITE, BLUE, RED
     }
 
     public ArtifactLight (HardwareMap hwMap) {
@@ -41,6 +41,12 @@ public class ArtifactLight {
         }
         else if (color == LightColor.WHITE) {
             artifactLight.setPosition(1.0);
+        }
+        else if (color == LightColor.BLUE) {
+            artifactLight.setPosition(0.611);
+        }
+        else if (color == LightColor.RED) {
+            artifactLight.setPosition(0.279);
         }
         else {
             artifactLight.setPosition(0.0);

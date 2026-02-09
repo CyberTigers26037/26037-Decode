@@ -64,8 +64,8 @@ public class CloseAuto extends PedroAutoBase {
     public Pose getStartPose() {
         // Start Pose of our robot.
         return isBlueAlliance ?
-                new Pose(18.5, 119, Math.toRadians(54)) : // blue
-                new Pose(125.5, 119, Math.toRadians(126));  // red
+                new Pose(18, 119, Math.toRadians(52)) : // blue
+                new Pose(125, 119, Math.toRadians(126));  // red
     }
 
 
@@ -76,35 +76,35 @@ public class CloseAuto extends PedroAutoBase {
     private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, park;
     public void buildPaths() {
         Pose scanObeliskPose = isBlueAlliance ?
-                new Pose (48, 100, Math.toRadians(70)) : // blue
+                new Pose (48, 95, Math.toRadians(70)) : // blue
                 new Pose (96, 90, Math.toRadians(110));  // red
         Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-                new Pose(52, 100, Math.toRadians(140)) : // blue
+                new Pose(48, 92, Math.toRadians(140)) : // blue
                 new Pose(92, 80, Math.toRadians(45));    // red
         // ============== Pickup 1 ==============
         Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(50, 92, Math.toRadians(183)) :  // blue
-                new Pose(96, 71, Math.toRadians(2));     // red
+                new Pose(50, 81, Math.toRadians(180)) :  // blue
+                new Pose(96, 71, Math.toRadians(0));     // red
         Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(33, 92, Math.toRadians(183)) :  // blue
-                new Pose(100, 71, Math.toRadians(2));    // red
+                new Pose(33, 82, Math.toRadians(180)) :  // blue
+                new Pose(100, 71, Math.toRadians(0));    // red
         Pose collect1Pose = isBlueAlliance ?
-                new Pose(20, 92, Math.toRadians(183)) : // blue
-                new Pose(119, 71, Math.toRadians(2));   // red
+                new Pose(20, 82, Math.toRadians(180)) : // blue
+                new Pose(119, 71, Math.toRadians(0));   // red
         // ============== Pickup 2 ==============
         Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(50, 68, Math.toRadians(183)) :  // blue
-                new Pose(96, 45, Math.toRadians(5));    // red
+                new Pose(50, 58, Math.toRadians(180)) :  // blue
+                new Pose(96, 45, Math.toRadians(0));    // red
         Pose halfPickup2Pose = isBlueAlliance ?
-                new Pose(34, 68, Math.toRadians(183)) :  // blue
-                new Pose(114, 45, Math.toRadians(5));    // red
+                new Pose(34, 58, Math.toRadians(180)) :  // blue
+                new Pose(114, 45, Math.toRadians(0));    // red
         Pose collect2Pose = isBlueAlliance ?
-                new Pose(16, 68, Math.toRadians(183)) : // blue
-                new Pose(120, 45, Math.toRadians(5));   // red
+                new Pose(16, 58, Math.toRadians(180)) : // blue
+                new Pose(120, 45, Math.toRadians(0));   // red
         // ============== PARK ==============
         Pose parkPose = isBlueAlliance ?
-                new Pose(30, 68, Math.toRadians(183)) : // blue
-                new Pose(114, 45, Math.toRadians(5));   // red
+                new Pose(30, 58, Math.toRadians(180)) : // blue
+                new Pose(114, 45, Math.toRadians(50));   // red
 
 
         prepScan = follower.pathBuilder()
@@ -281,14 +281,14 @@ public class CloseAuto extends PedroAutoBase {
 
             case HALF_PICKUP1:
                 if (!follower.isBusy() || (pathTimer.getElapsedTimeSeconds() > 1.5)) {
-                    follower.followPath(halfPickup1, 0.19, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(halfPickup1, 0.21, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
                 }
                 break;
 
             case COLLECT_PICKUP1:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup1, 0.19, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(collectPickup1, 0.21, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.SCORE_PICKUP1);
                 }
                 break;
@@ -385,21 +385,21 @@ public class CloseAuto extends PedroAutoBase {
                 break;
                 // ===================================== Pickup 2 =====================================
             case PREP_PICKUP2:
-                follower.followPath(prepPickup2); // prep to collect 1
+                follower.followPath(prepPickup2,0.8, Constants.followerConstants.automaticHoldEnd); // prep to collect 1
                 artifactSystem.startIntake();
                 setPathState(CloseAuto.PathState.HALF_PICKUP2);
                 break;
 
             case HALF_PICKUP2:
                 if (!follower.isBusy()) {
-                    follower.followPath(halfPickup2, 0.19, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(halfPickup2, 0.21, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.COLLECT_PICKUP2);
                 }
                 break;
 
             case COLLECT_PICKUP2:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup2, 0.19, Constants.followerConstants.automaticHoldEnd);
+                    follower.followPath(collectPickup2, 0.21, Constants.followerConstants.automaticHoldEnd);
                     setPathState(CloseAuto.PathState.PARK);
                 }
                 break;

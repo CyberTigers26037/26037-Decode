@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -12,8 +13,44 @@ import org.firstinspires.ftc.teamcode.subassembly.AprilTagLimelight;
 import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 
 @SuppressWarnings("unused")
+@Configurable
 @Autonomous(name= "CloseAuto", group="Pedro")
 public class CloseAuto extends PedroAutoBase {
+    public static class CloseAutoConfig {
+        public ConfigurablePose startPoseBlue = new ConfigurablePose(18, 119, 52);
+        public ConfigurablePose startPoseRed  = new ConfigurablePose(125, 119, 126);
+
+        public ConfigurablePose scanObeliskPoseBlue = new ConfigurablePose(48, 95, 70);
+        public ConfigurablePose scanObeliskPoseRed  = new ConfigurablePose(96, 90, 110);
+
+        public ConfigurablePose scorePoseBlue = new ConfigurablePose(48, 92, 140);
+        public ConfigurablePose scorePoseRed  = new ConfigurablePose(92, 80, 45);
+
+        public ConfigurablePose prepPickup1Blue = new ConfigurablePose(50, 81, 180);
+        public ConfigurablePose prepPickup1Red  = new ConfigurablePose(96, 71, 0);
+
+        public ConfigurablePose halfPickup1Blue = new ConfigurablePose(33, 82, 180);
+        public ConfigurablePose halfPickup1Red  = new ConfigurablePose(100, 71, 0);
+
+        public ConfigurablePose collect1Blue = new ConfigurablePose(20, 82, 180);
+        public ConfigurablePose collect1Red  = new ConfigurablePose(119, 71, 0);
+
+        public ConfigurablePose prepPickup2Blue = new ConfigurablePose(50, 58, 180);
+        public ConfigurablePose prepPickup2Red  = new ConfigurablePose(96, 45, 0);
+
+        public ConfigurablePose halfPickup2Blue = new ConfigurablePose(34, 58, 180);
+        public ConfigurablePose halfPickup2Red  = new ConfigurablePose(114, 45, 0);
+
+        public ConfigurablePose collect2Blue = new ConfigurablePose(16, 58, 180);
+        public ConfigurablePose collect2Red  = new ConfigurablePose(120, 45, 0);
+
+        public ConfigurablePose parkPoseBlue = new ConfigurablePose(30, 58, 180);
+        public ConfigurablePose parkPoseRed  = new ConfigurablePose(114, 45, 50);
+
+    }
+
+    public static CloseAutoConfig config = new CloseAutoConfig();
+
     private enum PathState {
         PREP_SCAN_OBELISK,
         DRIVE_TO_SCAN,
@@ -63,9 +100,7 @@ public class CloseAuto extends PedroAutoBase {
 
     public Pose getStartPose() {
         // Start Pose of our robot.
-        return isBlueAlliance ?
-                new Pose(18, 119, Math.toRadians(52)) : // blue
-                new Pose(125, 119, Math.toRadians(126));  // red
+        return isBlueAlliance ? config.startPoseBlue.getPose() : config.startPoseRed.getPose();
     }
 
 
@@ -75,36 +110,15 @@ public class CloseAuto extends PedroAutoBase {
 
     private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, park;
     public void buildPaths() {
-        Pose scanObeliskPose = isBlueAlliance ?
-                new Pose (48, 95, Math.toRadians(70)) : // blue
-                new Pose (96, 90, Math.toRadians(110));  // red
-        Pose scorePose = isBlueAlliance ? // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-                new Pose(48, 92, Math.toRadians(140)) : // blue
-                new Pose(92, 80, Math.toRadians(45));    // red
-        // ============== Pickup 1 ==============
-        Pose prepPickup1Pose = isBlueAlliance ? // Highest (First Set) of Artifacts from the Spike Mark.
-                new Pose(50, 81, Math.toRadians(180)) :  // blue
-                new Pose(96, 71, Math.toRadians(0));     // red
-        Pose halfPickup1Pose = isBlueAlliance ?
-                new Pose(33, 82, Math.toRadians(180)) :  // blue
-                new Pose(100, 71, Math.toRadians(0));    // red
-        Pose collect1Pose = isBlueAlliance ?
-                new Pose(20, 82, Math.toRadians(180)) : // blue
-                new Pose(119, 71, Math.toRadians(0));   // red
-        // ============== Pickup 2 ==============
-        Pose prepPickup2Pose = isBlueAlliance ?
-                new Pose(50, 58, Math.toRadians(180)) :  // blue
-                new Pose(96, 45, Math.toRadians(0));    // red
-        Pose halfPickup2Pose = isBlueAlliance ?
-                new Pose(34, 58, Math.toRadians(180)) :  // blue
-                new Pose(114, 45, Math.toRadians(0));    // red
-        Pose collect2Pose = isBlueAlliance ?
-                new Pose(16, 58, Math.toRadians(180)) : // blue
-                new Pose(120, 45, Math.toRadians(0));   // red
-        // ============== PARK ==============
-        Pose parkPose = isBlueAlliance ?
-                new Pose(30, 58, Math.toRadians(180)) : // blue
-                new Pose(114, 45, Math.toRadians(50));   // red
+        Pose scanObeliskPose = isBlueAlliance ? config.scanObeliskPoseBlue.getPose() : config.scanObeliskPoseRed.getPose();
+        Pose scorePose = isBlueAlliance ? config.scorePoseBlue.getPose() : config.scorePoseRed.getPose();
+        Pose prepPickup1Pose = isBlueAlliance ? config.prepPickup1Blue.getPose() : config.prepPickup1Red.getPose();
+        Pose halfPickup1Pose = isBlueAlliance ? config.halfPickup1Blue.getPose() : config.halfPickup1Red.getPose();
+        Pose collect1Pose = isBlueAlliance ? config.collect1Blue.getPose() : config.collect1Red.getPose();
+        Pose prepPickup2Pose = isBlueAlliance ? config.prepPickup2Blue.getPose() : config.prepPickup2Red.getPose();
+        Pose halfPickup2Pose = isBlueAlliance ? config.halfPickup2Blue.getPose() : config.halfPickup2Red.getPose();
+        Pose collect2Pose = isBlueAlliance ? config.collect2Blue.getPose() : config.collect2Red.getPose();
+        Pose parkPose = isBlueAlliance ? config.parkPoseBlue.getPose() : config.parkPoseRed.getPose();
 
 
         prepScan = follower.pathBuilder()

@@ -27,12 +27,12 @@ public class RobotConfig {
     private static double launcherRaisedPosition = 114.9;
 
     private static double launcherClosePosition = 42.0;
-    private static double launcherFarPosition = 63.0;
+    private static double launcherFarPosition = 85.0;
     private static double launcherFarPositionAuto = 56.9;
 
     private static double closeGoalCalcSlope = 0.78 ;
     private static double closeGoalCalcYIntercept = 2210.68;
-    private static double farGoalRPM = 2870.0;
+    private static double farGoalRPM = 3400.0;
 
     @SuppressWarnings("unused")
     public static String getRobotName() {

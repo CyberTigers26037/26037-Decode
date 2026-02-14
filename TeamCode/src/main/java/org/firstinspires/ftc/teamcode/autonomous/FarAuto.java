@@ -19,37 +19,37 @@ public class FarAuto extends PedroAutoBase {
         public ConfigurablePose startPoseBlue = new ConfigurablePose(48, 8, 90);
         public ConfigurablePose startPoseRed  = new ConfigurablePose(96, 8, 90);
 
-        public ConfigurablePose scorePoseBlue = new ConfigurablePose(60, 15, 120);
+        public ConfigurablePose scorePoseBlue = new ConfigurablePose(60, 12, 120);
         public ConfigurablePose scorePoseRed  = new ConfigurablePose(84, 12, 75);
 
-        public ConfigurablePose prepPickup3Blue = new ConfigurablePose(46, 40, 180);
+        public ConfigurablePose prepPickup3Blue = new ConfigurablePose(54, 33, 180);
         public ConfigurablePose prepPickup3Red = new ConfigurablePose(90, 32, 0);
 
-        public ConfigurablePose collectSpike3Artifact1Blue = new ConfigurablePose(33, 40, 180);
+        public ConfigurablePose collectSpike3Artifact1Blue = new ConfigurablePose(44, 35, 180);
         public ConfigurablePose collectSpike3Artifact1Red = new ConfigurablePose(100, 34, 0);
 
-        public ConfigurablePose collectSpike3Artifact2Blue = new ConfigurablePose(20, 40, 180);
+        public ConfigurablePose collectSpike3Artifact2Blue = new ConfigurablePose(38, 35, 180);
         public ConfigurablePose collectSpike3Artifact2Red = new ConfigurablePose(106, 34, 0);
 
-        public ConfigurablePose collectSpike3Artifact3Blue = new ConfigurablePose(20, 64, 180);
+        public ConfigurablePose collectSpike3Artifact3Blue = new ConfigurablePose(26, 35, 180);
         public ConfigurablePose collectSpike3Artifact3Red = new ConfigurablePose(114, 34, 0);
 
-        public ConfigurablePose scorePose3NotHitWallBlue = new ConfigurablePose(56, 18, 115);
+        public ConfigurablePose scorePose3NotHitWallBlue = new ConfigurablePose(56, 23, 115);
         public ConfigurablePose scorePose3NotHitWallRed = new ConfigurablePose(84, 23, 75);
 
-        public ConfigurablePose prepPickup2Blue = new ConfigurablePose(43, 64, 180);
+        public ConfigurablePose prepPickup2Blue = new ConfigurablePose(54, 57, 180);
         public ConfigurablePose prepPickup2Red = new ConfigurablePose(90, 56, 0);
 
-        public ConfigurablePose collectSpike2Artifact1Blue = new ConfigurablePose(30, 64, 180);
+        public ConfigurablePose collectSpike2Artifact1Blue = new ConfigurablePose(44, 59, 180);
         public ConfigurablePose collectSpike2Artifact1Red = new ConfigurablePose(100, 58, 0);
 
-        public ConfigurablePose collectSpike2Artifact2Blue = new ConfigurablePose(33, 40, 180);
+        public ConfigurablePose collectSpike2Artifact2Blue = new ConfigurablePose(38, 59, 180);
         public ConfigurablePose collectSpike2Artifact2Red = new ConfigurablePose(106, 58, 0);
 
-        public ConfigurablePose collectSpike2Artifact3Blue = new ConfigurablePose(30, 64, 180);
+        public ConfigurablePose collectSpike2Artifact3Blue = new ConfigurablePose(26, 59, 180);
         public ConfigurablePose collectSpike2Artifact3Red = new ConfigurablePose(114, 58, 0);
 
-        public ConfigurablePose scorePose2NotHitWallBlue = new ConfigurablePose(56, 18, 115);
+        public ConfigurablePose scorePose2NotHitWallBlue = new ConfigurablePose(56, 23, 115);
         public ConfigurablePose scorePose2NotHitWallRed = new ConfigurablePose(94, 26, 75);
 
         public ConfigurablePose driveOutWhiteBoxBlue = new ConfigurablePose(56, 40, 180);
@@ -228,7 +228,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PRELOAD1, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD1:
-                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD2);
@@ -240,7 +240,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PRELOAD2, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD2:
-                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() && (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD3);
@@ -252,7 +252,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PRELOAD3, PathState.AFTER_PRELOAD_LAUNCHES);
                 break;
             case LAUNCH_PRELOAD3:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.AFTER_PRELOAD_LAUNCHES);
@@ -287,7 +287,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case COLLECT_SPIKE3_ARTIFACT2:
-                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.2) {
                     follower.followPath(collectSpike3Artifact2, 0.25, Constants.followerConstants.automaticHoldEnd);
                     setPathState(PathState.WAIT_BEFORE_SPIKE3_ARTIFACT3);
                 }
@@ -298,7 +298,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case COLLECT_SPIKE3_ARTIFACT3:
-                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.2) {
                     follower.followPath(collectSpike3Artifact3, 0.25, Constants.followerConstants.automaticHoldEnd);
                     setPathState(PathState.WAIT_AFTER_SPIKE3_ARTIFACT3);
                 }
@@ -341,7 +341,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact1, PathState.LAUNCH_PICKUP3_1, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_1:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_2);
@@ -353,7 +353,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact2, PathState.LAUNCH_PICKUP3_2, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_2:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP3_3);
@@ -365,7 +365,7 @@ public class FarAuto extends PedroAutoBase {
                 moveCarouselToNextLaunchPosition(artifact3, PathState.LAUNCH_PICKUP3_3, PathState.AFTER_PICKUP3_LAUNCHES);
                 break;
             case LAUNCH_PICKUP3_3:
-                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.getActualLauncherRpm() > 3370)) {
+                if (artifactSystem.isCarouselAtTarget() &&  (artifactSystem.isTargetRPMReached())) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(PathState.AFTER_PICKUP3_LAUNCHES);
@@ -406,7 +406,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case COLLECT_SPIKE2_ARTIFACT2:
-                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.2) {
                     follower.followPath(collectSpike2Artifact2, 0.25, Constants.followerConstants.automaticHoldEnd);
                     setPathState(PathState.WAIT_BEFORE_SPIKE2_ARTIFACT3);
                 }
@@ -417,7 +417,7 @@ public class FarAuto extends PedroAutoBase {
                 }
                 break;
             case COLLECT_SPIKE2_ARTIFACT3:
-                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.2) {
                     follower.followPath(collectSpike2Artifact3, 0.25, Constants.followerConstants.automaticHoldEnd);
                     setPathState(PathState.WAIT_AFTER_SPIKE2_ARTIFACT3);
                 }

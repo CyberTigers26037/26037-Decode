@@ -27,22 +27,29 @@ public class CloseAuto extends PedroAutoBase {
         public ConfigurablePose scorePoseRed  = new ConfigurablePose(92, 80, 45);
 
         public ConfigurablePose prepPickup1Blue = new ConfigurablePose(50, 81, 180);
-        public ConfigurablePose prepPickup1Red  = new ConfigurablePose(96, 71, 0);
+        public ConfigurablePose prepPickup1Red  = new ConfigurablePose(96, 82, 0);
 
-        public ConfigurablePose halfPickup1Blue = new ConfigurablePose(33, 82, 180);
-        public ConfigurablePose halfPickup1Red  = new ConfigurablePose(100, 71, 0);
+        public ConfigurablePose collectSpike1Artifact1Blue = new ConfigurablePose(33, 82, 180);
+        public ConfigurablePose collectSpike1Artifact1Red = new ConfigurablePose(105, 82, 0);
 
-        public ConfigurablePose collect1Blue = new ConfigurablePose(20, 82, 180);
-        public ConfigurablePose collect1Red  = new ConfigurablePose(119, 71, 0);
+        public ConfigurablePose collectSpike1Artifact2Blue = new ConfigurablePose(27, 82, 180);
+        public ConfigurablePose collectSpike1Artifact2Red = new ConfigurablePose(110, 82, 0);
+
+        public ConfigurablePose collectSpike1Artifact3Blue = new ConfigurablePose(20, 82, 180);
+        public ConfigurablePose collectSpike1Artifact3Red = new ConfigurablePose(119, 82, 0);
+
 
         public ConfigurablePose prepPickup2Blue = new ConfigurablePose(50, 58, 180);
-        public ConfigurablePose prepPickup2Red  = new ConfigurablePose(96, 45, 0);
+        public ConfigurablePose prepPickup2Red  = new ConfigurablePose(96, 58, 0);
 
-        public ConfigurablePose halfPickup2Blue = new ConfigurablePose(34, 58, 180);
-        public ConfigurablePose halfPickup2Red  = new ConfigurablePose(114, 45, 0);
+        public ConfigurablePose collectSpike2Artifact1Blue = new ConfigurablePose(34, 58, 180);
+        public ConfigurablePose collectSpike2Artifact1Red = new ConfigurablePose(105, 58, 0);
 
-        public ConfigurablePose collect2Blue = new ConfigurablePose(16, 58, 180);
-        public ConfigurablePose collect2Red  = new ConfigurablePose(120, 45, 0);
+        public ConfigurablePose collectSpike2Artifact2Blue = new ConfigurablePose(25, 58, 180);
+        public ConfigurablePose collectSpike2Artifact2Red = new ConfigurablePose(110, 58, 0);
+
+        public ConfigurablePose collectSpike2Artifact3Blue = new ConfigurablePose(16, 58, 180);
+        public ConfigurablePose collectSpike2Artifact3Red = new ConfigurablePose(119, 58, 0);
 
         public ConfigurablePose parkPoseBlue = new ConfigurablePose(30, 58, 180);
         public ConfigurablePose parkPoseRed  = new ConfigurablePose(114, 45, 50);
@@ -70,8 +77,12 @@ public class CloseAuto extends PedroAutoBase {
         AFTER_PRELOAD_LAUNCHES,
         // ============== Pickup 1 ==============
         PREP_PICKUP1,
-        HALF_PICKUP1,
-        COLLECT_PICKUP1,
+        WAIT_BEFORE_SPIKE1_ARTIFACT2,
+         COLLECT_SPIKE1_ARTIFACT2,
+        WAIT_BEFORE_SPIKE1_ARTIFACT3,
+        COLLECT_SPIKE1_ARTIFACT3,
+        WAIT_AFTER_SPIKE1_ARTIFACT3,
+        COLLECT_SPIKE1_ARTIFACT1,
         SCORE_PICKUP1,
         SCORE_PICKUP1_WAIT_FOR_DRIVING,
         AUTO_AIM_PICKUP1,
@@ -87,8 +98,12 @@ public class CloseAuto extends PedroAutoBase {
         AFTER_PICKUP1_LAUNCHES,
         // ============== Pickup 2 ==============
         PREP_PICKUP2,
-        HALF_PICKUP2,
-        COLLECT_PICKUP2,
+        COLLECT_SPIKE2_ARTIFACT1,
+        WAIT_BEFORE_SPIKE2_ARTIFACT2,
+        COLLECT_SPIKE2_ARTIFACT2,
+        WAIT_BEFORE_SPIKE2_ARTIFACT3,
+        COLLECT_SPIKE2_ARTIFACT3,
+        WAIT_AFTER_SPIKE2_ARTIFACT3,
         PARK,
         STOP
     }
@@ -108,16 +123,18 @@ public class CloseAuto extends PedroAutoBase {
 
     /** We do not use this because everything should automatically disable **/
 
-    private PathChain prepScan, prepPickup1, halfPickup1, collectPickup1, scorePickup1, prepPickup2, halfPickup2, collectPickup2, park;
+    private PathChain prepScan, prepPickup1, collectSpike1Artifact1,collectSpike1Artifact2,collectSpike1Artifact3, scorePickup1, prepPickup2,collectSpike2Artifact1, collectSpike2Artifact2, collectSpike2Artifact3, park;
     public void buildPaths() {
         Pose scanObeliskPose = isBlueAlliance ? config.scanObeliskPoseBlue.getPose() : config.scanObeliskPoseRed.getPose();
         Pose scorePose = isBlueAlliance ? config.scorePoseBlue.getPose() : config.scorePoseRed.getPose();
         Pose prepPickup1Pose = isBlueAlliance ? config.prepPickup1Blue.getPose() : config.prepPickup1Red.getPose();
-        Pose halfPickup1Pose = isBlueAlliance ? config.halfPickup1Blue.getPose() : config.halfPickup1Red.getPose();
-        Pose collect1Pose = isBlueAlliance ? config.collect1Blue.getPose() : config.collect1Red.getPose();
+        Pose collectSpike1Artifact1Pose = isBlueAlliance ? config.collectSpike1Artifact1Blue.getPose() : config.collectSpike1Artifact1Red.getPose();
+        Pose collectSpike1Artifact2Pose = isBlueAlliance ? config.collectSpike1Artifact2Blue.getPose() : config.collectSpike1Artifact2Red.getPose();
+        Pose collectSpike1Artifact3Pose = isBlueAlliance ? config.collectSpike1Artifact3Blue.getPose() : config.collectSpike1Artifact3Red.getPose();
         Pose prepPickup2Pose = isBlueAlliance ? config.prepPickup2Blue.getPose() : config.prepPickup2Red.getPose();
-        Pose halfPickup2Pose = isBlueAlliance ? config.halfPickup2Blue.getPose() : config.halfPickup2Red.getPose();
-        Pose collect2Pose = isBlueAlliance ? config.collect2Blue.getPose() : config.collect2Red.getPose();
+        Pose collectSpike2Artifact1Pose = isBlueAlliance ? config.collectSpike2Artifact1Blue.getPose() : config.collectSpike2Artifact1Red.getPose();
+        Pose collectSpike2Artifact2Pose = isBlueAlliance ? config.collectSpike2Artifact2Blue.getPose() : config.collectSpike2Artifact2Red.getPose();
+        Pose collectSpike2Artifact3Pose = isBlueAlliance ? config.collectSpike2Artifact3Blue.getPose() : config.collectSpike2Artifact3Red.getPose();
         Pose parkPose = isBlueAlliance ? config.parkPoseBlue.getPose() : config.parkPoseRed.getPose();
 
 
@@ -133,20 +150,25 @@ public class CloseAuto extends PedroAutoBase {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup1Pose.getHeading())
                 .build();
 
-        halfPickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup1Pose, halfPickup1Pose))
-                .setLinearHeadingInterpolation(prepPickup1Pose.getHeading(), halfPickup1Pose.getHeading())
+
+        collectSpike1Artifact1 = follower.pathBuilder()
+                .addPath(new BezierLine(prepPickup1Pose, collectSpike1Artifact1Pose))
+                .setLinearHeadingInterpolation(prepPickup1Pose.getHeading(), collectSpike1Artifact1Pose.getHeading())
                 .build();
 
-
-        collectPickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(halfPickup1Pose, collect1Pose))
-                .setLinearHeadingInterpolation(halfPickup1Pose.getHeading(), collect1Pose.getHeading())
+        collectSpike1Artifact2 = follower.pathBuilder()
+                .addPath(new BezierLine(collectSpike1Artifact1Pose, collectSpike1Artifact2Pose))
+                .setLinearHeadingInterpolation(collectSpike1Artifact1Pose.getHeading(), collectSpike1Artifact2Pose.getHeading())
                 .build();
+        collectSpike1Artifact3 = follower.pathBuilder()
+                .addPath(new BezierLine(collectSpike1Artifact2Pose, collectSpike1Artifact3Pose))
+                .setLinearHeadingInterpolation(collectSpike1Artifact2Pose.getHeading(), collectSpike1Artifact3Pose.getHeading())
+                .build();
+
 
         scorePickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(collect1Pose, scorePose))
-                .setLinearHeadingInterpolation(collect1Pose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(collectSpike1Artifact3Pose, scorePose))
+                .setLinearHeadingInterpolation(collectSpike1Artifact3Pose.getHeading(), scorePose.getHeading())
                 .build();
 
         // ===================================== Pickup 2 =====================================
@@ -155,23 +177,25 @@ public class CloseAuto extends PedroAutoBase {
                 .addPath(new BezierLine(scorePose, prepPickup2Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), prepPickup2Pose.getHeading())
                 .build();
-
-        halfPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(prepPickup2Pose, halfPickup2Pose))
-                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), halfPickup2Pose.getHeading())
+        collectSpike2Artifact1 = follower.pathBuilder()
+                .addPath(new BezierLine(prepPickup2Pose, collectSpike2Artifact1Pose))
+                .setLinearHeadingInterpolation(prepPickup2Pose.getHeading(), collectSpike2Artifact1Pose.getHeading())
+                .build();
+        collectSpike2Artifact2 = follower.pathBuilder()
+                .addPath(new BezierLine(collectSpike2Artifact1Pose, collectSpike2Artifact2Pose))
+                .setLinearHeadingInterpolation(collectSpike2Artifact1Pose.getHeading(), collectSpike2Artifact2Pose.getHeading())
+                .build();
+        collectSpike2Artifact3 = follower.pathBuilder()
+                .addPath(new BezierLine(collectSpike2Artifact2Pose, collectSpike2Artifact3Pose))
+                .setLinearHeadingInterpolation(collectSpike2Artifact2Pose.getHeading(), collectSpike2Artifact3Pose.getHeading())
                 .build();
 
-        collectPickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(halfPickup2Pose, collect2Pose))
-                .setLinearHeadingInterpolation(halfPickup2Pose.getHeading(), collect2Pose.getHeading())
-                .build();
 
         // ===================================== PARK =====================================
 
         park = follower.pathBuilder()
-                .addPath(new BezierLine(collect2Pose, parkPose))
-                .setLinearHeadingInterpolation(collect2Pose
-                        .getHeading(), parkPose.getHeading())
+                .addPath(new BezierLine(collectSpike2Artifact3Pose, parkPose))
+                .setLinearHeadingInterpolation(collectSpike2Artifact3Pose.getHeading(), parkPose.getHeading())
                 .build();
     }
 
@@ -203,7 +227,7 @@ public class CloseAuto extends PedroAutoBase {
             case SCORE_PRELOAD:
                 beginDetectingGoal();
                 follower.turnToDegrees(isBlueAlliance ? 145 : 35);
-                artifactSystem.setLauncherRpm(2250);
+                artifactSystem.setLauncherRpm(2200);
                 artifactSystem.startLauncher();
                 setPathState(CloseAuto.PathState.SCORE_PRELOAD_AIM);
                 break;
@@ -215,7 +239,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case AUTO_AIM_PRELOAD:
-                if (autoRotateTowardGoal(2) || (pathTimer.getElapsedTimeSeconds() > 1.0)) {
+                if (autoRotateTowardGoal(1) || (pathTimer.getElapsedTimeSeconds() > 1.0)) {
                     stopAutoRotating();
                     setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                 }
@@ -232,7 +256,7 @@ public class CloseAuto extends PedroAutoBase {
                 break;
 
             case LAUNCH_PRELOAD1:
-                if ((artifactSystem.getActualLauncherRpm() > 2200)) {
+                if ((artifactSystem.getActualLauncherRpm() > 2150)) {
                     if (pathTimer.getElapsedTimeSeconds() > 0.5) {
 
                         if (artifactSystem.raiseFlipper()) {
@@ -252,7 +276,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PRELOAD2:
-                if (artifactSystem.getActualLauncherRpm() > 2200) {
+                if (artifactSystem.getActualLauncherRpm() > 2150) {
                     if ((pathTimer.getElapsedTimeSeconds() > 0.5)) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PRELOAD3);
@@ -271,7 +295,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PRELOAD3:
-                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2200)) {
+                if ((pathTimer.getElapsedTimeSeconds() > 0.5) && (artifactSystem.getActualLauncherRpm() > 2150)) {
                     if ((pathTimer.getElapsedTimeSeconds() > 0.5)) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(CloseAuto.PathState.AFTER_PRELOAD_LAUNCHES);
@@ -290,29 +314,51 @@ public class CloseAuto extends PedroAutoBase {
             case PREP_PICKUP1:
                 follower.followPath(prepPickup1); // prep to collect 1
                 artifactSystem.startIntake();
-                setPathState(CloseAuto.PathState.HALF_PICKUP1);
+                setPathState(PathState.COLLECT_SPIKE1_ARTIFACT1);
                 break;
 
-            case HALF_PICKUP1:
-                if (!follower.isBusy() || (pathTimer.getElapsedTimeSeconds() > 1.5)) {
-                    follower.followPath(halfPickup1, 0.21, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(CloseAuto.PathState.COLLECT_PICKUP1);
-                }
-                break;
-
-            case COLLECT_PICKUP1:
+            case COLLECT_SPIKE1_ARTIFACT1:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup1, 0.21, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(CloseAuto.PathState.SCORE_PICKUP1);
+                    follower.followPath(collectSpike1Artifact1, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_BEFORE_SPIKE1_ARTIFACT2);
                 }
                 break;
+            case WAIT_BEFORE_SPIKE1_ARTIFACT2:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.COLLECT_SPIKE1_ARTIFACT2);
+                }
+                break;
+
+            case COLLECT_SPIKE1_ARTIFACT2:
+                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                    follower.followPath(collectSpike1Artifact2, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_BEFORE_SPIKE1_ARTIFACT3);
+                }
+                break;
+            case WAIT_BEFORE_SPIKE1_ARTIFACT3:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.COLLECT_SPIKE1_ARTIFACT3);
+                }
+                break;
+            case COLLECT_SPIKE1_ARTIFACT3:
+                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                    follower.followPath(collectSpike1Artifact3, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_AFTER_SPIKE1_ARTIFACT3);
+                }
+                break;
+            case WAIT_AFTER_SPIKE1_ARTIFACT3:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.SCORE_PICKUP1);
+                }
+                break;
+
 
             case SCORE_PICKUP1:
                 if (pathTimer.getElapsedTimeSeconds() > 2.5) {
                     artifactSystem.stopIntake(false);
                     if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
-                        artifactSystem.setLauncherRpm(2250);
+                        artifactSystem.setLauncherRpm(2200);
                         artifactSystem.startLauncher();
                         setPathState(PathState.SCORE_PICKUP1_WAIT_FOR_DRIVING);
                     }
@@ -326,7 +372,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case AUTO_AIM_PICKUP1:
-                if(autoRotateTowardGoal(2) || pathTimer.getElapsedTimeSeconds() > 1.0) {
+                if(autoRotateTowardGoal(2)|| pathTimer.getElapsedTimeSeconds() > 1.0) {
                     stopAutoRotating();
                     setPathState(PathState.PREPARE_TO_LAUNCH_PICKUP1_1);
                 }
@@ -342,7 +388,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PICKUP1_1:
-                if ((artifactSystem.getActualLauncherRpm() > 2250)) {
+                if ((artifactSystem.getActualLauncherRpm() > 2150)) {
                     if((pathTimer.getElapsedTimeSeconds() > 0.5)) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_2);
@@ -360,7 +406,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PICKUP1_2:
-                if ((artifactSystem.getActualLauncherRpm() > 2200)) {
+                if ((artifactSystem.getActualLauncherRpm() > 2150)) {
                     if((pathTimer.getElapsedTimeSeconds() > 0.5)) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(CloseAuto.PathState.PREPARE_TO_LAUNCH_PICKUP1_3);
@@ -378,7 +424,7 @@ public class CloseAuto extends PedroAutoBase {
                 }
                 break;
             case LAUNCH_PICKUP1_3:
-                if ((artifactSystem.getActualLauncherRpm() > 2200)) {
+                if ((artifactSystem.getActualLauncherRpm() > 2150)) {
                     if((pathTimer.getElapsedTimeSeconds() > 0.5)) {
                         if (artifactSystem.raiseFlipper()) {
                             setPathState(CloseAuto.PathState.AFTER_PICKUP1_LAUNCHES);
@@ -401,27 +447,47 @@ public class CloseAuto extends PedroAutoBase {
             case PREP_PICKUP2:
                 follower.followPath(prepPickup2,0.8, Constants.followerConstants.automaticHoldEnd); // prep to collect 1
                 artifactSystem.startIntake();
-                setPathState(CloseAuto.PathState.HALF_PICKUP2);
+                setPathState(PathState.COLLECT_SPIKE2_ARTIFACT1);
                 break;
 
-            case HALF_PICKUP2:
+            case COLLECT_SPIKE2_ARTIFACT1:
                 if (!follower.isBusy()) {
-                    follower.followPath(halfPickup2, 0.21, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(CloseAuto.PathState.COLLECT_PICKUP2);
+                    follower.followPath(collectSpike2Artifact1, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_BEFORE_SPIKE2_ARTIFACT2);
                 }
                 break;
-
-            case COLLECT_PICKUP2:
+            case WAIT_BEFORE_SPIKE2_ARTIFACT2:
                 if (!follower.isBusy()) {
-                    follower.followPath(collectPickup2, 0.21, Constants.followerConstants.automaticHoldEnd);
-                    setPathState(CloseAuto.PathState.PARK);
+                    setPathState(PathState.COLLECT_SPIKE2_ARTIFACT2);
+                }
+                break;
+            case COLLECT_SPIKE2_ARTIFACT2:
+                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                    follower.followPath(collectSpike2Artifact2, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_BEFORE_SPIKE2_ARTIFACT3);
+                }
+                break;
+            case WAIT_BEFORE_SPIKE2_ARTIFACT3:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.COLLECT_SPIKE2_ARTIFACT3);
+                }
+                break;
+            case COLLECT_SPIKE2_ARTIFACT3:
+                if (pathTimer.getElapsedTimeSeconds() > 0.4) {
+                    follower.followPath(collectSpike2Artifact3, 0.25, Constants.followerConstants.automaticHoldEnd);
+                    setPathState(PathState.WAIT_AFTER_SPIKE2_ARTIFACT3);
+                }
+                break;
+            case WAIT_AFTER_SPIKE2_ARTIFACT3:
+                if (!follower.isBusy()) {
+                    setPathState(PathState.PARK);
                 }
                 break;
 
             // ===================================== PARK =====================================
 
             case PARK:
-                if (!follower.isBusy()) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0){
                     follower.followPath(park);
                     artifactSystem.stopIntake(false);
                     setPathState(CloseAuto.PathState.STOP);

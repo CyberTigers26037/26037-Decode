@@ -80,9 +80,7 @@ public class ArtifactSystemAutoLauncher {
                 launchArtifact(ArtifactLaunchingState.PAUSE_FOR_LAUNCH);
                 break;
             case PAUSE_FOR_LAUNCH:
-                if (stateTimer.getElapsedSeconds() > 1.0) {
-                    setLaunchingState(ArtifactLaunchingState.STOP);
-                }
+                setLaunchingState(ArtifactLaunchingState.STOP);
                 break;
 
             case STOP:
@@ -106,16 +104,14 @@ public class ArtifactSystemAutoLauncher {
 
     private void launchArtifact(ArtifactLaunchingState nextState) {
         if (artifactSystem.isCarouselAtTarget() && (isLauncherRPMAtTarget())) {
-            if (stateTimer.getElapsedSeconds() > 0.5) {
-                if (artifactSystem.raiseFlipperTurbo()) {
-                    setLaunchingState(nextState);
-                }
+            if (artifactSystem.raiseFlipperTurbo()) {
+                setLaunchingState(nextState);
             }
         }
     }
 
     private boolean isLauncherRPMAtTarget() {
-        int delta=artifactSystem.getActualLauncherRpm() - artifactSystem.getLauncherRpm();
+        int delta = artifactSystem.getActualLauncherRpm() - artifactSystem.getLauncherRpm();
         return (delta >= -20) && (delta <= 30);
     }
 

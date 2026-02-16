@@ -40,7 +40,7 @@ public class FarAuto extends PedroAutoBase {
         public ConfigurablePose prepPickup2Blue = new ConfigurablePose(54, 57, 180);
         public ConfigurablePose prepPickup2Red = new ConfigurablePose(90, 56, 0);
 
-        public ConfigurablePose collectSpike2Artifact1Blue = new ConfigurablePose(44, 59, 180);
+        public ConfigurablePose collectSpike2Artifact1Blue = new ConfigurablePose(45, 59, 180);
         public ConfigurablePose collectSpike2Artifact1Red = new ConfigurablePose(100, 58, 0);
 
         public ConfigurablePose collectSpike2Artifact2Blue = new ConfigurablePose(38, 59, 180);
@@ -52,8 +52,8 @@ public class FarAuto extends PedroAutoBase {
         public ConfigurablePose scorePose2NotHitWallBlue = new ConfigurablePose(56, 23, 115);
         public ConfigurablePose scorePose2NotHitWallRed = new ConfigurablePose(94, 26, 75);
 
-        public ConfigurablePose driveOutWhiteBoxBlue = new ConfigurablePose(56, 40, 180);
-        public ConfigurablePose driveOutWhiteBoxRed = new ConfigurablePose(88, 30, 90);
+        public ConfigurablePose driveOutWhiteBoxBlue = new ConfigurablePose(26, 59, 180);
+        public ConfigurablePose driveOutWhiteBoxRed = new ConfigurablePose(114, 58, 0);
 
     }
 
@@ -218,7 +218,7 @@ public class FarAuto extends PedroAutoBase {
                 break;
             case AUTO_AIM_PRELOAD:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
-                    if (autoRotateTowardGoalAuto( isBlueAlliance? 4:-2) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                    if (autoRotateTowardGoalAuto( isBlueAlliance? 3:-1) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
                         stopAutoRotating();
                         setPathState(PathState.PREPARE_TO_LAUNCH_PRELOAD1);
                     }
@@ -433,7 +433,6 @@ public class FarAuto extends PedroAutoBase {
 
             case DRIVE_OUT_BOX:
                 if (pathTimer.getElapsedTimeSeconds() > 1.0){
-                    artifactSystem.stopLauncher();
                     follower.followPath(driveOutBox, 1, Constants.followerConstants.automaticHoldEnd);
                     setPathState(PathState.STOP);
                 }

@@ -23,8 +23,8 @@ public class CloseAuto extends PedroAutoBase {
         public ConfigurablePose scanObeliskPoseBlue = new ConfigurablePose(48, 95, 70);
         public ConfigurablePose scanObeliskPoseRed  = new ConfigurablePose(96, 90, 110);
 
-        public ConfigurablePose scorePoseBlue = new ConfigurablePose(48, 92, 140);
-        public ConfigurablePose scorePoseRed  = new ConfigurablePose(92, 80, 45);
+        public ConfigurablePose scorePoseBlue = new ConfigurablePose(48, 92, 150);
+        public ConfigurablePose scorePoseRed  = new ConfigurablePose(86, 80, 35);
 
         public ConfigurablePose prepPickup1Blue = new ConfigurablePose(44, 79, 180);
         public ConfigurablePose prepPickup1Red  = new ConfigurablePose(96, 82, 0);
@@ -357,8 +357,8 @@ public class CloseAuto extends PedroAutoBase {
                 if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     artifactSystem.stopIntake(false);
                     if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
-                        follower.followPath(scorePickup1, 1.0, Constants.followerConstants.automaticHoldEnd);
-                        artifactSystem.setLauncherRpm(2200);
+                        follower.followPath(scorePickup1, 0.7, Constants.followerConstants.automaticHoldEnd);
+                        artifactSystem.setLauncherRpm(2250);
                         artifactSystem.startLauncher();
                         setPathState(PathState.SCORE_PICKUP1_WAIT_FOR_DRIVING);
                     }

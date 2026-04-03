@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.bylazar.configurables.annotations.Configurable;
-import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -16,21 +14,9 @@ import org.firstinspires.ftc.teamcode.subassembly.ArtifactColor;
 public class DemoDanceAuto extends PedroAutoBase {
     public static class CloseAutoConfig {
         public ConfigurablePose startPose = new ConfigurablePose(0, 0, 0);
-
     }
 
     public static CloseAutoConfig config = new CloseAutoConfig();
-
-    // Spin
-    // Stop spinning
-    // Change light color
-    // Intake
-    // Reverse intake
-    // Adjust launcher
-    // Carousel
-    // Attempt launch
-    // Park
-
 
     private enum PathState {
         SPIN,
@@ -68,10 +54,8 @@ public class DemoDanceAuto extends PedroAutoBase {
     }
 
     public Pose getStartPose() {
-        return startPose.getPose();
+        return config.startPose.getPose();
     }
-
-    /** We do not use this because everything should automatically disable **/
 
     public void buildPaths() {
 
@@ -80,112 +64,116 @@ public class DemoDanceAuto extends PedroAutoBase {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case SPIN:
-                follower.turnDegrees(720, false);
-                setPathState(PathState.STOP_SPINNING);
+                if (pathTimer.getElapsedTimeSeconds() > 4.0) {
+                    follower.turnDegrees(180, false);
+                    setPathState(PathState.STOP_SPINNING);
+                }
                 break;
             case STOP_SPINNING:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 3.0)) {
+                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 1.0)) {
                     setPathState(PathState.CYCLE_LIGHT1);
                 }
                 break;
 
             case CYCLE_LIGHT1:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
                     rgbLight.setPosition(RED);
                     setPathState(PathState.CYCLE_LIGHT2);
-                }
                 break;
             case CYCLE_LIGHT2:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     rgbLight.setPosition(BLUE);
                     setPathState(PathState.CYCLE_LIGHT3);
                 }
                 break;
             case CYCLE_LIGHT3:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     rgbLight.setPosition(RED);
                     setPathState(PathState.STOP_CYCLE_LIGHT);
                 }
                 break;
             case STOP_CYCLE_LIGHT:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.0) {
                     rgbLight.setPosition(OFF);
                     setPathState(PathState.INTAKE);
                 }
                 break;
 
             case INTAKE:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     artifactSystem.startIntake();
                     setPathState(PathState.STOP_INTAKE);
                 }
                 break;
             case STOP_INTAKE:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
                     artifactSystem.stopIntake(false);
                     setPathState(PathState.REVERSE_INTAKE);
                 }
                 break;
             case REVERSE_INTAKE:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     artifactSystem.startReverseIntake();
                     setPathState(PathState.ADJUST_LAUNCHER_CLOSE);
                 }
                 break;
 
             case ADJUST_LAUNCHER_CLOSE:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
                     artifactSystem.stopReverseIntake();
                     adjustLauncherAngle.adjustCloseAngle();
                     setPathState(PathState.ADJUST_LAUNCHER_FAR);
                 }
                 break;
             case ADJUST_LAUNCHER_FAR:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
                     adjustLauncherAngle.adjustCloseAngle();
                     setPathState(PathState.CAROUSEL1);
                 }
                 break;
 
             case CAROUSEL1:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     artifactSystem.moveCarouselToPosition(1);
                     setPathState(PathState.CAROUSEL2);
                 }
                 break;
             case CAROUSEL2:
-                artifactSystem.moveCarouselToPosition(2);
-                setPathState(PathState.CAROUSEL3);
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    artifactSystem.moveCarouselToPosition(2);
+                    setPathState(PathState.CAROUSEL3);
+                }
                 break;
+
             case CAROUSEL3:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     artifactSystem.moveCarouselToPosition(3);
                     setPathState(PathState.RAISE_FLIPPER);
                 }
                 break;
 
             case RAISE_FLIPPER:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
                     artifactSystem.raiseFlipper();
                     setPathState(PathState.LAUNCH);
                 }
                 break;
             case PARK_FLIPPER:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
-                    artifactSystem.raiseFlipper();
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    artifactSystem.parkFlipper();
                     setPathState(PathState.LAUNCH);
                 }
                 break;
+
             case LAUNCH:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 0.5)) {
-                    artifactSystem.setLauncherRpm(1000);
+                if (pathTimer.getElapsedTimeSeconds() > 1.5) {
+                    artifactSystem.setLauncherRpm(2000);
                     artifactSystem.startLauncher();
                     setPathState(PathState.PARK);
                 }
                 break;
 
             case PARK:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 1.0)) {
+                if (pathTimer.getElapsedTimeSeconds() > 4.0) {
                     artifactSystem.stopLauncher();
                     setPathState(PathState.STOP);
                 }
@@ -214,7 +202,7 @@ public class DemoDanceAuto extends PedroAutoBase {
 
     @Override
     protected String getAutoName() {
-        return "Close Auto";
+        return "Dance Auto";
     }
 
     @Override

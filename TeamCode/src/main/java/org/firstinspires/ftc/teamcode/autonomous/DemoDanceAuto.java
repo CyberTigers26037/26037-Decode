@@ -28,8 +28,8 @@ public class DemoDanceAuto extends PedroAutoBase {
         INTAKE,
         STOP_INTAKE,
         REVERSE_INTAKE,
-        ADJUST_LAUNCHER_CLOSE,
         ADJUST_LAUNCHER_FAR,
+        ADJUST_LAUNCHER_CLOSE,
         CAROUSEL1,
         CAROUSEL2,
         CAROUSEL3,
@@ -113,18 +113,18 @@ public class DemoDanceAuto extends PedroAutoBase {
             case REVERSE_INTAKE:
                 if (pathTimer.getElapsedTimeSeconds() > 0.5) {
                     artifactSystem.startReverseIntake();
-                    setPathState(PathState.ADJUST_LAUNCHER_CLOSE);
-                }
-                break;
-
-            case ADJUST_LAUNCHER_CLOSE:
-                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
-                    artifactSystem.stopReverseIntake();
-                    adjustLauncherAngle.adjustCloseAngle();
                     setPathState(PathState.ADJUST_LAUNCHER_FAR);
                 }
                 break;
+
             case ADJUST_LAUNCHER_FAR:
+                if (pathTimer.getElapsedTimeSeconds() > 2.0) {
+                    artifactSystem.stopReverseIntake();
+                    adjustLauncherAngle.adjustFarAngle();
+                    setPathState(PathState.ADJUST_LAUNCHER_CLOSE);
+                }
+                break;
+            case ADJUST_LAUNCHER_CLOSE:
                 if (pathTimer.getElapsedTimeSeconds() > 2.0) {
                     adjustLauncherAngle.adjustCloseAngle();
                     setPathState(PathState.CAROUSEL1);

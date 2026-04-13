@@ -19,7 +19,8 @@ public class DemoDanceAuto extends PedroAutoBase {
     public static CloseAutoConfig config = new CloseAutoConfig();
 
     private enum PathState {
-        SPIN,
+        SPIN1_1,
+        SPIN1_2,
         STOP_SPINNING,
         CYCLE_LIGHT1,
         CYCLE_LIGHT2,
@@ -63,14 +64,18 @@ public class DemoDanceAuto extends PedroAutoBase {
 
     public void autonomousPathUpdate() {
         switch (pathState) {
-            case SPIN:
-                if (pathTimer.getElapsedTimeSeconds() > 4.0) {
+            case SPIN1_1:
+                    follower.turnDegrees(180, false);
+                    setPathState(PathState.SPIN1_2);
+                break;
+            case SPIN1_2:
+                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 4.0)) {
                     follower.turnDegrees(180, false);
                     setPathState(PathState.STOP_SPINNING);
                 }
                 break;
             case STOP_SPINNING:
-                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 1.0)) {
+                if ((!follower.isBusy()) || (pathTimer.getElapsedTimeSeconds() > 4.0)) {
                     setPathState(PathState.CYCLE_LIGHT1);
                 }
                 break;
@@ -175,7 +180,7 @@ public class DemoDanceAuto extends PedroAutoBase {
             case PARK:
                 if (pathTimer.getElapsedTimeSeconds() > 4.0) {
                     artifactSystem.stopLauncher();
-                    setPathState(PathState.STOP);
+                    setPathState(PathState.SPIN1_1);
                 }
                 break;
 
@@ -209,7 +214,7 @@ public class DemoDanceAuto extends PedroAutoBase {
     public void start() {
         super.start();
         opmodeTimer.resetTimer();
-        setPathState(PathState.SPIN);
+        setPathState(PathState.SPIN1_1);
     }
 
     @Override

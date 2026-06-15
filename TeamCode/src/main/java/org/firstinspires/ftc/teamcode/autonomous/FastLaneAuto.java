@@ -35,7 +35,7 @@ public class FastLaneAuto extends PedroAutoBase {
 
     @Override
     public Pose getStartPose() {
-        return new Pose(30, 9, 0);
+        return new Pose(60, 18, 0);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path1 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(30, 9, 0),
-                        new Pose(60, 9, 0)))
+                        new Pose(60, 18, 0),
+                        new Pose(120, 18, 0)))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(0))
@@ -52,8 +52,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path2 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(60, 9, 0),
-                        new Pose(60, 30, Math.toRadians(90))))
+                        new Pose(120, 18, 0),
+                        new Pose(120, 60, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(90))
@@ -61,8 +61,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path3 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(60, 30, Math.toRadians(90)),
-                        new Pose(30, 30, Math.toRadians(180))))
+                        new Pose(120, 60, Math.toRadians(90)),
+                        new Pose(60, 60, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(180))
@@ -70,8 +70,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path4 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(30, 30, Math.toRadians(180)),
-                        new Pose(30, 45, Math.toRadians(90))))
+                        new Pose(60, 60, Math.toRadians(180)),
+                        new Pose(60, 90, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(180),
                         Math.toRadians(90))
@@ -79,8 +79,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path5 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(30, 45, Math.toRadians(90)),
-                        new Pose(60, 45, 0)))
+                        new Pose(60, 90, Math.toRadians(90)),
+                        new Pose(120, 90, 0)))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(0))
@@ -88,8 +88,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path6 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(60, 45, 0),
-                        new Pose(60, 63, Math.toRadians(90))))
+                        new Pose(120, 90, 0),
+                        new Pose(120, 126, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(90))
@@ -97,8 +97,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path7 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(60, 63, Math.toRadians(90)),
-                        new Pose(15, 63, Math.toRadians(180))))
+                        new Pose(120, 126, Math.toRadians(90)),
+                        new Pose(30, 126, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(180))
@@ -106,8 +106,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path8 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(15, 63, Math.toRadians(180)),
-                        new Pose(15, 9, Math.toRadians(270))))
+                        new Pose(30, 126, Math.toRadians(180)),
+                        new Pose(30, 18, Math.toRadians(270))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(180),
                         Math.toRadians(270))
@@ -115,8 +115,8 @@ public class FastLaneAuto extends PedroAutoBase {
 
         path9 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(15, 9, Math.toRadians(270)),
-                        new Pose(30, 9, 0)))
+                        new Pose(30, 18, Math.toRadians(270)),
+                        new Pose(60, 18, 0)))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(270),
                         Math.toRadians(0))

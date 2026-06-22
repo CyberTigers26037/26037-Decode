@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -10,10 +11,13 @@ public class FastLaneAuto extends PedroSimpleBase {
 
     private enum PathState {
         PATH1,
+        CURVE_PATH1,
         PATH2,
         PATH3,
+        CURVE_PATH2,
         PATH4,
         PATH5,
+        CURVE_PATH3,
         PATH6,
         PATH7,
         PATH8,
@@ -24,10 +28,13 @@ public class FastLaneAuto extends PedroSimpleBase {
     private PathState pathState;
 
     private PathChain path1;
+    private PathChain curvePath1;
     private PathChain path2;
     private PathChain path3;
+    private PathChain curvePath2;
     private PathChain path4;
     private PathChain path5;
+    private PathChain curvePath3;
     private PathChain path6;
     private PathChain path7;
     private PathChain path8;
@@ -42,70 +49,97 @@ public class FastLaneAuto extends PedroSimpleBase {
     public void buildPaths() {
 
         path1 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(60, 18, 0),
-                        new Pose(55, 18, 0)))
+                .addPath(new BezierCurve(
+                        new Pose(60, 18, Math.toRadians(0)),
+                        new Pose(96, 18, Math.toRadians(0))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(0))
                 .build();
 
-        path2 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(120, 18, 0),
-                        new Pose(120, 60, Math.toRadians(90))))
+        curvePath1 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(96, 18, Math.toRadians(0)),
+                        new Pose(120, 36, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(90))
                 .build();
 
-        path3 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(120, 60, Math.toRadians(90)),
-                        new Pose(60, 60, Math.toRadians(180))))
+        path2 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(120, 36, Math.toRadians(90)),
+                        new Pose(96, 60, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(180))
                 .build();
+// U-turn 1 ^^^^ complete
+        path3 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(96, 60, Math.toRadians(180)),
+                        new Pose(84, 60, Math.toRadians(180))))
+                .setLinearHeadingInterpolation(
+                        Math.toRadians(180),
+                        Math.toRadians(180))
+                .build();
 
-        path4 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(60, 60, Math.toRadians(180)),
-                        new Pose(60, 90, Math.toRadians(90))))
+        curvePath2 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(84, 60, Math.toRadians(180)),
+                        new Pose(60, 75, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(180),
                         Math.toRadians(90))
                 .build();
 
-        path5 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(60, 90, Math.toRadians(90)),
-                        new Pose(120, 90, 0)))
+        path4 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(60, 75, Math.toRadians(90)),
+                        new Pose(84, 90, Math.toRadians(0))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(0))
                 .build();
+// U-Turn 2 ^^^^ need to test
+        path5 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(84, 90, Math.toRadians(0)),
+                        new Pose(96, 90, Math.toRadians(0))))
+                .setLinearHeadingInterpolation(
+                        Math.toRadians(0),
+                        Math.toRadians(0))
+                .build();
 
-        path6 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(120, 90, 0),
-                        new Pose(120, 126, Math.toRadians(90))))
+        curvePath3 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(96, 90, Math.toRadians(0)),
+                        new Pose(120, 108, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(90))
                 .build();
 
-        path7 = follower.pathBuilder()
-                .addPath(new BezierLine(
-                        new Pose(120, 126, Math.toRadians(90)),
-                        new Pose(30, 126, Math.toRadians(180))))
+        path6 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(120, 108, Math.toRadians(90)),
+                        new Pose(96, 126, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(180))
                 .build();
+// U-Turn 3 ^^^ need to test
+        path7 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(96, 126, Math.toRadians(180)),
+                        new Pose(30, 126, Math.toRadians(180))))
+                .setLinearHeadingInterpolation(
+                        Math.toRadians(180),
+                        Math.toRadians(180))
+                .build();
 
         path8 = follower.pathBuilder()
-                .addPath(new BezierLine(
+                .addPath(new BezierCurve(
                         new Pose(30, 126, Math.toRadians(180)),
                         new Pose(30, 18, Math.toRadians(270))))
                 .setLinearHeadingInterpolation(
@@ -114,9 +148,9 @@ public class FastLaneAuto extends PedroSimpleBase {
                 .build();
 
         path9 = follower.pathBuilder()
-                .addPath(new BezierLine(
+                .addPath(new BezierCurve(
                         new Pose(30, 18, Math.toRadians(270)),
-                        new Pose(60, 18, 0)))
+                        new Pose(60, 18, Math.toRadians(0))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(270),
                         Math.toRadians(0))
@@ -128,6 +162,13 @@ public class FastLaneAuto extends PedroSimpleBase {
         switch (pathState) {
 
             case PATH1:
+                if (!follower.isBusy()) {
+                    follower.followPath(curvePath1);
+                    setPathState(PathState.CURVE_PATH1);
+                }
+                break;
+
+            case CURVE_PATH1:
                 if (!follower.isBusy()) {
                     follower.followPath(path2);
                     setPathState(PathState.PATH2);
@@ -143,6 +184,13 @@ public class FastLaneAuto extends PedroSimpleBase {
 
             case PATH3:
                 if (!follower.isBusy()) {
+                    follower.followPath(curvePath2);
+                    setPathState(PathState.CURVE_PATH2);
+                }
+                break;
+
+            case CURVE_PATH2:
+                if (!follower.isBusy()) {
                     follower.followPath(path4);
                     setPathState(PathState.PATH4);
                 }
@@ -156,6 +204,13 @@ public class FastLaneAuto extends PedroSimpleBase {
                 break;
 
             case PATH5:
+                if (!follower.isBusy()) {
+                    follower.followPath(curvePath3);
+                    setPathState(PathState.CURVE_PATH3);
+                }
+                break;
+
+            case CURVE_PATH3:
                 if (!follower.isBusy()) {
                     follower.followPath(path6);
                     setPathState(PathState.PATH6);

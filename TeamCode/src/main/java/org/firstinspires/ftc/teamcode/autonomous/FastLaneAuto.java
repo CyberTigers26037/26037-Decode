@@ -52,8 +52,8 @@ public class FastLaneAuto extends PedroSimpleBase {
 
         path2 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(55, 18, 0),
-                        new Pose(70, 60, Math.toRadians(90))))
+                        new Pose(120, 18, 0),
+                        new Pose(120, 60, Math.toRadians(90))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(90))
@@ -61,7 +61,7 @@ public class FastLaneAuto extends PedroSimpleBase {
 
         path3 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(70, 60, Math.toRadians(90)),
+                        new Pose(120, 60, Math.toRadians(90)),
                         new Pose(60, 60, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
@@ -126,7 +126,7 @@ public class FastLaneAuto extends PedroSimpleBase {
     public void autonomousPathUpdate() {
 
         switch (pathState) {
-/*
+
             case PATH1:
                 if (!follower.isBusy()) {
                     follower.followPath(path2);
@@ -188,10 +188,10 @@ public class FastLaneAuto extends PedroSimpleBase {
                     setPathState(PathState.PATH1);
                 }
                 break;
-*/
-//            case STOP:
-//                follower.breakFollowing();
-//                break;
+
+            case STOP:
+                follower.breakFollowing();
+                break;
         }
     }
 

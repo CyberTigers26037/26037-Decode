@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -13,7 +14,9 @@ public class WayfinderAuto extends PedroSimpleBase {
     private enum PathState {
         PATH1,
         PATH2,
+        TURNPATh2,
         PATH3,
+        TURNPATH3,
         PATH4,
         PATH5
     }
@@ -23,7 +26,9 @@ public class WayfinderAuto extends PedroSimpleBase {
 
     private PathChain path1;
     private PathChain path2;
+    private PathChain turn_Path2;
     private PathChain path3;
+    private PathChain turn_Path3;
     private PathChain path4;
     private PathChain path5;
 
@@ -52,31 +57,48 @@ public class WayfinderAuto extends PedroSimpleBase {
                         Math.toRadians(0),
                         Math.toRadians(90))
                 .build();
+        turn_Path2 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        new Pose(123, 127, Math.toRadians(180)),
+                        new Pose(60, 65, Math.toRadians(90))))
+                .setLinearHeadingInterpolation(
+                        Math.toRadians(180),
+                        Math.toRadians(90))
+                .build();
 
         path3 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(123, 127, Math.toRadians(90)),
+                        new Pose(60, 65, Math.toRadians(90)),
                         new Pose(18, 126, Math.toRadians(180))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(90),
                         Math.toRadians(180))
                 .build();
 
-        path4 = follower.pathBuilder()
-                .addPath(new BezierLine(
+        turn_Path3 = follower.pathBuilder()
+                .addPath(new BezierCurve(
                         new Pose(18, 126, Math.toRadians(180)),
-                        new Pose(17, 18, Math.toRadians(90))))
+                        new Pose(40, 65, Math.toRadians(270))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(180),
-                        Math.toRadians(90))
+                        Math.toRadians(270))
+                .build();
+
+        path4 = follower.pathBuilder()
+                .addPath(new BezierLine(
+                        new Pose(40, 65, Math.toRadians(270)),
+                        new Pose(17, 18, Math.toRadians(270))))
+                .setLinearHeadingInterpolation(
+                        Math.toRadians(270),
+                        Math.toRadians(270))
                 .build();
 
         path5 = follower.pathBuilder()
                 .addPath(new BezierLine(
-                        new Pose(17, 18, Math.toRadians(90)),
+                        new Pose(17, 18, Math.toRadians(270)),
                         new Pose(59, 18, 0)))
                 .setLinearHeadingInterpolation(
-                        Math.toRadians(90),
+                        Math.toRadians(270),
                         Math.toRadians(0))
                 .build();
 
@@ -96,24 +118,38 @@ public class WayfinderAuto extends PedroSimpleBase {
 
             case PATH2:
                 if (!follower.isBusy()) {
+                    follower.followPath(turn_Path2);
+                    setPathState(PathState.TURNPATh2);
+
+
+                }
+                break;
+
+            case TURNPATh2:
+                if (!follower.isBusy()) {
                     follower.followPath(path3);
                     setPathState(PathState.PATH3);
                 }
                 break;
-
             case PATH3:
+                if (!follower.isBusy()) {
+                    follower.followPath(turn_Path3);
+                    setPathState(PathState.TURNPATH3);
+                }
+                break;
+
+            case TURNPATH3:
                 if (!follower.isBusy()) {
                     follower.followPath(path4);
                     setPathState(PathState.PATH4);
                 }
                 break;
-
-            case PATH4:
-                if (!follower.isBusy()) {
-                    follower.followPath(path5);
-                    setPathState(PathState.PATH5);
-                }
-                break;
+// case PATH4:
+//                if (!follower.isBusy()) {
+//                    follower.followPath(path5);
+//                    setPathState(PathState.PATH5);
+//                }
+//                break;
 
 
 

@@ -172,7 +172,7 @@ public class FastLaneAuto extends PedroSimpleBase {
         path9 = follower.pathBuilder()
                 .addPath(new BezierCurve(
                         new Pose(20, 18, Math.toRadians(0)),
-                        new Pose(60, 18, Math.toRadians(0))))
+                        new Pose(108, 18, Math.toRadians(0))))
                 .setLinearHeadingInterpolation(
                         Math.toRadians(0),
                         Math.toRadians(0))
@@ -248,12 +248,26 @@ public class FastLaneAuto extends PedroSimpleBase {
 
             case PATH7:
                 if (!follower.isBusy()) {
+                    follower.followPath(turnPath7);
+                    setPathState(PathState.TURN_PATH7);
+                }
+                break;
+
+            case TURN_PATH7:
+                if (!follower.isBusy()) {
                     follower.followPath(path8);
                     setPathState(PathState.PATH8);
                 }
                 break;
 
             case PATH8:
+                if (!follower.isBusy()) {
+                    follower.followPath(turnPath8);
+                    setPathState(PathState.TURN_PATH8);
+                }
+                break;
+
+            case TURN_PATH8:
                 if (!follower.isBusy()) {
                     follower.followPath(path9);
                     setPathState(PathState.PATH9);
@@ -262,7 +276,7 @@ public class FastLaneAuto extends PedroSimpleBase {
 
             case PATH9:
                 if (!follower.isBusy()) {
-                    setPathState(PathState.PATH1);
+                    setPathState(PathState.CURVE_PATH1);
                 }
                 break;
 // should loop till 30 seconds is over

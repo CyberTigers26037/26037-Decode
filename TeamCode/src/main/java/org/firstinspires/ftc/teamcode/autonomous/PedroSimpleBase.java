@@ -28,7 +28,11 @@ public abstract class PedroSimpleBase extends OpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
 
-        follower = Constants.createFollower(hardwareMap);
+        follower = createFollower();
+    }
+
+    protected Follower createFollower() {
+        return Constants.createFollower(hardwareMap);
     }
 
     protected abstract String getAutoName();

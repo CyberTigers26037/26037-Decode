@@ -60,13 +60,17 @@ public abstract class PedroAutoBase extends OpMode {
 
         artifactSystem.initializeArtifactColors(ArtifactColor.GREEN, ArtifactColor.PURPLE, ArtifactColor.PURPLE);
 
-        follower = Constants.createFollower(hardwareMap);
+        follower = createFollower();
 
         autoMenu = new AutoMenu();
         autoMenu.init();
 
         allianceOverrideMenu = new AllianceOverrideMenu();
         allianceOverrideMenu.init(hardwareMap);
+    }
+
+    protected Follower createFollower() {
+        return Constants.createFollower(hardwareMap);
     }
 
     @Override

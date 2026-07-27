@@ -104,13 +104,14 @@ public class TankDriveOpMode extends OpMode {
          * set Feeders to an initial value to initialize the servo controller
          */
         leftIntakeServo.setPower(0);
+        leftIntakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
         rightIntakeServo.setPower(0);
+
 
         /*
          * Much like our drivetrain motors, we set the right intake servo to reverse so that both
          * servos work to pull elements into the intake.
          */
-        rightIntakeServo.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Tell the driver that initialization is complete.

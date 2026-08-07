@@ -89,7 +89,7 @@ public class TankDriveOpMode extends OpMode {
          * Reduction or 90 Deg drives may require direction flips
          */
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         /*
          * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
@@ -147,7 +147,7 @@ public class TankDriveOpMode extends OpMode {
          * both motors work to rotate the robot. Combinations of these inputs can be used to create
          * more complex maneuvers.
          */
-        arcadeDrive(-gamepad1.left_stick_y, gamepad1.right_stick_x);
+        arcadeDrive(-gamepad1.left_stick_y, //gamepad1.right_stick_x);
 
         /*
          * Set the intake power variable to equal the right trigger, minus the left trigger.
@@ -161,7 +161,7 @@ public class TankDriveOpMode extends OpMode {
          * allow us to avoid setting the same motors/servos power more than once per loop. That can
          * create erratic behavior.
          */
-        intakePower = gamepad1.right_trigger - gamepad1.left_trigger;
+        intakePower = gamepad1.right_trigger - gamepad1.left_trigger);
 
         intake.setPower(intakePower);
         leftIntakeServo.setPower(intakePower);
